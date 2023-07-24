@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:layout_width="415dp"
+                android:layout_height="229dp"
+                android:layout_margin="8dp"
+                tools:ignore="MissingConstraints">
+            <ImageView
+                android:id="@+id/imageBackPopularMovie"
+                android:layout_width="410dp"
+                android:layout_height="292dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_bottom_dark" />
+        </FrameLayout>
+
+            <ImageView
+                android:id="@+id/imagePosterPopularMovie"
+                android:layout_width="130dp"
+                android:layout_height="184dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.287"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/textTitlePopularMovie"
+                android:layout_width="233dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="92dp"
+                android:text=""
+                android:textColor="@color/logoBlue"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imagePosterPopularMovie"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/imagePosterPopularMovie"
+                app:layout_constraintTop_toBottomOf="@+id/imageBackPopularMovie"
+                app:layout_constraintVertical_bias="0.451" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
