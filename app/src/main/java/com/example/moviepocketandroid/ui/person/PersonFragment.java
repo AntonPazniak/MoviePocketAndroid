@@ -24,11 +24,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
+import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.TVSeriesAdapter;
 import com.example.moviepocketandroid.api.ActorTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.MovieTMDBApi;
+import com.example.moviepocketandroid.api.models.MovieImage;
 import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class PersonFragment extends Fragment {
     private TextView textBirthday;
     private RecyclerView moviesRecyclerView;
     private RecyclerView tvRecyclerView;
-
-
+    private RecyclerView imagesRecyclerView;
+    private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
     private TVSeriesAdapter tvSeriesAdapter;
 
@@ -67,6 +68,7 @@ public class PersonFragment extends Fragment {
         textBirthday =view.findViewById(R.id.textBirthday);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
+        imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -94,6 +96,7 @@ public class PersonFragment extends Fragment {
                 Actor actorTMDBS = tmdbApi.getPersonById(idPerson);
                 List<Movie> movies = tmdbApi.getMoviesByIdActor(idPerson);
                 List<TVSeries> tvSeries = tmdbApi.getTVByIdActor(idPerson);
+                List<MovieImage> images = tmdbApi.getImagesByIdActor(idPerson);
                 if (actorTMDBS != null ) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @SuppressLint("SetTextI18n")
@@ -114,6 +117,13 @@ public class PersonFragment extends Fragment {
                             else
                                 textBirthday.setText(actorTMDBS.getBirthday()+" - "+actorTMDBS.getDeathDay());
 
+                            if ( images != null ) {
+                                movieImagesAdapter = new ImagesAdapter(images);
+                                imagesRecyclerView.setAdapter(movieImagesAdapter);
+                                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                                imagesRecyclerView.setLayoutManager(layoutManager2);
+                            }
+
                             if ( movies != null ) {
                                 movieAdapter = new MovieAdapter(movies);
                                 moviesRecyclerView.setAdapter(movieAdapter);
@@ -133,8 +143,8 @@ public class PersonFragment extends Fragment {
                             if (tvSeries != null) {
                                 tvSeriesAdapter = new TVSeriesAdapter(tvSeries);
                                 tvRecyclerView.setAdapter(tvSeriesAdapter);
-                                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                                tvRecyclerView.setLayoutManager(layoutManager2);
+                                LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                                tvRecyclerView.setLayoutManager(layoutManager1);
                                 tvSeriesAdapter.setOnMovieClickListener(new TVSeriesAdapter.OnMovieClickListener() {
                                     @Override
                                     public void onMovieClick(int idTV) {

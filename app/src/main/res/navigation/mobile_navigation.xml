@@ -62,6 +62,9 @@
         <action
             android:id="@+id/action_movieFragment_to_TVSeriesFragment"
             app:destination="@id/TVSeriesFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_movieInfoFragment"
+            app:destination="@id/movieInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -105,4 +108,9 @@
             android:id="@+id/action_TVSeriesFragment_self"
             app:destination="@id/TVSeriesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/movieInfoFragment"
+        android:name="com.example.moviepocketandroid.MovieInfoFragment"
+        android:label="fragment_movie_info"
+        tools:layout="@layout/fragment_movie_info" />
 </navigation>

@@ -11,4 +11,6 @@
     <string name="title">Title</string>
     <string name="biography">Biography</string>
     <string name="actors">Actors:</string>
+    <string name="similar_films">Similar films:</string>
+    <string name="images">Images:</string>
 </resources>

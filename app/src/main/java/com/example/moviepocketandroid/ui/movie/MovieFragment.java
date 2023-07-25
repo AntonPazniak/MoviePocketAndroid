@@ -13,9 +13,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,9 +28,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
+import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.MovieTMDBApi;
+import com.example.moviepocketandroid.api.models.MovieImage;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -52,12 +52,14 @@ public class MovieFragment extends Fragment {
     private RecyclerView actorsRecyclerView;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
+    private ImagesAdapter movieImagesAdapter;
 
     private boolean isLikeButtonPressed = false;
     private boolean isStarButtonPressed = false;
     private boolean isEyeButtonPressed = false;
     private boolean isBackPackButtonPressed = false;
     private RecyclerView moviesRecyclerView;
+    private RecyclerView imagesRecyclerView;
 
     AnimationSet animation;
 
@@ -86,6 +88,7 @@ public class MovieFragment extends Fragment {
         textRating = view.findViewById(R.id.textRating);
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
+        imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
 
         this.animation = createAnimation();
 
@@ -154,6 +157,7 @@ public class MovieFragment extends Fragment {
                 Movie movieInfoTMDB = tmdbApi.getMovieDetails(idMovie);
                 List<Actor> actors = tmdbApi.getActorsByIdMovie(idMovie);
                 List<Movie> movies = tmdbApi.getSimilarMoviesById(idMovie);
+                List<MovieImage> images = tmdbApi.getImagesByIdMovie(idMovie);
                 if (movieInfoTMDB != null) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -172,24 +176,40 @@ public class MovieFragment extends Fragment {
                             textOverview.setText(movieInfoTMDB.getOverview());
                             DecimalFormat decimalFormat = new DecimalFormat("#.#");
                             textRating.setText(decimalFormat.format(movieInfoTMDB.getVoteAverage()));
+                            if ( images != null ) {
+                                movieImagesAdapter = new ImagesAdapter(images);
+                                imagesRecyclerView.setAdapter(movieImagesAdapter);
+                                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                                imagesRecyclerView.setLayoutManager(layoutManager2);
+//                                movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+//                                    @Override
+//                                    public void onMovieClick(int movieId) {
+//                                        Bundle args = new Bundle();
+//                                        args.putInt("idMovie", movieId);
+//
+//                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+//                                        navController.navigate(R.id.movieFragment, args);
+//                                    }
+//                                });
+                            }
+                            if(actors != null) {
+                                actorsAdapter = new ActorsAdapter(actors);
+                                actorsRecyclerView.setAdapter(actorsAdapter);
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                                actorsRecyclerView.setLayoutManager(layoutManager);
 
-                            actorsAdapter = new ActorsAdapter(actors);
-                            actorsRecyclerView.setAdapter(actorsAdapter);
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                            actorsRecyclerView.setLayoutManager(layoutManager);
+                                actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
+                                    @Override
+                                    public void onActorClick(int actorId) {
+                                        // Navigate to PersonFragment with actorId as an argument
+                                        Bundle args = new Bundle();
+                                        args.putInt("idPerson", actorId);
 
-                            actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
-                                @Override
-                                public void onActorClick(int actorId) {
-                                    // Navigate to PersonFragment with actorId as an argument
-                                    Bundle args = new Bundle();
-                                    args.putInt("idPerson", actorId);
-
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigate(R.id.action_movieFragment_to_personFragment, args);
-                                }
-                            });
-
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_movieFragment_to_personFragment, args);
+                                    }
+                                });
+                            }
                             if ( movies != null ) {
                                 movieAdapter = new MovieAdapter(movies);
                                 moviesRecyclerView.setAdapter(movieAdapter);

@@ -6,6 +6,7 @@ import static com.example.moviepocketandroid.api.models.Movie.parseMovieInfo;
 import static com.example.moviepocketandroid.api.models.Movie.parseMoviePopular;
 
 import com.example.moviepocketandroid.api.models.Actor;
+import com.example.moviepocketandroid.api.models.MovieImage;
 import com.example.moviepocketandroid.api.models.Movie;
 
 import org.json.JSONArray;
@@ -200,7 +201,35 @@ public class MovieTMDBApi {
     }
 
 
+    public List<MovieImage> getImagesByIdMovie(int idMovie) {
+        OkHttpClient client = new OkHttpClient();
+        List<MovieImage> images = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/movie/"+idMovie+"/images?api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("backdrops");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    MovieImage image = MovieImage.parseMovieImage(movieObject.toString());
+                    if (image != null) {
+                        images.add(image);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return images;
+    }
 
 
 }

@@ -27,10 +27,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
+import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.TVSeriesAdapter;
 import com.example.moviepocketandroid.api.TVSeriesTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
+import com.example.moviepocketandroid.api.models.MovieImage;
 import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import java.text.DecimalFormat;
@@ -49,6 +51,7 @@ public class TVSeriesFragment extends Fragment {
     private TextView textOverview;
     private TextView textRating;
     private RecyclerView actorsRecyclerView;
+    private RecyclerView imagesRecyclerView;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
 
@@ -58,6 +61,8 @@ public class TVSeriesFragment extends Fragment {
     private boolean isBackPackButtonPressed = false;
     private RecyclerView tvRecyclerView;
     private TVSeriesAdapter tvSeriesAdapter;
+    private ImagesAdapter movieImagesAdapter;
+
 
 
     private AnimationSet animation;
@@ -87,6 +92,7 @@ public class TVSeriesFragment extends Fragment {
         textRating = view.findViewById(R.id.textRating);
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
+        imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
 
         this.animation = createAnimation();
 
@@ -154,6 +160,7 @@ public class TVSeriesFragment extends Fragment {
                 TVSeries tv = tmdbApi.getTVsInfo(idTV);
                 List<Actor> actors = tmdbApi.getActorsByIdTV(idTV);
                 List<TVSeries> tvSeries = tmdbApi.getSimilarTVById(idTV);
+                List<MovieImage> images = tmdbApi.getImagesByIdTV(idTV);
                 if (tv != null) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -172,12 +179,17 @@ public class TVSeriesFragment extends Fragment {
                             DecimalFormat decimalFormat = new DecimalFormat("#.#");
                             textRating.setText(decimalFormat.format(tv.getVoteAverage()));
                             textOverview.setText(tv.getOverview());
+                            if ( images != null ) {
+                                movieImagesAdapter = new ImagesAdapter(images);
+                                imagesRecyclerView.setAdapter(movieImagesAdapter);
+                                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                                imagesRecyclerView.setLayoutManager(layoutManager2);
+                            }
                             if(actors!=null) {
                                 actorsAdapter = new ActorsAdapter(actors);
                                 actorsRecyclerView.setAdapter(actorsAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
                                 actorsRecyclerView.setLayoutManager(layoutManager);
-
                                 actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
                                     @Override
                                     public void onActorClick(int actorId) {
@@ -192,8 +204,8 @@ public class TVSeriesFragment extends Fragment {
                                 if (tvSeries != null) {
                                     tvSeriesAdapter = new TVSeriesAdapter(tvSeries);
                                     tvRecyclerView.setAdapter(tvSeriesAdapter);
-                                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                                    tvRecyclerView.setLayoutManager(layoutManager2);
+                                    LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                                    tvRecyclerView.setLayoutManager(layoutManager1);
                                     tvSeriesAdapter.setOnMovieClickListener(new TVSeriesAdapter.OnMovieClickListener() {
                                         @Override
                                         public void onMovieClick(int idTV) {

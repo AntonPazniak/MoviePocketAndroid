@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api;
 
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.MovieImage;
 import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import org.json.JSONArray;
@@ -99,6 +100,36 @@ public class ActorTMDBApi {
         }
 
         return tvList;
+    }
+
+    public List<MovieImage> getImagesByIdActor(int idActor) {
+        OkHttpClient client = new OkHttpClient();
+        List<MovieImage> images = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/person/" + idActor + "/images?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("profiles");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    MovieImage image = MovieImage.parseMovieImage(movieObject.toString());
+                    if (image != null) {
+                        images.add(image);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return images;
     }
 
 }
