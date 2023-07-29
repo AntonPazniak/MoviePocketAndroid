@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class PersonFragment extends Fragment {
 
     private ImageView imagePerson;
     private TextView textNamePerson;
-    private TextView textBiography;
+    private TextView textOverview;
     private TextView textPlaceBirth;
     private TextView textBirthday;
     private RecyclerView moviesRecyclerView;
@@ -50,6 +51,7 @@ public class PersonFragment extends Fragment {
     private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
     private TVSeriesAdapter tvSeriesAdapter;
+    private boolean isExpanded = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -63,9 +65,9 @@ public class PersonFragment extends Fragment {
 
         imagePerson = view.findViewById(R.id.imagePerson);
         textNamePerson = view.findViewById(R.id.textNamePerson);
-        textBiography = view.findViewById(R.id.textBiography);
+        textOverview = view.findViewById(R.id.textOverview);
         textPlaceBirth = view.findViewById(R.id.textPlaceBirth);
-        textBirthday =view.findViewById(R.id.textBirthday);
+        textBirthday = view.findViewById(R.id.textBirthday);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
@@ -75,6 +77,21 @@ public class PersonFragment extends Fragment {
             int idMovie = args.getInt("idPerson");
             loadPersonDetails(idMovie);
         }
+
+        textOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExpanded) {
+                    textOverview.setMaxLines(5);
+                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textOverview.setMaxLines(Integer.MAX_VALUE);
+                    textOverview.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
+            }
+        });
+
     }
 
     @Override
@@ -110,7 +127,7 @@ public class PersonFragment extends Fragment {
                                     .apply(requestOptions)
                                     .into(imagePerson);
                             textNamePerson.setText(actorTMDBS.getName());
-                            textBiography.setText(actorTMDBS.getBiography());
+                            textOverview.setText(actorTMDBS.getBiography());
                             textPlaceBirth.setText(actorTMDBS.getPlaceOfBirth());
                             if(!actorTMDBS.getDeathDay().isEmpty())
                                 textBirthday.setText(actorTMDBS.getBirthday());

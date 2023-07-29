@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class MovieFragment extends Fragment {
     private boolean isStarButtonPressed = false;
     private boolean isEyeButtonPressed = false;
     private boolean isBackPackButtonPressed = false;
+    private boolean isExpanded = false;
     private RecyclerView moviesRecyclerView;
     private RecyclerView imagesRecyclerView;
 
@@ -137,12 +139,26 @@ public class MovieFragment extends Fragment {
         imageLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLikeButtonPressed)
+                if (isLikeButtonPressed)
                     imageLike.setImageResource(R.drawable.like_blue);
                 else
                     imageLike.setImageResource(R.drawable.like_pink);
                 isLikeButtonPressed = !isLikeButtonPressed;
                 imageLike.startAnimation(animation);
+            }
+        });
+
+        textOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExpanded) {
+                    textOverview.setMaxLines(5);
+                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textOverview.setMaxLines(Integer.MAX_VALUE);
+                    textOverview.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
             }
         });
 

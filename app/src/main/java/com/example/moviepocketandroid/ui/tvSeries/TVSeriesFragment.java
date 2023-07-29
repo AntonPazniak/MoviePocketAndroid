@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class TVSeriesFragment extends Fragment {
     private boolean isStarButtonPressed = false;
     private boolean isEyeButtonPressed = false;
     private boolean isBackPackButtonPressed = false;
+    private boolean isExpanded = false;
     private RecyclerView tvRecyclerView;
     private TVSeriesAdapter tvSeriesAdapter;
     private ImagesAdapter movieImagesAdapter;
@@ -140,7 +142,7 @@ public class TVSeriesFragment extends Fragment {
         imageLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLikeButtonPressed)
+                if (isLikeButtonPressed)
                     imageLike.setImageResource(R.drawable.like_blue);
                 else
                     imageLike.setImageResource(R.drawable.like_pink);
@@ -149,6 +151,19 @@ public class TVSeriesFragment extends Fragment {
             }
         });
 
+        textOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExpanded) {
+                    textOverview.setMaxLines(5);
+                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textOverview.setMaxLines(Integer.MAX_VALUE);
+                    textOverview.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
+            }
+        });
 
     }
     private void loadMovieDetails(int idTV) {
