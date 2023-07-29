@@ -47,10 +47,8 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<TVSeriesAdapter.MovieV
     public void onBindViewHolder(@NonNull TVSeriesAdapter.MovieViewHolder holder, int position) {
         TVSeries tv = tvSeries.get(position);
         holder.bind(tv);
-
-        // Set desired width and height for the movie item (if needed)
         int desiredWidthDp = 120;
-        int desiredHeightDp = 160;
+        int desiredHeightDp = 200;
         float density = holder.itemView.getResources().getDisplayMetrics().density;
         int desiredWidthPx = (int) (desiredWidthDp * density);
         int desiredHeightPx = (int) (desiredHeightDp * density);
@@ -88,8 +86,8 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<TVSeriesAdapter.MovieV
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(tv.getName());
-//            if (!tv.getGenres().isEmpty())
-//                textGenre.setText(tv.getGenres().get(0));
+            if (!tv.getGenres().isEmpty())
+                textGenre.setText(tv.getGenres().get(0));
             double rating = tv.getVoteAverage();
             DecimalFormat decimalFormat = new DecimalFormat("#.#");
 

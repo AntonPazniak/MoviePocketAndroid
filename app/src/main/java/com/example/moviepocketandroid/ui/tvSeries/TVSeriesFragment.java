@@ -50,6 +50,7 @@ public class TVSeriesFragment extends Fragment {
     private ImageView imageBackPack;
     private TextView textOverview;
     private TextView textRating;
+    private TextView textVoteCount;
     private RecyclerView actorsRecyclerView;
     private RecyclerView imagesRecyclerView;
     private ActorsAdapter actorsAdapter;
@@ -94,6 +95,7 @@ public class TVSeriesFragment extends Fragment {
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
+        textVoteCount = view.findViewById(R.id.textVoteCount);
 
         this.animation = createAnimation();
 
@@ -190,16 +192,27 @@ public class TVSeriesFragment extends Fragment {
                                     .apply(requestOptions)
                                     .into(imageBackPopularMovie);
                             textTitlePopularMovie.setText(tv.getName());
-                            DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                            textRating.setText(decimalFormat.format(tv.getVoteAverage()));
+                            if (tv.getVoteAverage() != 0) {
+                                double rating = tv.getVoteAverage();
+                                textOverview.setText(tv.getOverview());
+                                DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                                if (rating >= 8)
+                                    textRating.setTextColor(android.graphics.Color.parseColor("#F1B36E"));
+                                else if (rating >= 5)
+                                    textRating.setTextColor(android.graphics.Color.parseColor("#75FBE2"));
+                                else
+                                    textRating.setTextColor(android.graphics.Color.parseColor("#E4416A"));
+                                textRating.setText(decimalFormat.format(rating));
+                                textVoteCount.setText("Votes: " + tv.getVoteCount());
+                            }
                             textOverview.setText(tv.getOverview());
-                            if ( images != null ) {
+                            if (images != null) {
                                 movieImagesAdapter = new ImagesAdapter(images);
                                 imagesRecyclerView.setAdapter(movieImagesAdapter);
                                 LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
                                 imagesRecyclerView.setLayoutManager(layoutManager2);
                             }
-                            if(actors!=null) {
+                            if (actors != null) {
                                 actorsAdapter = new ActorsAdapter(actors);
                                 actorsRecyclerView.setAdapter(actorsAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);

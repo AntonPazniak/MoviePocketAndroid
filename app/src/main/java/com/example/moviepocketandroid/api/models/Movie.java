@@ -173,7 +173,7 @@ public class Movie {
         return movie;
     }
 
-    private static List<Integer> parseArrayToInteger(JSONArray jsonArray) throws JSONException {
+    public static List<Integer> parseArrayToInteger(JSONArray jsonArray) throws JSONException {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             int value = jsonArray.getInt(i);
@@ -183,7 +183,7 @@ public class Movie {
     }
 
 
-    private static List<String> parseArray(JSONArray jsonArray, String key) throws JSONException {
+    public static List<String> parseArray(JSONArray jsonArray, String key) throws JSONException {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -193,7 +193,7 @@ public class Movie {
         return list;
     }
 
-    private static List<String> getGenresText(List<Integer> genreIds) {
+    public static List<String> getGenresText(List<Integer> genreIds) {
         List<String> genres = new ArrayList<>();
 
         for (Integer genreId : genreIds) {
