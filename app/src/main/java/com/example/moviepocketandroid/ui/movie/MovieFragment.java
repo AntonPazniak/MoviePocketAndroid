@@ -4,6 +4,7 @@ import static com.example.moviepocketandroid.animation.Animation.createAnimation
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,7 @@ public class MovieFragment extends Fragment {
     private ImageView imageBackPack;
     private TextView textOverview;
     private TextView textRating;
+    private TextView textVoteCount;
     private RecyclerView actorsRecyclerView;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
@@ -91,6 +93,7 @@ public class MovieFragment extends Fragment {
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
+        textVoteCount = view.findViewById(R.id.textVoteCount);
 
         this.animation = createAnimation();
 
@@ -176,6 +179,7 @@ public class MovieFragment extends Fragment {
                 List<MovieImage> images = tmdbApi.getImagesByIdMovie(idMovie);
                 if (movieInfoTMDB != null) {
                     requireActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
                             RequestOptions requestOptions = new RequestOptions()
@@ -200,6 +204,7 @@ public class MovieFragment extends Fragment {
                                 else
                                     textRating.setTextColor(android.graphics.Color.parseColor("#E4416A"));
                                 textRating.setText(decimalFormat.format(rating));
+                                textVoteCount.setText("Votes: " + movieInfoTMDB.getVoteCount());
                             }
                             if ( images != null ) {
                                 movieImagesAdapter = new ImagesAdapter(images);

@@ -75,23 +75,7 @@
 
             <include layout="@layout/item_assessment" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textRating"
-                    android:layout_width="99dp"
-                    android:layout_height="98dp"
-                    android:layout_marginTop="32dp"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/logoYellow"
-                    android:textSize="50dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <include layout="@layout/item_rating" />
 
             <include layout="@layout/item_text_view" />
 
