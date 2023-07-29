@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.adapter;
 
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class TVSeriesAdapter extends RecyclerView.Adapter<TVSeriesAdapter.MovieViewHolder> {
@@ -66,11 +68,16 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<TVSeriesAdapter.MovieV
     public class MovieViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageMovie;
         private TextView textTitleMovie;
+        private TextView textGenre;
+        private TextView textRatingPoster;
+
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             imageMovie = itemView.findViewById(R.id.imageActor);
             textTitleMovie = itemView.findViewById(R.id.textNameActor);
+            textGenre = itemView.findViewById(R.id.textGenre);
+            textRatingPoster = itemView.findViewById(R.id.textRatingPoster);
         }
 
         public void bind(TVSeries tv) {
@@ -81,6 +88,25 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<TVSeriesAdapter.MovieV
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(tv.getName());
+//            if (!tv.getGenres().isEmpty())
+//                textGenre.setText(tv.getGenres().get(0));
+            double rating = tv.getVoteAverage();
+            DecimalFormat decimalFormat = new DecimalFormat("#.#");
+
+            int backgroundColor;
+            if (rating >= 8) {
+                backgroundColor = android.graphics.Color.parseColor("#F1B36E");
+            } else if (rating >= 5) {
+                backgroundColor = android.graphics.Color.parseColor("#75FBE2");
+            } else {
+                backgroundColor = android.graphics.Color.parseColor("#E4416A");
+            }
+
+            GradientDrawable backgroundDrawable = new GradientDrawable();
+            backgroundDrawable.setColor(backgroundColor);
+
+            textRatingPoster.setBackground(backgroundDrawable);
+            textRatingPoster.setText(decimalFormat.format(rating));
 
             // Set click listener for the movie item
             itemView.setOnClickListener(new View.OnClickListener() {
