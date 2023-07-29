@@ -20,10 +20,10 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.TVSeriesAdapter;
-import com.example.moviepocketandroid.api.TVSeriesTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.TVSeriesTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
 import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import java.util.List;

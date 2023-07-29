@@ -31,7 +31,7 @@ import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
 import com.example.moviepocketandroid.api.models.MovieImage;
 
 import java.text.DecimalFormat;
@@ -173,24 +173,23 @@ public class MovieFragment extends Fragment {
                                     .apply(requestOptions)
                                     .into(imagePosterPopularMovie);
                             textTitlePopularMovie.setText(movieInfoTMDB.getTitle());
-                            textOverview.setText(movieInfoTMDB.getOverview());
-                            DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                            textRating.setText(decimalFormat.format(movieInfoTMDB.getVoteAverage()));
+                            if(movieInfoTMDB.getVoteAverage() != 0) {
+                                double rating = movieInfoTMDB.getVoteAverage();
+                                textOverview.setText(movieInfoTMDB.getOverview());
+                                DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                                if (rating >= 8)
+                                    textRating.setTextColor(android.graphics.Color.parseColor("#F1B36E"));
+                                else if (rating >= 5)
+                                    textRating.setTextColor(android.graphics.Color.parseColor("#75FBE2"));
+                                else
+                                    textRating.setTextColor(android.graphics.Color.parseColor("#E4416A"));
+                                textRating.setText(decimalFormat.format(rating));
+                            }
                             if ( images != null ) {
                                 movieImagesAdapter = new ImagesAdapter(images);
                                 imagesRecyclerView.setAdapter(movieImagesAdapter);
                                 LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
                                 imagesRecyclerView.setLayoutManager(layoutManager2);
-//                                movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-//                                    @Override
-//                                    public void onMovieClick(int movieId) {
-//                                        Bundle args = new Bundle();
-//                                        args.putInt("idMovie", movieId);
-//
-//                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-//                                        navController.navigate(R.id.movieFragment, args);
-//                                    }
-//                                });
                             }
                             if(actors != null) {
                                 actorsAdapter = new ActorsAdapter(actors);

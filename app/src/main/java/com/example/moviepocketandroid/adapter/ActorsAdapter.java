@@ -46,8 +46,8 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
         Actor actor = actors.get(position);
         holder.bind(actor);
 
-        int desiredWidthDp = 120;
-        int desiredHeightDp = 160;
+        int desiredWidthDp = 115;
+        int desiredHeightDp = 220;
 
         float density = holder.itemView.getResources().getDisplayMetrics().density;
         int desiredWidthPx = (int) (desiredWidthDp * density);
@@ -67,11 +67,12 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
     public class ActorViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageActor;
         private TextView textNameActor;
-
+        private TextView textGenre;
         public ActorViewHolder(@NonNull View itemView) {
             super(itemView);
             imageActor = itemView.findViewById(R.id.imageActor);
             textNameActor = itemView.findViewById(R.id.textNameActor);
+            textGenre = itemView.findViewById(R.id.textGenre);
         }
 
         public void bind(Actor actor) {
@@ -82,6 +83,8 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
                     .apply(requestOptions)
                     .into(imageActor);
             textNameActor.setText(actor.getName());
+            if(actor.getCharacter()!=null)
+                textGenre.setText(actor.getCharacter());
 
             // Set click listener for the actor item
             itemView.setOnClickListener(new View.OnClickListener() {

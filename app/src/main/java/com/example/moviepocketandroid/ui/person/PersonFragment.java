@@ -26,7 +26,7 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.TVSeriesAdapter;
-import com.example.moviepocketandroid.api.ActorTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.ActorTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.models.MovieImage;

@@ -144,22 +144,46 @@
                     android:layout_margin="8dp"
                     tools:ignore="MissingConstraints">
 
-                <TextView
-                    android:id="@+id/textOverview"
-                    android:layout_width="337dp"
-                    android:layout_height="152dp"
-                    android:text=""
-                    android:textSize="18dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.505"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="MissingConstraints" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textOverview"
+                            android:layout_width="374dp"
+                            android:layout_height="152dp"
+                            android:text=""
+                            android:textSize="18dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.523"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="MissingConstraints"
+                            tools:layout_editor_absoluteY="14dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/gradient_bottom_dark" />
                 </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/more_details"
+                    android:textColor="@color/logoYellow"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -223,7 +247,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/actorsRecyclerView"
                     android:layout_width="400dp"
-                    android:layout_height="200dp"
+                    android:layout_height="220dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

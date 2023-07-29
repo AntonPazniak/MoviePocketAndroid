@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.SearchAdapter;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
 
 import java.util.List;
 

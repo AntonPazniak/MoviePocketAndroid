@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.api;
+package com.example.moviepocketandroid.api.TMDB;
 
 import static com.example.moviepocketandroid.api.models.Actor.parseActor;
 import static com.example.moviepocketandroid.api.models.Actor.parsePopularActor;

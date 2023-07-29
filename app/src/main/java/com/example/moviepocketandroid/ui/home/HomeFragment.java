@@ -16,7 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
 import java.util.List;
