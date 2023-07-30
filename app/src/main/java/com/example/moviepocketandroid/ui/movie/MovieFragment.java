@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationSet;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +67,8 @@ public class MovieFragment extends Fragment {
     private RecyclerView moviesRecyclerView;
     private RecyclerView imagesRecyclerView;
 
+    private WebView webView;
+
     AnimationSet animation;
 
     public static MovieFragment newInstance() {
@@ -94,6 +98,9 @@ public class MovieFragment extends Fragment {
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
         textVoteCount = view.findViewById(R.id.textVoteCount);
+        webView = view.findViewById(R.id.webView);
+
+        webView.setBackgroundColor(0);
 
         this.animation = createAnimation();
 
@@ -177,9 +184,10 @@ public class MovieFragment extends Fragment {
                 List<Actor> actors = tmdbApi.getActorsByIdMovie(idMovie);
                 List<Movie> movies = tmdbApi.getSimilarMoviesById(idMovie);
                 List<MovieImage> images = tmdbApi.getImagesByIdMovie(idMovie);
+                String movieTrailerUrl = tmdbApi.getMovieTrailerUrl(idMovie);
                 if (movieInfoTMDB != null) {
                     requireActivity().runOnUiThread(new Runnable() {
-                        @SuppressLint("SetTextI18n")
+                        @SuppressLint({"SetTextI18n", "SetJavaScriptEnabled"})
                         @Override
                         public void run() {
                             RequestOptions requestOptions = new RequestOptions()
@@ -206,13 +214,21 @@ public class MovieFragment extends Fragment {
                                 textRating.setText(decimalFormat.format(rating));
                                 textVoteCount.setText("Votes: " + movieInfoTMDB.getVoteCount());
                             }
-                            if ( images != null ) {
+                            if (movieTrailerUrl != null) {
+                                WebSettings webSettings = webView.getSettings();
+                                webSettings.setJavaScriptEnabled(true);
+                                String frameVideo = "<html><body><iframe width=\"100%\" height=\"100%\" src=\"" + movieTrailerUrl +
+                                        "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+                                webView.loadData(frameVideo, "text/html", "utf-8");
+                            }
+                            if (images != null) {
                                 movieImagesAdapter = new ImagesAdapter(images);
                                 imagesRecyclerView.setAdapter(movieImagesAdapter);
                                 LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
                                 imagesRecyclerView.setLayoutManager(layoutManager2);
                             }
-                            if(actors != null) {
+                            if (actors != null) {
                                 actorsAdapter = new ActorsAdapter(actors);
                                 actorsRecyclerView.setAdapter(actorsAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);

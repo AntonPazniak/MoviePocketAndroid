@@ -232,4 +232,35 @@ public class MovieTMDBApi {
     }
 
 
+    public String getMovieTrailerUrl(int movieId) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=1da35d58fd12497b111e4dd1c4a4c004&language=en-US";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject videoObject = resultsArray.getJSONObject(i);
+                    String type = videoObject.getString("type");
+                    if ("Trailer".equals(type)) {
+                        String key = videoObject.getString("key");
+                        return "https://www.youtube.com/embed/" + key;
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 }
