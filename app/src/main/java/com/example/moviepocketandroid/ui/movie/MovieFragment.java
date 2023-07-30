@@ -266,7 +266,7 @@ public class MovieFragment extends Fragment {
                                         args.putInt("idMovie", movieId);
 
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigate(R.id.movieFragment, args);
+                                        navController.navigate(R.id.action_movieFragment_self, args);
                                     }
                                 });
                             }
