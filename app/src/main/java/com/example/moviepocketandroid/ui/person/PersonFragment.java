@@ -45,6 +45,8 @@ public class PersonFragment extends Fragment {
     private TextView textOverview;
     private TextView textPlaceBirth;
     private TextView textBirthday;
+    private TextView textMoviesRecyclerView;
+    private TextView textTVRecyclerView;
     private RecyclerView moviesRecyclerView;
     private RecyclerView tvRecyclerView;
     private RecyclerView imagesRecyclerView;
@@ -71,6 +73,8 @@ public class PersonFragment extends Fragment {
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
+        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
+        textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -142,6 +146,7 @@ public class PersonFragment extends Fragment {
                             }
 
                             if ( movies != null ) {
+                                textMoviesRecyclerView.setText("Movies:");
                                 movieAdapter = new MovieAdapter(movies);
                                 moviesRecyclerView.setAdapter(movieAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -158,6 +163,7 @@ public class PersonFragment extends Fragment {
                                 });
                             }
                             if (tvSeries != null) {
+                                textTVRecyclerView.setText("TV Series:");
                                 tvSeriesAdapter = new TVSeriesAdapter(tvSeries);
                                 tvRecyclerView.setAdapter(tvSeriesAdapter);
                                 LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);

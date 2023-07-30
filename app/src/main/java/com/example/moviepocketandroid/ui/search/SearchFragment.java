@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.ui.search;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
@@ -36,6 +38,9 @@ public class SearchFragment extends Fragment {
     private RecyclerView moviesRecyclerView;
     private RecyclerView actorsRecyclerView;
     private RecyclerView tvRecyclerView;
+    private TextView textActorsRecyclerView;
+    private TextView textMoviesRecyclerView;
+    private TextView textTVRecyclerView;
 
     private Button buttonSearch;
     private EditText editTextSearch;
@@ -54,6 +59,9 @@ public class SearchFragment extends Fragment {
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
         buttonSearch = view.findViewById(R.id.buttonSearch);
         editTextSearch = view.findViewById(R.id.editTextSearch);
+        textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
+        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
+        textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
 
         loadMovieDetails();
 
@@ -90,9 +98,11 @@ public class SearchFragment extends Fragment {
                 List<Actor> actors = tmdbApi.getPopularActors();
                 List<TVSeries> tvSeries = tvSeriesTMDBApi.getPopularTVs();
                 requireActivity().runOnUiThread(new Runnable() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
                         if(actors != null) {
+                            textActorsRecyclerView.setText("Popular actors:");
                             actorsAdapter = new ActorsAdapter(actors);
                             actorsRecyclerView.setAdapter(actorsAdapter);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -111,6 +121,7 @@ public class SearchFragment extends Fragment {
                             });
                         }
                         if (movies != null) {
+                            textMoviesRecyclerView.setText("Popular movies:");
                             movieAdapter = new MovieAdapter(movies);
                             moviesRecyclerView.setAdapter(movieAdapter);
                             LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -128,6 +139,7 @@ public class SearchFragment extends Fragment {
                         }
 
                         if (tvSeries != null) {
+                            textTVRecyclerView.setText("Popular TV Series:");
                             tvSeriesAdapter = new TVSeriesAdapter(tvSeries);
                             tvRecyclerView.setAdapter(tvSeriesAdapter);
                             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);

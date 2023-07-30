@@ -3,31 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="228dp"
-    android:background="@color/black">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textWebView"
+        android:id="@+id/textTVRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="28dp"
-        android:text="@string/trailer"
         android:textColor="@color/logoBlue"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/webView"
+        app:layout_constraintBottom_toTopOf="@+id/tvRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.123"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/black"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tvRecyclerView"
+        android:layout_width="400dp"
+        android:layout_height="180dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_actor">
 
-
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

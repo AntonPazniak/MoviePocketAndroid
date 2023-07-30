@@ -79,77 +79,11 @@
 
             <include layout="@layout/item_text_view" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="33dp">
+            <include layout="@layout/item_recycler_view_images" />
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="282dp"
-                    android:layout_height="28dp"
-                    android:text="@string/images"
-                    android:textColor="@color/logoBlue"
-                    android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.123"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteY="-1dp" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <include layout="@layout/item_recycler_view_actors" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/imagesRecyclerView"
-                    android:layout_width="400dp"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:listitem="@layout/item_actor">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/actorsRecyclerView"
-                    android:layout_width="400dp"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:listitem="@layout/item_actor">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="233dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tvRecyclerView"
-                    android:layout_width="377dp"
-                    android:layout_height="186dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/item_actor">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <include layout="@layout/item_recycler_view_tv" />
 
 
         </LinearLayout>

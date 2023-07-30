@@ -5,6 +5,7 @@ import static com.example.moviepocketandroid.animation.Animation.createAnimation
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,8 @@ public class MovieFragment extends Fragment {
     private TextView textOverview;
     private TextView textRating;
     private TextView textVoteCount;
+    private TextView textActorsRecyclerView;
+    private TextView textMoviesRecyclerView;
     private RecyclerView actorsRecyclerView;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
@@ -98,6 +101,9 @@ public class MovieFragment extends Fragment {
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
         textVoteCount = view.findViewById(R.id.textVoteCount);
+        textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
+        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
+
         webView = view.findViewById(R.id.webView);
 
         webView.setBackgroundColor(0);
@@ -206,11 +212,11 @@ public class MovieFragment extends Fragment {
                                 textOverview.setText(movieInfoTMDB.getOverview());
                                 DecimalFormat decimalFormat = new DecimalFormat("#.#");
                                 if (rating >= 8)
-                                    textRating.setTextColor(android.graphics.Color.parseColor("#F1B36E"));
+                                    textRating.setTextColor(Color.parseColor("#F1B36E"));
                                 else if (rating >= 5)
-                                    textRating.setTextColor(android.graphics.Color.parseColor("#75FBE2"));
+                                    textRating.setTextColor(Color.parseColor("#75FBE2"));
                                 else
-                                    textRating.setTextColor(android.graphics.Color.parseColor("#E4416A"));
+                                    textRating.setTextColor(Color.parseColor("#E4416A"));
                                 textRating.setText(decimalFormat.format(rating));
                                 textVoteCount.setText("Votes: " + movieInfoTMDB.getVoteCount());
                             }
@@ -229,6 +235,7 @@ public class MovieFragment extends Fragment {
                                 imagesRecyclerView.setLayoutManager(layoutManager2);
                             }
                             if (actors != null) {
+                                textActorsRecyclerView.setText("Actors:");
                                 actorsAdapter = new ActorsAdapter(actors);
                                 actorsRecyclerView.setAdapter(actorsAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -247,6 +254,7 @@ public class MovieFragment extends Fragment {
                                 });
                             }
                             if ( movies != null ) {
+                                textMoviesRecyclerView.setText("Similar movies:");
                                 movieAdapter = new MovieAdapter(movies);
                                 moviesRecyclerView.setAdapter(movieAdapter);
                                 LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
