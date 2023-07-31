@@ -57,6 +57,9 @@ public class MovieFragment extends Fragment {
     private TextView textVoteCount;
     private TextView textActorsRecyclerView;
     private TextView textMoviesRecyclerView;
+    private TextView textCountry;
+    private TextView textCategories;
+    private TextView textMinutes;
     private RecyclerView actorsRecyclerView;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
@@ -103,9 +106,11 @@ public class MovieFragment extends Fragment {
         textVoteCount = view.findViewById(R.id.textVoteCount);
         textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
+        textCountry = view.findViewById(R.id.textCountry);
+        textCategories = view.findViewById(R.id.textCategories);
+        textMinutes = view.findViewById(R.id.textMinutes);
 
         webView = view.findViewById(R.id.webView);
-
         webView.setBackgroundColor(0);
 
         this.animation = createAnimation();
@@ -207,7 +212,26 @@ public class MovieFragment extends Fragment {
                                     .apply(requestOptions)
                                     .into(imagePosterPopularMovie);
                             textTitlePopularMovie.setText(movieInfoTMDB.getTitle());
-                            if(movieInfoTMDB.getVoteAverage() != 0) {
+                            StringBuilder s = new StringBuilder();
+                            if (!movieInfoTMDB.getProductionCountries().isEmpty()) {
+                                s.append(movieInfoTMDB.getProductionCountries().get(0));
+                                for (int i = 1; i < movieInfoTMDB.getProductionCountries().size(); i++) {
+                                    s.append(", ");
+                                    s.append(movieInfoTMDB.getProductionCountries().get(i));
+                                }
+                                textCountry.setText(s);
+                            }
+                            StringBuilder genders = new StringBuilder();
+                            textMinutes.setText(movieInfoTMDB.getReleaseDate().substring(0, 4) + ", " + movieInfoTMDB.getRuntime() + " min");
+                            if (!movieInfoTMDB.getGenres().isEmpty()) {
+                                genders.append(movieInfoTMDB.getGenres().get(0));
+                                for (int i = 1; i < movieInfoTMDB.getGenres().size(); i++) {
+                                    genders.append(", ");
+                                    genders.append(movieInfoTMDB.getGenres().get(i));
+                                }
+                                textCategories.setText(genders);
+                            }
+                            if (movieInfoTMDB.getVoteAverage() != 0) {
                                 double rating = movieInfoTMDB.getVoteAverage();
                                 textOverview.setText(movieInfoTMDB.getOverview());
                                 DecimalFormat decimalFormat = new DecimalFormat("#.#");
