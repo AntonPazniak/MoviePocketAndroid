@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -27,14 +30,27 @@ public class HomeFragment extends Fragment {
 
     private List<Movie> movieInfoTMDBList;
     private FragmentHomeBinding binding;
-
     private int popularMovie;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    private TextView textTitlePopularMovie;
+    private ImageView imageBackMovie;
+    private ImageView imagePosterMovie;
 
-        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        imageBackMovie = view.findViewById(R.id.imageBackMovie);
+        imagePosterMovie = view.findViewById(R.id.imagePosterMovie);
+        textTitlePopularMovie = view.findViewById(R.id.textTitlePopularMovie);
+
         Random random = new Random();
         popularMovie = random.nextInt(10);
 
@@ -52,19 +68,19 @@ public class HomeFragment extends Fragment {
                             Glide.with(requireContext())
                                     .load(movieInfoTMDBList.get(popularMovie).getBackdropPath())
                                     .apply(requestOptions)
-                                    .into(binding.imageBackPopularMovie);
+                                    .into(imageBackMovie);
                             Glide.with(requireContext())
                                     .load(movieInfoTMDBList.get(popularMovie).getPosterPath())
                                     .apply(requestOptions)
-                                    .into(binding.imagePosterPopularMovie);
-                            binding.textTitlePopularMovie.setText(movieInfoTMDBList.get(popularMovie).getTitle());
+                                    .into(imagePosterMovie);
+                            textTitlePopularMovie.setText(movieInfoTMDBList.get(popularMovie).getTitle());
                         }
                     });
                 }
             }
         }).start();
 
-        binding.imagePosterPopularMovie.setOnClickListener(new View.OnClickListener() {
+        imagePosterMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle args = new Bundle();
@@ -76,7 +92,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        return root;
     }
 
 

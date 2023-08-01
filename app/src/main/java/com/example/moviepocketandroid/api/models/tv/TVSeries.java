@@ -20,7 +20,7 @@ public class TVSeries {
     private List<String> genres;
     private int id;
     private String name;
-    private String[] originCountry;
+    private List<String> productionCountries;
     private String originalLanguage;
     private String originalName;
     private String overview;
@@ -40,15 +40,13 @@ public class TVSeries {
     private List<TVCredit> createdby;
 
 
-    public TVSeries(String backdropPath, String firstAirDate, int id, String name,
-                    String[] originCountry, String originalLanguage, String originalName, String overview,
+    public TVSeries(String backdropPath, String firstAirDate, int id, String name, String originalLanguage, String originalName, String overview,
                     double popularity, String posterPath, double voteAverage, int voteCount, List<String> genres) {
         this.backdropPath = URL + backdropPath;
         this.firstAirDate = firstAirDate;
         this.genres = genres;
         this.id = id;
         this.name = name;
-        this.originCountry = originCountry;
         this.originalLanguage = originalLanguage;
         this.originalName = originalName;
         this.overview = overview;
@@ -58,19 +56,15 @@ public class TVSeries {
         this.voteCount = voteCount;
     }
 
-    public TVSeries(String backdropPath, String firstAirDate
-            , int id, String name,
-                    String[] originCountry, String originalLanguage, String originalName, String overview,
+    public TVSeries(String backdropPath, String firstAirDate, int id, String name, String originalLanguage, String originalName, String overview,
                     double popularity, String posterPath, double voteAverage, int voteCount,
                     String[] languages, String status, String tagline, String type,
-                    int numberOfSeasons, int numberOfEpisodes, List<TVSeason> seasons,
-                    List<TVNetwork> networks, List<TVCredit> createdby, List<String> genres) {
+                    int numberOfSeasons, int numberOfEpisodes, List<TVSeason> seasons, List<TVCredit> createdby, List<String> genres, List<String> productionCountries) {
         this.backdropPath = URL + backdropPath;
         this.firstAirDate = firstAirDate;
         this.genres = genres;
         this.id = id;
         this.name = name;
-        this.originCountry = originCountry;
         this.originalLanguage = originalLanguage;
         this.originalName = originalName;
         this.overview = overview;
@@ -85,8 +79,8 @@ public class TVSeries {
         this.numberOfSeasons = numberOfSeasons;
         this.numberOfEpisodes = numberOfEpisodes;
         this.seasons = seasons;
-        this.networks = networks;
         this.createdby = createdby;
+        this.productionCountries = productionCountries;
     }
 
     public TVSeries(String name, int id, String posterPath, List<String> genres, double voteAverage) {
@@ -108,7 +102,6 @@ public class TVSeries {
             List<String> genres = getGenresText(genreIds);
             int id = jsonObject.getInt("id");
             String name = jsonObject.getString("name");
-            String[] originCountry = parseStringArray(jsonObject.getJSONArray("origin_country"));
             String originalLanguage = jsonObject.getString("original_language");
             String originalName = jsonObject.getString("original_name");
             String overview = jsonObject.getString("overview");
@@ -116,7 +109,7 @@ public class TVSeries {
             String posterPath = jsonObject.getString("poster_path");
             double voteAverage = jsonObject.getDouble("vote_average");
             int voteCount = jsonObject.getInt("vote_count");
-            tvSeries = new TVSeries(backdropPath, firstAirDate, id, name, originCountry, originalLanguage, originalName, overview, popularity, posterPath, voteAverage, voteCount, genres);
+            tvSeries = new TVSeries(backdropPath, firstAirDate, id, name, originalLanguage, originalName, overview, popularity, posterPath, voteAverage, voteCount, genres);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -149,7 +142,6 @@ public class TVSeries {
             String firstAirDate = jsonObject.getString("first_air_date");
             int id = jsonObject.getInt("id");
             String name = jsonObject.getString("name");
-            String[] originCountry = parseStringArray(jsonObject.getJSONArray("origin_country"));
             String originalLanguage = jsonObject.getString("original_language");
             String originalName = jsonObject.getString("original_name");
             String overview = jsonObject.getString("overview");
@@ -178,35 +170,17 @@ public class TVSeries {
                         seasonObject.getDouble("vote_average"));
                 seasons.add(season);
             }
-
-            List<TVNetwork> networks = new ArrayList<>();
-            JSONArray networksArray = jsonObject.getJSONArray("networks");
-            for (int i = 0; i < networksArray.length(); i++) {
-                JSONObject networkObject = networksArray.getJSONObject(i);
-                TVNetwork network = new TVNetwork(networkObject.getInt("id"),
-                        networkObject.getString("logo_path"),
-                        networkObject.getString("name"),
-                        networkObject.getString("origin_country"));
-                networks.add(network);
-            }
+            List<String> productionCountries = parseArray(jsonObject.getJSONArray("production_countries"), "name");
 
             List<TVCredit> createdby = new ArrayList<>();
             JSONArray createdbyArray = jsonObject.getJSONArray("created_by");
             List<String> genres = parseArray(jsonObject.getJSONArray("genres"), "name");
-            tvSeries = new TVSeries(backdropPath, firstAirDate, id, name, originCountry, originalLanguage, originalName, overview, popularity, posterPath, voteAverage, voteCount, languages, status, tagline, type, numberOfSeasons, numberOfEpisodes, seasons, networks, createdby, genres);
+            tvSeries = new TVSeries(backdropPath, firstAirDate, id, name, originalLanguage, originalName, overview, popularity, posterPath, voteAverage, voteCount, languages, status, tagline, type, numberOfSeasons, numberOfEpisodes, seasons, createdby, genres, productionCountries);
         } catch (JSONException e) {
             e.printStackTrace();
             System.out.println(e);
         }
         return tvSeries;
-    }
-
-    private static int[] parseIntArray(JSONArray jsonArray) throws JSONException {
-        int[] result = new int[jsonArray.length()];
-        for (int i = 0; i < jsonArray.length(); i++) {
-            result[i] = jsonArray.getInt(i);
-        }
-        return result;
     }
 
     private static String[] parseStringArray(JSONArray jsonArray) throws JSONException {
@@ -236,10 +210,6 @@ public class TVSeries {
 
     public String getName() {
         return name;
-    }
-
-    public String[] getOriginCountry() {
-        return originCountry;
     }
 
     public String getOriginalLanguage() {
@@ -308,5 +278,9 @@ public class TVSeries {
 
     public List<TVCredit> getCreatedby() {
         return createdby;
+    }
+
+    public List<String> getProductionCountries() {
+        return productionCountries;
     }
 }

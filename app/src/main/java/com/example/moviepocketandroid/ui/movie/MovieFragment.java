@@ -222,7 +222,7 @@ public class MovieFragment extends Fragment {
                                 textCountry.setText(s);
                             }
                             StringBuilder genders = new StringBuilder();
-                            textMinutes.setText(movieInfoTMDB.getReleaseDate().substring(0, 4) + ", " + movieInfoTMDB.getRuntime() + " min");
+                            textMinutes.setText(movieInfoTMDB.getReleaseDate().substring(0, 4) + ", " + movieInfoTMDB.getRuntime() + " mins");
                             if (!movieInfoTMDB.getGenres().isEmpty()) {
                                 genders.append(movieInfoTMDB.getGenres().get(0));
                                 for (int i = 1; i < movieInfoTMDB.getGenres().size(); i++) {

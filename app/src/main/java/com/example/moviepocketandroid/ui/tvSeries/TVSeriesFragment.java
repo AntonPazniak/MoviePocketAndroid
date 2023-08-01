@@ -55,6 +55,9 @@ public class TVSeriesFragment extends Fragment {
     private TextView textVoteCount;
     private TextView textActorsRecyclerView;
     private TextView textTVRecyclerView;
+    private TextView textCountry;
+    private TextView textCategories;
+    private TextView textMinutes;
     private RecyclerView actorsRecyclerView;
     private RecyclerView imagesRecyclerView;
     private ActorsAdapter actorsAdapter;
@@ -102,6 +105,9 @@ public class TVSeriesFragment extends Fragment {
         textVoteCount = view.findViewById(R.id.textVoteCount);
         textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
         textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
+        textCountry = view.findViewById(R.id.textCountry);
+        textCategories = view.findViewById(R.id.textCategories);
+        textMinutes = view.findViewById(R.id.textMinutes);
 
         this.animation = createAnimation();
 
@@ -199,6 +205,25 @@ public class TVSeriesFragment extends Fragment {
                                     .apply(requestOptions)
                                     .into(imageBackPopularMovie);
                             textTitlePopularMovie.setText(tv.getName());
+                            StringBuilder s = new StringBuilder();
+                            if (!tv.getProductionCountries().isEmpty()) {
+                                s.append(tv.getProductionCountries().get(0));
+                                for (int i = 1; i < tv.getProductionCountries().size(); i++) {
+                                    s.append(", ");
+                                    s.append(tv.getProductionCountries().get(i));
+                                }
+                                textCountry.setText(s);
+                            }
+                            StringBuilder genders = new StringBuilder();
+                            textMinutes.setText(tv.getFirstAirDate().substring(0, 4) + ", " + tv.getSeasons().size() + " Seasons, " + tv.getNumberOfEpisodes() + " Episode");
+                            if (!tv.getGenres().isEmpty()) {
+                                genders.append(tv.getGenres().get(0));
+                                for (int i = 1; i < tv.getGenres().size(); i++) {
+                                    genders.append(", ");
+                                    genders.append(tv.getGenres().get(i));
+                                }
+                                textCategories.setText(genders);
+                            }
                             if (tv.getVoteAverage() != 0) {
                                 double rating = tv.getVoteAverage();
                                 textOverview.setText(tv.getOverview());
