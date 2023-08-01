@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.moviepocketandroid.R;
@@ -42,7 +43,7 @@ public class SearchFragment extends Fragment {
     private TextView textMoviesRecyclerView;
     private TextView textTVRecyclerView;
 
-    private Button buttonSearch;
+    private ImageButton buttonSearch;
     private EditText editTextSearch;
 
 

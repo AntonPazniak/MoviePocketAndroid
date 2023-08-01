@@ -1,53 +1,47 @@
 package com.example.moviepocketandroid.adapter;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewHolder> {
+public class TVSeriesSearchAdapter extends RecyclerView.Adapter<TVSeriesSearchAdapter.TVSeriesViewHolder> {
 
-    private List<Movie> movies;
-    private SearchAdapter.OnMovieClickListener onMovieClickListener;
+    private List<TVSeries> tvSeriesList;
+    private OnTVSeriesClickListener onTVSeriesClickListener;
 
-
-    public interface OnMovieClickListener {
-        void onMovieClick(int movieId);
+    public TVSeriesSearchAdapter(List<TVSeries> tvSeriesList) {
+        this.tvSeriesList = tvSeriesList;
     }
 
-    public void setOnMovieClickListener(SearchAdapter.OnMovieClickListener listener) {
-        this.onMovieClickListener = listener;
-    }
-
-    public SearchAdapter(List<Movie> movies) {
-        this.movies = movies;
+    public void setOnTVSeriesClickListener(OnTVSeriesClickListener listener) {
+        this.onTVSeriesClickListener = listener;
     }
 
     @NonNull
     @Override
-    public SearchAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TVSeriesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent, false);
-        return new SearchAdapter.MovieViewHolder(view);
+        return new TVSeriesViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchAdapter.MovieViewHolder holder, int position) {
-        Movie movie = movies.get(position);
-        holder.bind(movie);
+    public void onBindViewHolder(@NonNull TVSeriesViewHolder holder, int position) {
+        TVSeries tvSeries = tvSeriesList.get(position);
+        holder.bind(tvSeries);
 
-// Set desired width and height for the movie item (if needed)
         int desiredHeightDp = 110;
         float density = holder.itemView.getResources().getDisplayMetrics().density;
         int desiredHeightPx = (int) (desiredHeightDp * density);
@@ -58,16 +52,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return tvSeriesList.size();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    public interface OnTVSeriesClickListener {
+        void onTVSeriesClick(int tvSeriesId);
+    }
+
+    public class TVSeriesViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageMovie;
         private TextView textTitleMovie;
         private TextView textGenres;
         private TextView textYear;
 
-        public MovieViewHolder(@NonNull View itemView) {
+        public TVSeriesViewHolder(@NonNull View itemView) {
             super(itemView);
             imageMovie = itemView.findViewById(R.id.imagePosterMovieSearch);
             textTitleMovie = itemView.findViewById(R.id.textTitleMovieSearch);
@@ -75,31 +73,30 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
             textGenres = itemView.findViewById(R.id.textGenres);
         }
 
-        public void bind(Movie movie) {
+        public void bind(TVSeries tvSeries) {
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(itemView.getContext())
-                    .load(movie.getPosterPath())
+                    .load(tvSeries.getPosterPath())
                     .apply(requestOptions)
                     .into(imageMovie);
-            textTitleMovie.setText(movie.getTitle());
-            textYear.setText(movie.getReleaseDate());
+            textTitleMovie.setText(tvSeries.getName());
+            textYear.setText(tvSeries.getFirstAirDate());
             StringBuilder genders = new StringBuilder();
-            if(!movie.getGenres().isEmpty()) {
-                genders.append(movie.getGenres().get(0));
-                for (int i = 1; i < movie.getGenres().size(); i++) {
+            if (!tvSeries.getGenres().isEmpty()) {
+                genders.append(tvSeries.getGenres().get(0));
+                for (int i = 1; i < tvSeries.getGenres().size(); i++) {
                     genders.append(",");
-                    genders.append(movie.getGenres().get(i));
+                    genders.append(tvSeries.getGenres().get(i));
                 }
                 textGenres.setText(genders);
             }
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (onMovieClickListener != null) {
-                        int movieId = movie.getId();
-                        onMovieClickListener.onMovieClick(movieId);
+                    if (onTVSeriesClickListener != null) {
+                        int movieId = tvSeries.getId();
+                        onTVSeriesClickListener.onTVSeriesClick(movieId);
                     }
                 }
             });

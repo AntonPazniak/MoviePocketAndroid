@@ -161,7 +161,34 @@ public class TVSeriesTMDBApi {
         return images;
     }
 
+    public List<TVSeries> getSearchResults(String query) {
+        OkHttpClient client = new OkHttpClient();
+        List<TVSeries> tvSeriesList = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/search/tv?api_key=1da35d58fd12497b111e4dd1c4a4c004&query=" + query;
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject tvObject = resultsArray.getJSONObject(i);
+                    TVSeries tvSeries = TVSeries.pars(tvObject.toString());
+                    if (tvSeries != null) {
+                        tvSeriesList.add(tvSeries);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
 
+        return tvSeriesList;
+    }
 
 
 }

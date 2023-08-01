@@ -82,7 +82,7 @@
         android:id="@+id/searchResultsFragment"
         android:name="com.example.moviepocketandroid.ui.searchResults.SearchResultsFragment"
         android:label="fragment_search_results"
-        tools:layout="@layout/fragment_search_results" >
+        tools:layout="@layout/fragment_search_results">
         <argument
             android:name="equals"
             app:argType="string" />
@@ -92,6 +92,9 @@
         <action
             android:id="@+id/action_searchResultsFragment_to_personFragment"
             app:destination="@id/personFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_TVSeriesFragment"
+            app:destination="@id/TVSeriesFragment" />
     </fragment>
     <fragment
         android:id="@+id/TVSeriesFragment"

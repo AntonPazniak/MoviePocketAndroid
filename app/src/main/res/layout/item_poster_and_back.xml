@@ -42,15 +42,15 @@
 
         <TextView
             android:id="@+id/textTitlePopularMovie"
-            android:layout_width="233dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
+            android:layout_width="232dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text=""
             android:textColor="@color/logoPink"
-            android:textSize="22dp"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imagePosterMovie" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

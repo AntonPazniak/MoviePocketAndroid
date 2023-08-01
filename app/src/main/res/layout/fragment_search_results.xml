@@ -16,6 +16,9 @@
             android:layout_height="51dp"
             android:textSize="26dp"
             android:textColor="@color/logoBlue" />
+
+        <include layout="@layout/item_search_category" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

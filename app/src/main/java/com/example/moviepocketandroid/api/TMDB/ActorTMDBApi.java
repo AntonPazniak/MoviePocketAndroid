@@ -131,4 +131,31 @@ public class ActorTMDBApi {
         return images;
     }
 
+    public List<Actor> getSearchResults(String query) {
+        OkHttpClient client = new OkHttpClient();
+        List<Actor> actors = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/search/person?api_key=1da35d58fd12497b111e4dd1c4a4c004&query=" + query;
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject actorObject = resultsArray.getJSONObject(i);
+                    Actor actor = Actor.parsePopularActor(actorObject.toString());
+                    if (actor != null)
+                        actors.add(actor);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return actors;
+    }
+
 }
