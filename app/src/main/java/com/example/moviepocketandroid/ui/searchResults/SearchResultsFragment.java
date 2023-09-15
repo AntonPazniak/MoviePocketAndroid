@@ -36,7 +36,7 @@ public class SearchResultsFragment extends Fragment {
 
     private SearchAdapter searchAdapter;
     private ActorSearchAdapter actorSearchAdapter;
-    private TVSeriesSearchAdapter tvSeriesSearchAdapter;
+    private SearchAdapter tvSeriesSearchAdapter;
     private RecyclerView searchRecyclerView;
     private TextView textQuery;
     private TextView textMovies;
@@ -46,7 +46,7 @@ public class SearchResultsFragment extends Fragment {
 
     private List<Movie> movies;
     private List<Actor> actors;
-    private List<TVSeries> tvSeries;
+    private List<Movie> tvSeries;
 
     private boolean isMovies = true;
     private boolean isTVs = false;
@@ -90,8 +90,9 @@ public class SearchResultsFragment extends Fragment {
                 MovieTMDBApi movieTMDBApi = new MovieTMDBApi();
                 TVSeriesTMDBApi tvSeriesTMDBApi = new TVSeriesTMDBApi();
                 ActorTMDBApi actorTMDBApi = new ActorTMDBApi();
-                movies = movieTMDBApi.getSearchResults(query);
-                tvSeries = tvSeriesTMDBApi.getSearchResults(query);
+                movies = movieTMDBApi.getSearchResultsMovie(query);
+                tvSeries = movieTMDBApi.getSearchResultsTV(query);
+                System.out.println(tvSeries.size());
                 actors = actorTMDBApi.getSearchResults(query);
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -183,17 +184,17 @@ public class SearchResultsFragment extends Fragment {
     }
 
     private void setTV() {
-        tvSeriesSearchAdapter = new TVSeriesSearchAdapter(tvSeries);
-        searchRecyclerView.setAdapter(tvSeriesSearchAdapter);
+        searchAdapter = new SearchAdapter(tvSeries);
+        searchRecyclerView.setAdapter(searchAdapter);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         searchRecyclerView.setLayoutManager(layoutManager2);
-        tvSeriesSearchAdapter.setOnTVSeriesClickListener(new TVSeriesSearchAdapter.OnTVSeriesClickListener() {
+        searchAdapter.setOnMovieClickListener(new SearchAdapter.OnMovieClickListener() {
             @Override
-            public void onTVSeriesClick(int idTV) {
+            public void onMovieClick(int movieId) {
                 Bundle args = new Bundle();
-                args.putInt("idTV", idTV);
+                args.putInt("idMovie", movieId);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_searchResultsFragment_to_TVSeriesFragment, args);
+                navController.navigate(R.id.action_searchResultsFragment_to_movieFragment, args);
             }
         });
     }

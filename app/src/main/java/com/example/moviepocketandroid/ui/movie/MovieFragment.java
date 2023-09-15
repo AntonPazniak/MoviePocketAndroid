@@ -191,7 +191,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void run() {
                 MovieTMDBApi tmdbApi = new MovieTMDBApi();
-                Movie movieInfoTMDB = tmdbApi.getMovieDetails(idMovie);
+                Movie movieInfoTMDB = tmdbApi.getInfoMovie(idMovie);
                 List<Actor> actors = tmdbApi.getActorsByIdMovie(idMovie);
                 List<Movie> movies = tmdbApi.getSimilarMoviesById(idMovie);
                 List<MovieImage> images = tmdbApi.getImagesByIdMovie(idMovie);

@@ -91,7 +91,7 @@ public class TVSeries {
         this.voteAverage = voteAverage;
     }
 
-
+    //done
     public static TVSeries parseTVSeriesPopularInfo(String tvSeriesInfoJson) {
         TVSeries tvSeries = null;
         try {
@@ -116,6 +116,7 @@ public class TVSeries {
         return tvSeries;
     }
 
+    //done
     public static TVSeries pars(String tvSeriesInfoJson) {
         TVSeries tvSeries = null;
         try {

@@ -1,4 +1,8 @@
 package com.example.moviepocketandroid.api.models;
+import com.example.moviepocketandroid.api.models.tv.TVNetwork;
+import com.example.moviepocketandroid.api.models.tv.TVSeason;
+import com.example.moviepocketandroid.api.models.tv.TVSeries;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +37,11 @@ public class Movie {
     private boolean video;
     private double voteAverage;
     private int voteCount;
+    private String type;
+    private int numberOfSeasons;
+    private int numberOfEpisodes;
+    private List<TVSeason> seasons;
+    private List<TVNetwork> networks;
     private final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
     public Movie(boolean adult, String backdropPath, String belongsToCollection, int budget, List<String> genres, String homepage, int id, String imdbId, String originalLanguage, String originalTitle, String overview, double popularity, String posterPath, List<String> productionCompanies, List<String> productionCountries, String releaseDate, int revenue, int runtime, List<String> spokenLanguages, String status, String tagline, String title, boolean video, double voteAverage, int voteCount) {
@@ -107,9 +116,7 @@ public class Movie {
             e.printStackTrace();
         }
         return movie;
-
     }
-
     public static Movie parseMovieInfo(String movieInfoJson) {
         Movie movie = null;
         try {
@@ -172,6 +179,104 @@ public class Movie {
         }
         return movie;
     }
+    public static Movie parsTVSeries(String tvSeriesInfoJson) {
+        Movie movie = null;
+        try {
+            JSONObject jsonObject = new JSONObject(tvSeriesInfoJson);
+            int id = jsonObject.getInt("id");
+            id = id * -1;
+
+            String posterPath = jsonObject.getString("poster_path");
+            String name = jsonObject.getString("name");
+            List<Integer> genreIds = parseArrayToInteger(jsonObject.getJSONArray("genre_ids"));
+            List<String> genres = getGenresText(genreIds);
+            String releaseDate = jsonObject.getString("first_air_date");
+            double voteAverage = jsonObject.getDouble("vote_average");
+            movie = new Movie(id,posterPath,name,releaseDate,genres,voteAverage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return movie;
+    }
+
+    public static Movie parseTVSeriesPopularInfo(String tvSeriesInfoJson) {
+        Movie tvSeries = null;
+        try {
+            JSONObject jsonObject = new JSONObject(tvSeriesInfoJson);
+            int id = jsonObject.getInt("id");
+            id = id * -1;
+
+            String backdropPath = jsonObject.getString("backdrop_path");
+            String releaseDate = jsonObject.getString("first_air_date");
+            List<Integer> genreIds = parseArrayToInteger(jsonObject.getJSONArray("genre_ids"));
+            List<String> genres = getGenresText(genreIds);
+            String title = jsonObject.getString("name");
+            String originalLanguage = jsonObject.getString("original_language");
+            String originalTitle = jsonObject.getString("original_name");
+            String overview = jsonObject.getString("overview");
+            double popularity = jsonObject.getDouble("popularity");
+            String posterPath = jsonObject.getString("poster_path");
+            double voteAverage = jsonObject.getDouble("vote_average");
+            int voteCount = jsonObject.getInt("vote_count");
+            tvSeries = new Movie(true, backdropPath, genreIds, id, originalLanguage, originalTitle, overview, popularity, posterPath, releaseDate, title,
+                    false, voteAverage, voteCount,genres);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tvSeries;
+    }
+
+    public static Movie parseTVSeriesInfo(String tvSeriesInfoJson) {
+        Movie tvSeries = null;
+        try {
+            JSONObject jsonObject = new JSONObject(tvSeriesInfoJson);
+            int id = jsonObject.getInt("id");
+            id = id * -1;
+
+            String backdropPath = jsonObject.getString("backdrop_path");
+            String releaseDate = jsonObject.getString("first_air_date");
+            String title = jsonObject.getString("name");
+            String originalLanguage = jsonObject.getString("original_language");
+            String originalTitle = jsonObject.getString("original_name");
+            String overview = jsonObject.getString("overview");
+            double popularity = jsonObject.getDouble("popularity");
+            String posterPath = jsonObject.getString("poster_path");
+            double voteAverage = jsonObject.getDouble("vote_average");
+            int voteCount = jsonObject.getInt("vote_count");
+            //List<String> languages = parseStringArray(jsonObject.getJSONArray("languages"));
+            String status = jsonObject.getString("status");
+            String tagline = jsonObject.getString("tagline");
+            String type = jsonObject.getString("type");
+            int numberOfSeasons = jsonObject.getInt("number_of_seasons");
+            int numberOfEpisodes = jsonObject.getInt("number_of_episodes");
+
+            List<TVSeason> seasons = new ArrayList<>();
+            JSONArray seasonsArray = jsonObject.getJSONArray("seasons");
+            for (int i = 0; i < seasonsArray.length(); i++) {
+                JSONObject seasonObject = seasonsArray.getJSONObject(i);
+                TVSeason season = new TVSeason(seasonObject.getString("air_date"),
+                        seasonObject.getInt("episode_count"),
+                        seasonObject.getInt("id"),
+                        seasonObject.getString("name"),
+                        seasonObject.getString("overview"),
+                        seasonObject.getString("poster_path"),
+                        seasonObject.getInt("season_number"),
+                        seasonObject.getDouble("vote_average"));
+                seasons.add(season);
+            }
+            List<String> productionCountries = parseArray(jsonObject.getJSONArray("production_countries"), "name");
+
+            JSONArray productionCompanies = jsonObject.getJSONArray("created_by");
+            List<String> genres = parseArray(jsonObject.getJSONArray("genres"), "name");
+            tvSeries  = new Movie(true, backdropPath, "", 0, genres, "", id, "imdbId", originalLanguage, originalTitle,
+                    overview, popularity, posterPath, null, productionCountries, releaseDate, 0, 0,
+                    null, status, tagline, title, false, voteAverage, voteCount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+        return tvSeries;
+    }
 
     public static List<Integer> parseArrayToInteger(JSONArray jsonArray) throws JSONException {
         List<Integer> list = new ArrayList<>();
@@ -181,8 +286,6 @@ public class Movie {
         }
         return list;
     }
-
-
     public static List<String> parseArray(JSONArray jsonArray, String key) throws JSONException {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -192,7 +295,6 @@ public class Movie {
         }
         return list;
     }
-
     public static List<String> getGenresText(List<Integer> genreIds) {
         List<String> genres = new ArrayList<>();
 
@@ -202,10 +304,8 @@ public class Movie {
                 genres.add(genreText);
             }
         }
-
         return genres;
     }
-
     private static String getGenreText(int genreId) {
         String genreText;
         switch (genreId) {
@@ -270,11 +370,8 @@ public class Movie {
                 genreText = "Unknown Genre";
                 break;
         }
-
         return genreText;
     }
-
-
     public boolean isAdult() {
         return adult;
     }

@@ -21,7 +21,7 @@ public class ActorTMDBApi {
 
     public Actor getPersonById(int idPerson) {
         OkHttpClient client = new OkHttpClient();
-        String url = "https://api.themoviedb.org/3/person/"+idPerson+"?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/person/"+idPerson+"?api_key=1da35d58fd12497b111e4dd1c4a4c004&language=en-US";
         Request request = new Request.Builder()
                 .url(url)
                 .get()
