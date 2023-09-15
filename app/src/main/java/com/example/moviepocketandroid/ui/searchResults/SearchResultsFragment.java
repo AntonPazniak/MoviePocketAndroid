@@ -20,14 +20,10 @@ import android.widget.TextView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorSearchAdapter;
 import com.example.moviepocketandroid.adapter.SearchAdapter;
-import com.example.moviepocketandroid.adapter.TVSeriesSearchAdapter;
 import com.example.moviepocketandroid.api.TMDB.ActorTMDBApi;
-import com.example.moviepocketandroid.api.TMDB.TVSeriesTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
-import com.example.moviepocketandroid.api.models.tv.TVSeason;
-import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import java.util.List;
 
@@ -88,7 +84,6 @@ public class SearchResultsFragment extends Fragment {
             @Override
             public void run() {
                 MovieTMDBApi movieTMDBApi = new MovieTMDBApi();
-                TVSeriesTMDBApi tvSeriesTMDBApi = new TVSeriesTMDBApi();
                 ActorTMDBApi actorTMDBApi = new ActorTMDBApi();
                 movies = movieTMDBApi.getSearchResultsMovie(query);
                 tvSeries = movieTMDBApi.getSearchResultsTV(query);

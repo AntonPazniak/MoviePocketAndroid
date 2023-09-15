@@ -1,7 +1,6 @@
 package com.example.moviepocketandroid.api.models;
 import com.example.moviepocketandroid.api.models.tv.TVNetwork;
 import com.example.moviepocketandroid.api.models.tv.TVSeason;
-import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import org.json.JSONArray;
 import org.json.JSONException;

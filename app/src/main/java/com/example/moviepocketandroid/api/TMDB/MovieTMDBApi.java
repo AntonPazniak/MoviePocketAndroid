@@ -8,7 +8,6 @@ import static com.example.moviepocketandroid.api.models.Movie.parseMoviePopular;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.MovieImage;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -287,9 +286,9 @@ public class MovieTMDBApi {
         return null;
     }
 
-    public List<TVSeries> getPopularTVs(){
+    public List<Movie> getPopularTVs() {
         OkHttpClient client = new OkHttpClient();
-        List<TVSeries> tvs = new ArrayList<>();
+        List<Movie> tvs = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/tv/popular?api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
@@ -304,7 +303,7 @@ public class MovieTMDBApi {
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
-                    TVSeries tv = TVSeries.parseTVSeriesPopularInfo(movieObject.toString());
+                    Movie tv = Movie.parseTVSeriesPopularInfo(movieObject.toString());
                     if (tv != null) {
                         tvs.add(tv);
                     }

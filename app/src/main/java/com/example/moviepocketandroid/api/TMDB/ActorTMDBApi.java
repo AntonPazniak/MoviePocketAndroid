@@ -3,7 +3,6 @@ package com.example.moviepocketandroid.api.TMDB;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.models.MovieImage;
-import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,10 +70,10 @@ public class ActorTMDBApi {
         return movieList;
     }
 
-    public List<TVSeries> getTVByIdActor(int idActor) {
+    public List<Movie> getTVByIdActor(int idActor) {
         OkHttpClient client = new OkHttpClient();
-        List<TVSeries> tvList = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/person/"+idActor+"/tv_credits?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        List<Movie> tvList = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/person/" + idActor + "/tv_credits?api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -88,7 +87,7 @@ public class ActorTMDBApi {
                 JSONArray resultsArray = jsonObject.getJSONArray("cast");
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
-                    TVSeries tv = TVSeries.pars(movieObject.toString());
+                    Movie tv = Movie.parsTVSeries(movieObject.toString());
                     if (tv != null) {
                         tvList.add(tv);
                     }

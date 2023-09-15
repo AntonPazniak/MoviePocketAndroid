@@ -22,20 +22,17 @@ import android.widget.TextView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
-import com.example.moviepocketandroid.adapter.TVSeriesAdapter;
-import com.example.moviepocketandroid.api.TMDB.TVSeriesTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
-import com.example.moviepocketandroid.api.models.tv.TVSeries;
 
 import java.util.List;
 
 public class SearchFragment extends Fragment {
 
     private MovieAdapter movieAdapter;
+    private MovieAdapter tvAdapter;
     private ActorsAdapter actorsAdapter;
-    private TVSeriesAdapter tvSeriesAdapter;
     private RecyclerView moviesRecyclerView;
     private RecyclerView actorsRecyclerView;
     private RecyclerView tvRecyclerView;
@@ -94,10 +91,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void run() {
                 MovieTMDBApi tmdbApi = new MovieTMDBApi();
-                TVSeriesTMDBApi tvSeriesTMDBApi = new TVSeriesTMDBApi();
                 List<Movie> movies = tmdbApi.getPopularMovies();
                 List<Actor> actors = tmdbApi.getPopularActors();
-                List<TVSeries> tvSeries = tvSeriesTMDBApi.getPopularTVs();
+                List<Movie> tvSeries = tmdbApi.getPopularTVs();
                 requireActivity().runOnUiThread(new Runnable() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -141,17 +137,18 @@ public class SearchFragment extends Fragment {
 
                         if (tvSeries != null) {
                             textTVRecyclerView.setText("Popular TV Series:");
-                            tvSeriesAdapter = new TVSeriesAdapter(tvSeries);
-                            tvRecyclerView.setAdapter(tvSeriesAdapter);
+                            tvAdapter = new MovieAdapter(tvSeries);
+                            tvRecyclerView.setAdapter(tvAdapter);
                             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
                             tvRecyclerView.setLayoutManager(layoutManager2);
-                            tvSeriesAdapter.setOnMovieClickListener(new TVSeriesAdapter.OnMovieClickListener() {
+                            tvAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
                                 @Override
-                                public void onMovieClick(int idTV) {
+                                public void onMovieClick(int movieId) {
                                     Bundle args = new Bundle();
-                                    args.putInt("idTV", idTV);
+                                    args.putInt("idMovie", movieId);
+
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigate(R.id.action_navigation_search_to_TVSeriesFragment, args);
+                                    navController.navigate(R.id.action_navigation_search_to_movieFragment, args);
                                 }
                             });
                         }
