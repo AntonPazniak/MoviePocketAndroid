@@ -1,22 +1,29 @@
 package com.example.moviepocketandroid.ui.user;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.adapter.MovieTokAdapter;
+import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
+import com.example.moviepocketandroid.api.models.Movie;
+
+import java.util.List;
 
 public class UserFragment extends Fragment {
-
-    private UserViewModel mViewModel;
+    ViewPager2 viewPager;
+    private MovieTokAdapter adapterMovieTok;
+    private RecyclerView recyclerViewMovieTok;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -31,15 +38,35 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewPager = view.findViewById(R.id.viewPager);
+        loadMovieDetails(/* pass the appropriate idMovie here */);
+    }
 
+    private void loadMovieDetails() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MovieTMDBApi tmdbApi = new MovieTMDBApi();
+                List<Movie> movies = tmdbApi.getPopularMovies();
+                if (movies != null) {
+                    adapterMovieTok = new MovieTokAdapter(requireContext(), movies);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MovieTokAdapter adapter = new MovieTokAdapter(requireContext(), movies);
+                            viewPager.setAdapter(adapter);
+                        }
+                    });
+                }
+            }
+        }).start();
 
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

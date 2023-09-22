@@ -34,10 +34,13 @@
         android:id="@+id/userFragment"
         android:name="com.example.moviepocketandroid.ui.user.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" >
+        tools:layout="@layout/fragment_user">
         <action
             android:id="@+id/action_userFragment_to_movieFragment"
             app:destination="@id/movieFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_movieTokFragment"
+            app:destination="@id/movieTokFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieFragment"
@@ -78,4 +81,9 @@
             android:id="@+id/action_searchResultsFragment_to_personFragment"
             app:destination="@id/personFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/movieTokFragment"
+        android:name="com.example.moviepocketandroid.ui.movieTok.MovieTokFragment"
+        android:label="fragment_movie_tok"
+        tools:layout="@layout/fragment_movie_tok" />
 </navigation>
