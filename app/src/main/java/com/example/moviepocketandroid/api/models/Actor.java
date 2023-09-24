@@ -30,6 +30,7 @@ public class Actor {
     private int order;
 
     private final String URL = "https://image.tmdb.org/t/p/w500/";
+    private final String STANDARD_URL = "https://github.com/prymakD/MoviePocket/raw/16f04a6063f407cec8ee8eab29a4bd25c4ae111b/src/main/frontend/src/images/person.png";
 
     public Actor(boolean adult, List<String> alsoKnownAs, String biography, String birthday, String deathDay,
                  int gender, String homepage, int id, String imdbId, String knownForDepartment, String name,
@@ -47,7 +48,10 @@ public class Actor {
         this.name = name;
         this.placeOfBirth = placeOfBirth;
         this.popularity = popularity;
-        this.profilePath = URL+profilePath;
+        if (!profilePath.equals("null"))
+            this.profilePath = URL + profilePath;
+        else
+            this.profilePath = STANDARD_URL;
     }
 
     public Actor(boolean adult, int gender, int id, String knownForDepartment, String name, String originalName, double popularity, String profilePath, String character, String creditId, int order) {
@@ -58,10 +62,13 @@ public class Actor {
         this.name = name;
         this.originalName = originalName;
         this.popularity = popularity;
-        this.profilePath = URL+profilePath;
         this.character = character;
         this.creditId = creditId;
         this.order = order;
+        if (!profilePath.equals("null"))
+            this.profilePath = URL + profilePath;
+        else
+            this.profilePath = STANDARD_URL;
     }
 
     public static Actor parseActor(String actorInfoJson) {
@@ -106,7 +113,10 @@ public class Actor {
         this.knownForDepartment = knownForDepartment;
         this.name = name;
         this.popularity = popularity;
-        this.profilePath = URL+profilePath;
+        if (!profilePath.equals("null"))
+            this.profilePath = URL + profilePath;
+        else
+            this.profilePath = STANDARD_URL;
     }
 
     public static Actor parsPerson(String actorInfoJson) {

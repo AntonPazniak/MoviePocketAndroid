@@ -48,40 +48,21 @@ import java.util.List;
 public class MovieFragment extends Fragment {
 
     private MovieViewModel mViewModel;
-    private ImageView imageBackPopularMovie;
-    private ImageView imagePosterPopularMovie;
+    private ImageView imageBackPopularMovie, imagePosterPopularMovie;
     private TextView textTitlePopularMovie;
-    private ImageView imageEye;
-    private ImageView imageLike;
-    private ImageView imageBackPack;
-    private TextView textOverview;
-    private TextView textRating;
-    private TextView textVoteCount;
-    private TextView textActorsRecyclerView;
-    private TextView textMoviesRecyclerView;
-    private TextView textCountry;
-    private TextView textCategories;
-    private TextView textMinutes;
-    private TextView textImages;
-    private RecyclerView actorsRecyclerView;
+    private ImageView imageEye, imageLike, imageBackPack;
+    private TextView textRating, textVoteCount, textOverview, textImages;
+    private TextView textActorsRecyclerView, textMoviesRecyclerView;
+    private TextView textCountry, textCategories, textMinutes;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
     private ImagesAdapter movieImagesAdapter;
-    private View viewYouTube;
-    private View viewImages;
-    private View viewActors;
-
-    private boolean isLikeButtonPressed = false;
-    private boolean isStarButtonPressed = false;
-    private boolean isEyeButtonPressed = false;
-    private boolean isBackPackButtonPressed = false;
+    private View viewYouTube, viewImages, viewActors, viewSimilar;
     private boolean isExpanded = false;
-    private RecyclerView moviesRecyclerView;
-    private RecyclerView imagesRecyclerView;
+    private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView;
 
     private WebView webView;
 
-    AnimationSet animation;
 
     public static MovieFragment newInstance() {
         return new MovieFragment();
@@ -119,12 +100,10 @@ public class MovieFragment extends Fragment {
         viewYouTube = view.findViewById(R.id.viewYouTube);
         viewImages = view.findViewById(R.id.viewImages);
         viewActors = view.findViewById(R.id.viewActors);
-
+        viewSimilar = view.findViewById(R.id.viewSimilar);
 
         webView = view.findViewById(R.id.webView);
         webView.setBackgroundColor(0);
-
-        this.animation = createAnimation();
 
         Bundle args = getArguments();
         if (args != null) {
@@ -133,6 +112,19 @@ public class MovieFragment extends Fragment {
         }
 
         ButtonUntil buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack);
+        textOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExpanded) {
+                    textOverview.setMaxLines(5);
+                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textOverview.setMaxLines(Integer.MAX_VALUE);
+                    textOverview.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
+            }
+        });
 
     }
 
@@ -197,7 +189,8 @@ public class MovieFragment extends Fragment {
             textCountry.setText(s);
         }
         StringBuilder genders = new StringBuilder();
-        textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", " + movie.getRuntime() + " mins");
+        if (!movie.getReleaseDate().isEmpty())
+            textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", " + movie.getRuntime() + " mins");
         if (!movie.getGenres().isEmpty()) {
             genders.append(movie.getGenres().get(0));
             for (int i = 1; i < movie.getGenres().size(); i++) {
@@ -234,9 +227,8 @@ public class MovieFragment extends Fragment {
                     "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
             webView.loadData(frameVideo, "text/html", "utf-8");
-        } else {
+        } else
             viewYouTube.setVisibility(View.GONE);
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -276,7 +268,7 @@ public class MovieFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setMovieSimilar(List<Movie> movies) {
-        if (movies != null) {
+        if (movies.size() > 0) {
             textMoviesRecyclerView.setText("Similar:");
             movieAdapter = new MovieAdapter(movies);
             moviesRecyclerView.setAdapter(movieAdapter);
@@ -292,7 +284,8 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_self, args);
                 }
             });
-        }
+        } else
+            viewSimilar.setVisibility(View.GONE);
     }
 
 }

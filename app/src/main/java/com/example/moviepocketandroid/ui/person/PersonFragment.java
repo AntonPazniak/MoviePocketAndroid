@@ -37,20 +37,13 @@ public class PersonFragment extends Fragment {
 
     private PersonViewModel mViewModel;
     private int idPerson;
-
     private ImageView imagePerson;
-    private TextView textNamePerson;
-    private TextView textOverview;
-    private TextView textPlaceBirth;
-    private TextView textBirthday;
-    private TextView textMoviesRecyclerView;
-    private TextView textTVRecyclerView;
-    private RecyclerView moviesRecyclerView;
-    private RecyclerView tvRecyclerView;
-    private RecyclerView imagesRecyclerView;
+    private TextView textNamePerson, textOverview, textPlaceBirth, textBirthday, textMoviesRecyclerView, textTVRecyclerView;
+    private RecyclerView moviesRecyclerView, tvRecyclerView, imagesRecyclerView;
     private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
     private MovieAdapter tvAdapter;
+    private View viewImages, viewMovie, viewTvs;
     private boolean isExpanded = false;
 
     @Override
@@ -73,6 +66,9 @@ public class PersonFragment extends Fragment {
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
         textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
+        viewImages = view.findViewById(R.id.viewImages);
+        viewMovie = view.findViewById(R.id.viewSimilar);
+        viewTvs = view.findViewById(R.id.viewTVs);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -103,10 +99,6 @@ public class PersonFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
-
-
-
-
     private void loadPersonDetails(int idPerson){
         new Thread(new Runnable() {
             @Override
@@ -116,75 +108,98 @@ public class PersonFragment extends Fragment {
                 List<Movie> movies = tmdbApi.getMoviesByIdActor(idPerson);
                 List<Movie> tvSeries = tmdbApi.getTVByIdActor(idPerson);
                 List<MovieImage> images = tmdbApi.getImagesByIdActor(idPerson);
-                if (actorTMDBS != null ) {
+                if (actorTMDBS != null) {
                     requireActivity().runOnUiThread(new Runnable() {
-                        @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
-                            RequestOptions requestOptions = new RequestOptions()
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL);
-                            System.out.println(actorTMDBS.getProfilePath());
-                            Glide.with(requireContext())
-                                    .load(actorTMDBS.getProfilePath())
-                                    .apply(requestOptions)
-                                    .into(imagePerson);
-                            textNamePerson.setText(actorTMDBS.getName());
-                            textOverview.setText(actorTMDBS.getBiography());
-                            textPlaceBirth.setText(actorTMDBS.getPlaceOfBirth());
-                            if(!actorTMDBS.getDeathDay().isEmpty())
-                                textBirthday.setText(actorTMDBS.getBirthday());
-                            else
-                                textBirthday.setText(actorTMDBS.getBirthday()+" - "+actorTMDBS.getDeathDay());
-
-                            if ( images != null ) {
-                                movieImagesAdapter = new ImagesAdapter(images);
-                                imagesRecyclerView.setAdapter(movieImagesAdapter);
-                                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                                imagesRecyclerView.setLayoutManager(layoutManager2);
-                            }
-
-                            if ( movies != null ) {
-                                textMoviesRecyclerView.setText("Movies:");
-                                movieAdapter = new MovieAdapter(movies);
-                                moviesRecyclerView.setAdapter(movieAdapter);
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                                moviesRecyclerView.setLayoutManager(layoutManager);
-                                movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-                                    @Override
-                                    public void onMovieClick(int movieId) {
-                                        Bundle args = new Bundle();
-                                        args.putInt("idMovie", movieId);
-
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigate(R.id.action_personFragment_to_movieFragment, args);
-                                    }
-                                });
-                            }
-                            if (tvSeries != null) {
-                                textTVRecyclerView.setText("TV Series:");
-                                tvAdapter = new MovieAdapter(tvSeries);
-                                tvRecyclerView.setAdapter(tvAdapter);
-                                LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                                tvRecyclerView.setLayoutManager(layoutManager1);
-                                tvAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-                                    @Override
-                                    public void onMovieClick(int movieId) {
-                                        Bundle args = new Bundle();
-                                        args.putInt("idMovie", movieId);
-
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigate(R.id.action_personFragment_to_movieFragment, args);
-                                    }
-                                });
-                            }
-
-
-
+                            setImagePerson(actorTMDBS);
+                            setInfoPerson(actorTMDBS);
+                            setImages(images);
+                            setMovies(movies);
+                            setTVs(tvSeries);
                         }
                     });
                 }
             }
         }).start();
+    }
+
+    private void setImagePerson(Actor actor) {
+        RequestOptions requestOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+        Glide.with(requireContext())
+                .load(actor.getProfilePath())
+                .apply(requestOptions)
+                .into(imagePerson);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setInfoPerson(Actor actor) {
+        if (!actor.getName().equals("null"))
+            textNamePerson.setText(actor.getName());
+        if (!actor.getPlaceOfBirth().equals("null"))
+            textPlaceBirth.setText(actor.getPlaceOfBirth());
+        if (!actor.getBiography().equals("null"))
+            textOverview.setText(actor.getBiography());
+        if (!actor.getDeathDay().equals("null") && !actor.getBiography().equals("null"))
+            textBirthday.setText(actor.getBirthday() + " - " + actor.getDeathDay());
+        else if (!actor.getBirthday().equals("null"))
+            textBirthday.setText(actor.getBirthday());
+
+    }
+
+    private void setImages(List<MovieImage> images) {
+        if (images.size() > 0) {
+            movieImagesAdapter = new ImagesAdapter(images);
+            imagesRecyclerView.setAdapter(movieImagesAdapter);
+            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            imagesRecyclerView.setLayoutManager(layoutManager2);
+        } else
+            viewImages.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setMovies(List<Movie> movies) {
+        if (movies.size() > 0) {
+            textMoviesRecyclerView.setText("Movies:");
+            movieAdapter = new MovieAdapter(movies);
+            moviesRecyclerView.setAdapter(movieAdapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            moviesRecyclerView.setLayoutManager(layoutManager);
+            movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+                @Override
+                public void onMovieClick(int movieId) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", movieId);
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_personFragment_to_movieFragment, args);
+                }
+            });
+        } else
+            viewMovie.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setTVs(List<Movie> tv) {
+        if (tv.size() > 0) {
+            textTVRecyclerView.setText("TV Series:");
+            tvAdapter = new MovieAdapter(tv);
+            tvRecyclerView.setAdapter(tvAdapter);
+            LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            tvRecyclerView.setLayoutManager(layoutManager1);
+            tvAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+                @Override
+                public void onMovieClick(int movieId) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", movieId);
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_personFragment_to_movieFragment, args);
+                }
+            });
+        } else
+            viewTvs.setVisibility(View.GONE);
     }
 
 }

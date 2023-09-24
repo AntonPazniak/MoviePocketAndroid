@@ -42,10 +42,12 @@ public class Movie {
     private List<TVSeason> seasons;
     private List<TVNetwork> networks;
     private final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
+    private final String STANDARD_URL = "https://github.com/prymakD/MoviePocket/raw/16f04a6063f407cec8ee8eab29a4bd25c4ae111b/src/main/frontend/src/images/person.png";
+
 
     public Movie(boolean adult, String backdropPath, String belongsToCollection, int budget, List<String> genres, String homepage, int id, String imdbId, String originalLanguage, String originalTitle, String overview, double popularity, String posterPath, List<String> productionCompanies, List<String> productionCountries, String releaseDate, int revenue, int runtime, List<String> spokenLanguages, String status, String tagline, String title, boolean video, double voteAverage, int voteCount) {
         this.adult = adult;
-        this.backdropPath = POSTER_BASE_URL+backdropPath;
+        this.backdropPath = POSTER_BASE_URL + backdropPath;
         this.belongsToCollection = belongsToCollection;
         this.budget = budget;
         this.genres = genres;
@@ -56,7 +58,10 @@ public class Movie {
         this.originalTitle = originalTitle;
         this.overview = overview;
         this.popularity = popularity;
-        this.posterPath = POSTER_BASE_URL+posterPath;
+        if (!posterPath.equals("null"))
+            this.posterPath = POSTER_BASE_URL + posterPath;
+        else
+            this.posterPath = STANDARD_URL;
         this.productionCompanies = productionCompanies;
         this.productionCountries = productionCountries;
         this.releaseDate = releaseDate;
@@ -73,14 +78,17 @@ public class Movie {
 
     public Movie(boolean adult, String backdropPath, List<java.lang.Integer> genreIds, int id, String originalLanguage, String originalTitle, String overview, double popularity, String posterPath, String releaseDate, String title, boolean video, double voteAverage, int voteCount, List<String> genres) {
         this.adult = adult;
-        this.backdropPath = POSTER_BASE_URL+backdropPath;
+        this.backdropPath = POSTER_BASE_URL + backdropPath;
         this.genreIds = genreIds;
         this.id = id;
         this.originalLanguage = originalLanguage;
         this.originalTitle = originalTitle;
         this.overview = overview;
         this.popularity = popularity;
-        this.posterPath = POSTER_BASE_URL+posterPath;
+        if (!posterPath.equals("null"))
+            this.posterPath = POSTER_BASE_URL + posterPath;
+        else
+            this.posterPath = STANDARD_URL;
         this.releaseDate = releaseDate;
         this.title = title;
         this.video = video;
@@ -91,7 +99,10 @@ public class Movie {
 
     public Movie(int id, String posterPath, String title, String releaseDate, List<String>genres,double voteAverage) {
         this.id = id;
-        this.posterPath = POSTER_BASE_URL+posterPath;
+        if (!posterPath.equals("null"))
+            this.posterPath = POSTER_BASE_URL + posterPath;
+        else
+            this.posterPath = STANDARD_URL;
         this.title = title;
         this.releaseDate = releaseDate;
         this.genres = genres;
