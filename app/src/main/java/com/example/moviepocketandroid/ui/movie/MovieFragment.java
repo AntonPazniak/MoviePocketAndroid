@@ -51,13 +51,13 @@ public class MovieFragment extends Fragment {
     private ImageView imageBackPopularMovie, imagePosterPopularMovie;
     private TextView textTitlePopularMovie;
     private ImageView imageEye, imageLike, imageBackPack;
-    private TextView textRating, textVoteCount, textOverview, textImages;
+    private TextView textRating, textVoteCount, textOverview, textImages, textViewOverview;
     private TextView textActorsRecyclerView, textMoviesRecyclerView;
     private TextView textCountry, textCategories, textMinutes;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
     private ImagesAdapter movieImagesAdapter;
-    private View viewYouTube, viewImages, viewActors, viewSimilar;
+    private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
     private boolean isExpanded = false;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView;
 
@@ -96,11 +96,13 @@ public class MovieFragment extends Fragment {
         textCategories = view.findViewById(R.id.textCategories);
         textMinutes = view.findViewById(R.id.textMinutes);
         textImages = view.findViewById(R.id.textImages);
+        textViewOverview = view.findViewById(R.id.textViewOverview);
 
         viewYouTube = view.findViewById(R.id.viewYouTube);
         viewImages = view.findViewById(R.id.viewImages);
         viewActors = view.findViewById(R.id.viewActors);
         viewSimilar = view.findViewById(R.id.viewSimilar);
+        viewOverview = view.findViewById(R.id.viewOverview);
 
         webView = view.findViewById(R.id.webView);
         webView.setBackgroundColor(0);
@@ -205,7 +207,11 @@ public class MovieFragment extends Fragment {
     private void setMovieRating(Movie movie) {
         if (movie.getVoteAverage() != 0) {
             double rating = movie.getVoteAverage();
-            textOverview.setText(movie.getOverview());
+            if(!movie.getOverview().equals("null")) {
+                textViewOverview.setText("Description");
+                textOverview.setText(movie.getOverview());
+            }else
+                viewOverview.setVisibility(View.GONE);
             DecimalFormat decimalFormat = new DecimalFormat("#.#");
             if (rating >= 8)
                 textRating.setTextColor(Color.parseColor("#F1B36E"));

@@ -38,12 +38,12 @@ public class PersonFragment extends Fragment {
     private PersonViewModel mViewModel;
     private int idPerson;
     private ImageView imagePerson;
-    private TextView textNamePerson, textOverview, textPlaceBirth, textBirthday, textMoviesRecyclerView, textTVRecyclerView;
+    private TextView textNamePerson, textOverview, textPlaceBirth, textBirthday, textImages, textMoviesRecyclerView, textTVRecyclerView, textViewOverview;
     private RecyclerView moviesRecyclerView, tvRecyclerView, imagesRecyclerView;
     private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
     private MovieAdapter tvAdapter;
-    private View viewImages, viewMovie, viewTvs;
+    private View viewImages, viewMovie, viewTvs, viewOverview;
     private boolean isExpanded = false;
 
     @Override
@@ -66,9 +66,13 @@ public class PersonFragment extends Fragment {
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
         textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
+        textImages = view.findViewById(R.id.textImages);
+
         viewImages = view.findViewById(R.id.viewImages);
         viewMovie = view.findViewById(R.id.viewSimilar);
         viewTvs = view.findViewById(R.id.viewTVs);
+        textViewOverview = view.findViewById(R.id.textViewOverview);
+        viewOverview = view.findViewById(R.id.viewOverview);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -139,8 +143,11 @@ public class PersonFragment extends Fragment {
             textNamePerson.setText(actor.getName());
         if (!actor.getPlaceOfBirth().equals("null"))
             textPlaceBirth.setText(actor.getPlaceOfBirth());
-        if (!actor.getBiography().equals("null"))
+        if (!actor.getBiography().equals("")) {
+            textViewOverview.setText("Biography");
             textOverview.setText(actor.getBiography());
+        }else
+            viewOverview.setVisibility(View.GONE);
         if (!actor.getDeathDay().equals("null") && !actor.getBiography().equals("null"))
             textBirthday.setText(actor.getBirthday() + " - " + actor.getDeathDay());
         else if (!actor.getBirthday().equals("null"))
@@ -148,8 +155,10 @@ public class PersonFragment extends Fragment {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void setImages(List<MovieImage> images) {
         if (images.size() > 0) {
+            textImages.setText("Images:");
             movieImagesAdapter = new ImagesAdapter(images);
             imagesRecyclerView.setAdapter(movieImagesAdapter);
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
