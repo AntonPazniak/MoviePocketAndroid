@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,25 +19,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
-    private TextView movieTitleTextView;
-    private TextView movieOverviewTextView;
-    private TextView movieReleaseDateTextView;
-    private TextView movieGenresTextView;
-    private LinearLayout homeButton;
-    private LinearLayout searchButton;
-    private LinearLayout youButton;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-
-
-
+        Intent intent = new Intent(this, MainActivity2.class);
+        startActivity(intent);
+        finish();
 
     }
 
