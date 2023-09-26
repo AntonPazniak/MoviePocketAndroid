@@ -21,7 +21,7 @@ import com.example.moviepocketandroid.api.models.Movie;
 import java.util.List;
 
 public class UserFragment extends Fragment {
-    ViewPager2 viewPager;
+    private ViewPager2 viewPager;
     private MovieTokAdapter adapterMovieTok;
     private RecyclerView recyclerViewMovieTok;
 
@@ -39,7 +39,7 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager = view.findViewById(R.id.viewPager);
-        loadMovieDetails(/* pass the appropriate idMovie here */);
+        loadMovieDetails();
     }
 
     private void loadMovieDetails() {

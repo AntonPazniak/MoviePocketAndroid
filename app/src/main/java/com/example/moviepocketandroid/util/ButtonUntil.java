@@ -13,9 +13,11 @@ public class ButtonUntil {
     private boolean isLikeButtonPressed = false;
     private boolean isEyeButtonPressed = false;
     private boolean isBackPackButtonPressed = false;
+    private boolean isBinocularsButtonPressed = false;
     private ImageView imageEye;
     private ImageView imageLike;
     private ImageView imageBackPack;
+    private ImageView imageBinoculars;
 
     public ButtonUntil(ImageView imageEye, ImageView imageLike, ImageView imageBackPack) {
         this.imageEye = imageEye;
@@ -56,6 +58,38 @@ public class ButtonUntil {
                 imageLike.startAnimation(animation);
             }
         });
+    }
+
+    public ButtonUntil(ImageView imageBackPack, ImageView imageBinoculars) {
+        this.imageBackPack = imageBackPack;
+        this.imageBinoculars = imageBinoculars;
+        this.animation = createAnimation();
+
+        imageBackPack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isBackPackButtonPressed)
+                    imageBackPack.setImageResource(R.drawable.backpack_blue);
+                else
+                    imageBackPack.setImageResource(R.drawable.backpack_yellow);
+                isBackPackButtonPressed = !isBackPackButtonPressed;
+                imageBackPack.startAnimation(animation);
+            }
+        });
+
+        imageBinoculars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isBinocularsButtonPressed)
+                    imageBinoculars.setImageResource(R.drawable.binoculars_blue);
+                else
+                    imageBinoculars.setImageResource(R.drawable.binoculars_pink);
+                isBinocularsButtonPressed = !isBinocularsButtonPressed;
+                imageBinoculars.startAnimation(animation);
+            }
+        });
 
     }
+
+
 }

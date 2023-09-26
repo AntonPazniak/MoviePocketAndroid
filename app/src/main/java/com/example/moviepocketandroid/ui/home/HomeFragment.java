@@ -13,11 +13,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.adapter.ActorsAdapter;
+import com.example.moviepocketandroid.adapter.MovieTokAdapter;
+import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
@@ -27,12 +31,13 @@ import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
+    private ViewPager2 viewPager;
 
     private List<Movie> movieInfoTMDBList;
     private FragmentHomeBinding binding;
     private int popularMovie;
 
-    private TextView textTitlePopularMovie;
+    private TextView textTitlePopularMovie, textViewCinema;
     private ImageView imageBackMovie;
     private ImageView imagePosterMovie;
 
@@ -51,6 +56,10 @@ public class HomeFragment extends Fragment {
         imagePosterMovie = view.findViewById(R.id.imagePosterMovie);
         textTitlePopularMovie = view.findViewById(R.id.textTitlePopularMovie);
 
+        textViewCinema = view.findViewById(R.id.textViewCinema);
+
+        viewPager = view.findViewById(R.id.viewPager);
+
         Random random = new Random();
         popularMovie = random.nextInt(10);
 
@@ -59,6 +68,7 @@ public class HomeFragment extends Fragment {
             public void run() {
                 MovieTMDBApi tmdbApi = new MovieTMDBApi();
                 movieInfoTMDBList = tmdbApi.getPopularMovies();
+                List<Movie> nowPlayMovie = tmdbApi.getNowPlayingMovie();
                 if (!movieInfoTMDBList.isEmpty()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -74,6 +84,21 @@ public class HomeFragment extends Fragment {
                                     .apply(requestOptions)
                                     .into(imagePosterMovie);
                             textTitlePopularMovie.setText(movieInfoTMDBList.get(popularMovie).getTitle());
+
+                            textViewCinema.setVisibility(View.VISIBLE);
+
+                            NowPlayingMovieAdapter adapter = new NowPlayingMovieAdapter(nowPlayMovie);
+                            viewPager.setAdapter(adapter);
+                            adapter.setOnMovieClickListener(new NowPlayingMovieAdapter.OnMovieClickListener() {
+                                @Override
+                                public void onMovieClick(int movieId) {
+                                    Bundle args = new Bundle();
+                                    args.putInt("idMovie", movieId);
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigate(R.id.action_navigation_home_to_movieFragment, args);
+                                }
+                            });
+
                         }
                     });
                 }

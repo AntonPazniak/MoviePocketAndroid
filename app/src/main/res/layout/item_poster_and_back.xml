@@ -15,8 +15,7 @@
             android:id="@+id/imageBackMovie"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/gradient_bottom_dark" />
+            android:scaleType="centerCrop" />
 
         <View
             android:layout_width="match_parent"

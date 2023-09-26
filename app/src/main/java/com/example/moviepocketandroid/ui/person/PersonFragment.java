@@ -38,7 +38,7 @@ public class PersonFragment extends Fragment {
     private PersonViewModel mViewModel;
     private int idPerson;
     private ImageView imagePerson;
-    private TextView textNamePerson, textOverview, textPlaceBirth, textBirthday, textImages, textMoviesRecyclerView, textTVRecyclerView, textViewOverview;
+    private TextView textNamePerson, textOverview, textPlaceBirth, textBirthday, textImages, textMoviesRecyclerView, textTVRecyclerView, textViewOverview, textDeathDay;
     private RecyclerView moviesRecyclerView, tvRecyclerView, imagesRecyclerView;
     private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
@@ -61,6 +61,7 @@ public class PersonFragment extends Fragment {
         textOverview = view.findViewById(R.id.textOverview);
         textPlaceBirth = view.findViewById(R.id.textPlaceBirth);
         textBirthday = view.findViewById(R.id.textBirthday);
+        textDeathDay = view.findViewById(R.id.textDeathDay);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
@@ -146,12 +147,13 @@ public class PersonFragment extends Fragment {
         if (!actor.getBiography().equals("")) {
             textViewOverview.setText("Biography");
             textOverview.setText(actor.getBiography());
-        }else
+        } else
             viewOverview.setVisibility(View.GONE);
-        if (!actor.getDeathDay().equals("null") && !actor.getBiography().equals("null"))
-            textBirthday.setText(actor.getBirthday() + " - " + actor.getDeathDay());
-        else if (!actor.getBirthday().equals("null"))
-            textBirthday.setText(actor.getBirthday());
+        if (!actor.getDeathDay().equals("null") && !actor.getBiography().equals("null")) {
+            textBirthday.setText("Birthday: " + actor.getBirthday());
+            textDeathDay.setText("DeathDay: " + actor.getDeathDay());
+        } else if (!actor.getBirthday().equals("null"))
+            textBirthday.setText("Birthday: " + actor.getBirthday());
 
     }
 

@@ -485,4 +485,32 @@ public class Movie {
     public int getVoteCount() {
         return voteCount;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getNumberOfSeasons() {
+        return numberOfSeasons;
+    }
+
+    public int getNumberOfEpisodes() {
+        return numberOfEpisodes;
+    }
+
+    public List<TVSeason> getSeasons() {
+        return seasons;
+    }
+
+    public List<TVNetwork> getNetworks() {
+        return networks;
+    }
+
+    public String getPOSTER_BASE_URL() {
+        return POSTER_BASE_URL;
+    }
+
+    public String getSTANDARD_URL() {
+        return STANDARD_URL;
+    }
 }

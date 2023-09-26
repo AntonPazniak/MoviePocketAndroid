@@ -50,7 +50,7 @@ public class MovieFragment extends Fragment {
     private MovieViewModel mViewModel;
     private ImageView imageBackPopularMovie, imagePosterPopularMovie;
     private TextView textTitlePopularMovie;
-    private ImageView imageEye, imageLike, imageBackPack;
+    private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
     private TextView textRating, textVoteCount, textOverview, textImages, textViewOverview;
     private TextView textActorsRecyclerView, textMoviesRecyclerView;
     private TextView textCountry, textCategories, textMinutes;
@@ -81,9 +81,12 @@ public class MovieFragment extends Fragment {
         imageBackPopularMovie = view.findViewById(R.id.imageBackMovie);
         imagePosterPopularMovie = view.findViewById(R.id.imagePosterMovie);
         textTitlePopularMovie = view.findViewById(R.id.textTitlePopularMovie);
+
         imageEye = view.findViewById(R.id.imageEye);
         imageLike = view.findViewById(R.id.imageLike);
         imageBackPack = view.findViewById(R.id.imageBackPack);
+        imageBinoculars = view.findViewById(R.id.imageBinoculars);
+
         textOverview = view.findViewById(R.id.textOverview);
         textRating = view.findViewById(R.id.textRating);
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
@@ -113,7 +116,7 @@ public class MovieFragment extends Fragment {
             loadMovieDetails(idMovie);
         }
 
-        ButtonUntil buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack);
+
         textOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +148,7 @@ public class MovieFragment extends Fragment {
                         @Override
                         public void run() {
                             setPosterAndTitle(movieInfoTMDB);
+                            setButtons(movieInfoTMDB);
                             setMovieInfo(movieInfoTMDB);
                             setMovieRating(movieInfoTMDB);
                             setMovieTrailer(movieTrailerUrl);
@@ -163,6 +167,23 @@ public class MovieFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    private void setButtons(Movie movie) {
+        ButtonUntil buttonUntil;
+        if (movie.getStatus().equals("Planned")) {
+            imageBinoculars.setVisibility(View.VISIBLE);
+            imageBackPack.setVisibility(View.VISIBLE);
+            imageEye.setVisibility(View.GONE);
+            imageLike.setVisibility(View.GONE);
+            buttonUntil = new ButtonUntil(imageBackPack, imageBinoculars);
+        } else {
+            imageEye.setVisibility(View.VISIBLE);
+            imageLike.setVisibility(View.VISIBLE);
+            imageBackPack.setVisibility(View.VISIBLE);
+            imageBinoculars.setVisibility(View.GONE);
+            buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack);
+        }
     }
 
     private void setPosterAndTitle(Movie movie) {
@@ -192,7 +213,11 @@ public class MovieFragment extends Fragment {
         }
         StringBuilder genders = new StringBuilder();
         if (!movie.getReleaseDate().isEmpty())
-            textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", " + movie.getRuntime() + " mins");
+            if (movie.getId() > 0) {
+                textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", " + movie.getRuntime() + " mins");
+            } else {
+                textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", Seasons: " + movie.getNumberOfEpisodes() + " Episodes: " + movie.getNumberOfEpisodes());
+            }
         if (!movie.getGenres().isEmpty()) {
             genders.append(movie.getGenres().get(0));
             for (int i = 1; i < movie.getGenres().size(); i++) {

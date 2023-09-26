@@ -10,9 +10,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <include layout="@layout/item_poster_and_back" />
+
+        <TextView
+            android:id="@+id/textViewCinema"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/now_at_the_cinema"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:visibility="invisible" />
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

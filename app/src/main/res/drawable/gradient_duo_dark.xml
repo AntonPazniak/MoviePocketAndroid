@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Затемнение сверху -->
+    <item
+        android:bottom="50dp"
+        android:top="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="-90"
+                android:centerColor="#20000000"
+                android:endColor="#00000000"
+                android:startColor="#000000" />
+        </shape>
+    </item>
+
+    <!-- Затемнение снизу -->
+    <item
+        android:bottom="0dp"
+        android:top="50dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="90"
+                android:centerColor="#20000000"
+                android:endColor="#00000000"
+                android:startColor="#000000" />
+        </shape>
+    </item>
+</layer-list>

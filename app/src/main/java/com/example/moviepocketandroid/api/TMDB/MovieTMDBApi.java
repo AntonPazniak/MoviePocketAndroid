@@ -286,6 +286,36 @@ public class MovieTMDBApi {
         return null;
     }
 
+    public List<Movie> getNowPlayingMovie() {
+        OkHttpClient client = new OkHttpClient();
+        List<Movie> movieList = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    Movie movie = parseMoviePopular(movieObject.toString());
+                    if (movie != null) {
+                        movieList.add(movie);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return movieList;
+    }
+
     public List<Movie> getPopularTVs() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvs = new ArrayList<>();
