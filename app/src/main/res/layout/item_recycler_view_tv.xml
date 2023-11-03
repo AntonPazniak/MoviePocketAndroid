@@ -10,6 +10,7 @@
         android:id="@+id/textTVRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="28dp"
+        android:layout_marginStart="5dp"
         android:textColor="@color/logoBlue"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/tvRecyclerView"

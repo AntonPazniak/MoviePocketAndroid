@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="20dp"
+    android:layout_height="30dp"
     android:orientation="horizontal"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="1dp">
@@ -14,6 +14,7 @@
         android:layout_weight="1"
         android:gravity="right"
         android:text="@string/movies"
+        android:textSize="20dp"
         android:textColor="@color/logoPink" />
 
     <TextView
@@ -23,6 +24,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/tv"
+        android:textSize="20dp"
         android:textColor="@color/logoBlue" />
 
     <TextView
@@ -32,6 +34,7 @@
         android:layout_weight="1"
         android:gravity="left"
         android:text="@string/persons"
+        android:textSize="20dp"
         android:textColor="@color/logoBlue" />
 
 

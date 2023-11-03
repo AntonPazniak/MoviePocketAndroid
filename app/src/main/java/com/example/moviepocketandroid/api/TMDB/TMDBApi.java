@@ -21,19 +21,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieTMDBApi {
+public class TMDBApi {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3";
     private static final String API_KEY = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGEzNWQ1OGZkMTI0OTdiMTExZTRkZDFjNGE0YzAwNCIsInN1YiI6IjY0NDUyZGMwNjUxZmNmMDYxNzliZmY5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.expCnsMxBP9wfZab438BOkfl0VPQJftRFG7WPkSRyD0";
 
-    public Movie getInfoMovie(int id){
+    private static final String language = "us-US";
+
+    public Movie getInfoMovie(int id) {
         if (id > 0)
             return getMovieDetails(id);
         else
             return getTVsInfo(Math.abs(id));
     }
 
-    public List<Actor> getActorsByIdMovie(int id){
+    public List<Actor> getActorsByIdMovie(int id) {
         if (id > 0)
             return getActorsByIdFilm(id);
         else
@@ -54,11 +56,11 @@ public class MovieTMDBApi {
     private Movie getMovieDetails(int movieId) {
         OkHttpClient client = new OkHttpClient();
 
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
         Request request = new Request.Builder()
-                .url(BASE_URL + "/movie/" + movieId)
+                .url(url)
                 .get()
-                .addHeader("accept", "application/json")
-                .addHeader("Authorization", API_KEY)
                 .build();
 
         try {
@@ -79,7 +81,7 @@ public class MovieTMDBApi {
     public List<Movie> getPopularMovies() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key=1da35d58fd12497b111e4dd1c4a4c004&language=en-US&page=1";
+        String url = "https://api.themoviedb.org/3/movie/popular?" + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -109,7 +111,7 @@ public class MovieTMDBApi {
     public List<Actor> getActorsByIdFilm(int idMovie) {
         OkHttpClient client = new OkHttpClient();
         List<Actor> actors = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/movie/"+idMovie+"/credits?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/movie/" + idMovie + "/credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -138,7 +140,7 @@ public class MovieTMDBApi {
     private List<Movie> getSimilarFilmsById(int idMovie) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/movie/"+idMovie+"/similar?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/movie/" + idMovie + "/similar?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -167,7 +169,7 @@ public class MovieTMDBApi {
     public List<Actor> getPopularActors() {
         OkHttpClient client = new OkHttpClient();
         List<Actor> actors = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/person/popular?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/person/popular?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -197,7 +199,7 @@ public class MovieTMDBApi {
     public List<Movie> getSearchResultsMovie(String query) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movies = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/search/movie?api_key=1da35d58fd12497b111e4dd1c4a4c004&query="+query;
+        String url = "https://api.themoviedb.org/3/search/movie?language=" + language + "&query=" + query + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -258,7 +260,7 @@ public class MovieTMDBApi {
 
     public String getMovieTrailerUrl(int movieId) {
         OkHttpClient client = new OkHttpClient();
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=1da35d58fd12497b111e4dd1c4a4c004&language=en-US";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -289,7 +291,7 @@ public class MovieTMDBApi {
     public List<Movie> getNowPlayingMovie() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/movie/now_playing?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -319,7 +321,7 @@ public class MovieTMDBApi {
     public List<Movie> getPopularTVs() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvs = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/tv/popular?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/tv/popular?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -348,7 +350,7 @@ public class MovieTMDBApi {
 
     public Movie getTVsInfo(int idTV) {
         OkHttpClient client = new OkHttpClient();
-        String url = "https://api.themoviedb.org/3/tv/" + idTV + "?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/tv/" + idTV + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -370,7 +372,7 @@ public class MovieTMDBApi {
     public List<Actor> getActorsByIdTV(int idTV) {
         OkHttpClient client = new OkHttpClient();
         List<Actor> actors = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/tv/"+idTV+"/credits?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/tv/" + idTV + "/credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -399,7 +401,7 @@ public class MovieTMDBApi {
     private List<Movie> getSimilarTVById(int idTV) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvs = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/tv/"+idTV+"/similar?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        String url = "https://api.themoviedb.org/3/tv/" + idTV + "/similar?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -459,7 +461,7 @@ public class MovieTMDBApi {
     public List<Movie> getSearchResultsTV(String query) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvSeriesList = new ArrayList<>();
-        String url = "https://api.themoviedb.org/3/search/tv?api_key=1da35d58fd12497b111e4dd1c4a4c004&query=" + query;
+        String url = "https://api.themoviedb.org/3/search/tv?query=" + query + "&language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -485,5 +487,143 @@ public class MovieTMDBApi {
         return tvSeriesList;
     }
 
+    public Actor getPersonById(int idPerson) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://api.themoviedb.org/3/person/" + idPerson + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                return Actor.parsPerson(responseBody);
+            } else {
+                // Handle error response
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Movie> getMoviesByIdActor(int idActor) {
+        OkHttpClient client = new OkHttpClient();
+        List<Movie> movieList = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/person/" + idActor + "/movie_credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("cast");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    Movie movie = Movie.parsMovie(movieObject.toString());
+                    if (movie != null) {
+                        movieList.add(movie);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return movieList;
+    }
+
+    public List<Movie> getTVByIdActor(int idActor) {
+        OkHttpClient client = new OkHttpClient();
+        List<Movie> tvList = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/person/" + idActor + "/tv_credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("cast");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    Movie tv = Movie.parsTVSeries(movieObject.toString());
+                    if (tv != null) {
+                        tvList.add(tv);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return tvList;
+    }
+
+    public List<MovieImage> getImagesByIdActor(int idActor) {
+        OkHttpClient client = new OkHttpClient();
+        List<MovieImage> images = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/person/" + idActor + "/images?api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("profiles");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    MovieImage image = MovieImage.parseMovieImage(movieObject.toString());
+                    if (image != null) {
+                        images.add(image);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return images;
+    }
+
+    public List<Actor> getSearchResultsPerson(String query) {
+        OkHttpClient client = new OkHttpClient();
+        List<Actor> actors = new ArrayList<>();
+        String url = "https://api.themoviedb.org/3/search/person?query=" + query + "&language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject actorObject = resultsArray.getJSONObject(i);
+                    Actor actor = Actor.parsePopularActor(actorObject.toString());
+                    if (actor != null)
+                        actors.add(actor);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return actors;
+    }
 
 }

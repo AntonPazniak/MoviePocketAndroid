@@ -1,37 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment" >
+    tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/item_poster_and_back" />
-
-        <TextView
-            android:id="@+id/textViewCinema"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/now_at_the_cinema"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:visibility="invisible" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_poster_and_back" />
+
+            <TextView
+                android:id="@+id/textViewOverview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/halloween"
+                android:textColor="@color/logoYellow"
+                android:textSize="40dp"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="170dp">
+
+                <ImageView
+                    android:id="@+id/imagePumpkin"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/pumpkin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textViewCinema"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/now_at_the_cinema"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:visibility="invisible" />
 
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" />
 
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

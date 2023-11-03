@@ -12,7 +12,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
-import com.example.moviepocketandroid.api.TMDB.ActorTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.models.MovieImage;
@@ -108,7 +107,7 @@ public class PersonFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ActorTMDBApi tmdbApi = new ActorTMDBApi();
+                TMDBApi tmdbApi = new TMDBApi();
                 Actor actorTMDBS = tmdbApi.getPersonById(idPerson);
                 List<Movie> movies = tmdbApi.getMoviesByIdActor(idPerson);
                 List<Movie> tvSeries = tmdbApi.getTVByIdActor(idPerson);

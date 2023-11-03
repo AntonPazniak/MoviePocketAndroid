@@ -1,7 +1,5 @@
 package com.example.moviepocketandroid.ui.movie;
 
-import static com.example.moviepocketandroid.animation.Animation.createAnimation;
-
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -12,15 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationSet;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,10 +31,14 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
+import com.example.moviepocketandroid.adapter.ReviewAdapter;
+import com.example.moviepocketandroid.api.MP.MPApi;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.MovieImage;
+import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.util.ButtonUntil;
 
 import java.text.DecimalFormat;
@@ -57,9 +56,10 @@ public class MovieFragment extends Fragment {
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
     private ImagesAdapter movieImagesAdapter;
+    private ReviewAdapter reviewAdapter;
     private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
     private boolean isExpanded = false;
-    private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView;
+    private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
 
     private WebView webView;
 
@@ -89,9 +89,12 @@ public class MovieFragment extends Fragment {
 
         textOverview = view.findViewById(R.id.textOverview);
         textRating = view.findViewById(R.id.textRating);
+
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
+        reviewRecyclerView = view.findViewById(R.id.recyclerViewReview);
+
         textVoteCount = view.findViewById(R.id.textVoteCount);
         textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
@@ -137,24 +140,33 @@ public class MovieFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MovieTMDBApi tmdbApi = new MovieTMDBApi();
+                TMDBApi tmdbApi = new TMDBApi();
                 Movie movieInfoTMDB = tmdbApi.getInfoMovie(idMovie);
                 List<Actor> actors = tmdbApi.getActorsByIdMovie(idMovie);
                 List<Movie> movies = tmdbApi.getSimilarMoviesById(idMovie);
                 List<MovieImage> images = tmdbApi.getImagesByIdMovie(idMovie);
                 String movieTrailerUrl = tmdbApi.getMovieTrailerUrl(idMovie);
+                Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
+
+
+                MPApi mpApi = new MPApi();
+                List<Review> reviews = mpApi.getReviewAllByIdMovie(idMovie);
+
                 if (movieInfoTMDB != null) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (isAuthentication) {
+                                setButtons(movieInfoTMDB);
+                            }
                             setPosterAndTitle(movieInfoTMDB);
-                            setButtons(movieInfoTMDB);
                             setMovieInfo(movieInfoTMDB);
                             setMovieRating(movieInfoTMDB);
                             setMovieTrailer(movieTrailerUrl);
                             setMovieImages(images);
                             setMovieActors(actors);
                             setMovieSimilar(movies);
+                            setMovieReview(reviews);
                         }
                     });
                 }
@@ -176,13 +188,13 @@ public class MovieFragment extends Fragment {
             imageBackPack.setVisibility(View.VISIBLE);
             imageEye.setVisibility(View.GONE);
             imageLike.setVisibility(View.GONE);
-            buttonUntil = new ButtonUntil(imageBackPack, imageBinoculars);
+            buttonUntil = new ButtonUntil(imageBackPack, imageBinoculars, movie.getId());
         } else {
             imageEye.setVisibility(View.VISIBLE);
             imageLike.setVisibility(View.VISIBLE);
             imageBackPack.setVisibility(View.VISIBLE);
             imageBinoculars.setVisibility(View.GONE);
-            buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack);
+            buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack, movie.getId());
         }
     }
 
@@ -319,4 +331,13 @@ public class MovieFragment extends Fragment {
             viewSimilar.setVisibility(View.GONE);
     }
 
+    private void setMovieReview(List<Review> reviews) {
+        if (reviews.size() > 0) {
+            reviewAdapter = new ReviewAdapter(reviews);
+            reviewRecyclerView.setAdapter(reviewAdapter);
+            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            reviewRecyclerView.setLayoutManager(layoutManager2);
+            System.out.println(reviews.size());
+        }
+    }
 }

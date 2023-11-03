@@ -72,7 +72,7 @@ public class MovieTokAdapter extends RecyclerView.Adapter<MovieTokAdapter.MovieV
             imageEye = itemView.findViewById(R.id.imageEye);
             imageLike = itemView.findViewById(R.id.imageLike);
             imageBackPack = itemView.findViewById(R.id.imageBackPack);
-            buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack);
+            //buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack,);
             textViewOverview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

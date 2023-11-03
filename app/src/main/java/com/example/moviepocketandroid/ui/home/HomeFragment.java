@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
@@ -19,11 +18,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.adapter.ActorsAdapter;
-import com.example.moviepocketandroid.adapter.MovieTokAdapter;
 import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
 import java.util.List;
@@ -66,7 +63,7 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MovieTMDBApi tmdbApi = new MovieTMDBApi();
+                TMDBApi tmdbApi = new TMDBApi();
                 movieInfoTMDBList = tmdbApi.getPopularMovies();
                 List<Movie> nowPlayMovie = tmdbApi.getNowPlayingMovie();
                 if (!movieInfoTMDBList.isEmpty()) {

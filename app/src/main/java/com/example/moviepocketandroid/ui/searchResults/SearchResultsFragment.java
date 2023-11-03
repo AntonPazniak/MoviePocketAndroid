@@ -20,25 +20,20 @@ import android.widget.TextView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorSearchAdapter;
 import com.example.moviepocketandroid.adapter.SearchAdapter;
-import com.example.moviepocketandroid.api.TMDB.ActorTMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.TMDB.MovieTMDBApi;
+import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 
 import java.util.List;
 
 public class SearchResultsFragment extends Fragment {
-
 
     private SearchAdapter searchAdapter;
     private ActorSearchAdapter actorSearchAdapter;
     private SearchAdapter tvSeriesSearchAdapter;
     private RecyclerView searchRecyclerView;
     private TextView textQuery;
-    private TextView textMovies;
-    private TextView textTVs;
-    private TextView textPersons;
-
+    private TextView textMovies, textTVs, textPersons;
 
     private List<Movie> movies;
     private List<Actor> actors;
@@ -83,12 +78,11 @@ public class SearchResultsFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MovieTMDBApi movieTMDBApi = new MovieTMDBApi();
-                ActorTMDBApi actorTMDBApi = new ActorTMDBApi();
+                TMDBApi movieTMDBApi = new TMDBApi();
                 movies = movieTMDBApi.getSearchResultsMovie(query);
                 tvSeries = movieTMDBApi.getSearchResultsTV(query);
                 System.out.println(tvSeries.size());
-                actors = actorTMDBApi.getSearchResults(query);
+                actors = movieTMDBApi.getSearchResultsPerson(query);
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
