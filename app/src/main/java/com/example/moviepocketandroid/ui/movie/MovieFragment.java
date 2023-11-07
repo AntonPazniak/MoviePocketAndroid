@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,8 +33,8 @@ import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
-import com.example.moviepocketandroid.api.MP.MPApi;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
+import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
@@ -60,8 +61,8 @@ public class MovieFragment extends Fragment {
     private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
     private boolean isExpanded = false;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
-
     private WebView webView;
+    private Button button2, button;
 
 
     public static MovieFragment newInstance() {
@@ -110,6 +111,9 @@ public class MovieFragment extends Fragment {
         viewSimilar = view.findViewById(R.id.viewSimilar);
         viewOverview = view.findViewById(R.id.viewOverview);
 
+        button2 = view.findViewById(R.id.button2);
+        button = view.findViewById(R.id.button);
+
         webView = view.findViewById(R.id.webView);
         webView.setBackgroundColor(0);
 
@@ -149,7 +153,7 @@ public class MovieFragment extends Fragment {
                 Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
 
 
-                MPApi mpApi = new MPApi();
+                MPReviewApi mpApi = new MPReviewApi();
                 List<Review> reviews = mpApi.getReviewAllByIdMovie(idMovie);
 
                 if (movieInfoTMDB != null) {
@@ -158,6 +162,26 @@ public class MovieFragment extends Fragment {
                         public void run() {
                             if (isAuthentication) {
                                 setButtons(movieInfoTMDB);
+                                button2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idMovie", movieInfoTMDB.getId());
+
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                                    }
+                                });
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idMovie", movieInfoTMDB.getId());
+
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
+                                    }
+                                });
                             }
                             setPosterAndTitle(movieInfoTMDB);
                             setMovieInfo(movieInfoTMDB);
@@ -337,7 +361,16 @@ public class MovieFragment extends Fragment {
             reviewRecyclerView.setAdapter(reviewAdapter);
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
             reviewRecyclerView.setLayoutManager(layoutManager2);
-            System.out.println(reviews.size());
+            reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
+                @Override
+                public void onReviewClick(int reviewId) {
+                    Bundle args = new Bundle();
+                    args.putInt("idReview", reviewId);
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_detailReviewFragment, args);
+                }
+            });
         }
     }
 }

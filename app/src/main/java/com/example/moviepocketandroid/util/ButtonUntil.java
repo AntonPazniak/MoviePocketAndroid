@@ -7,12 +7,11 @@ import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.MP.MPApi;
 import com.example.moviepocketandroid.api.MP.MPAssessmentAPI;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
 
 public class ButtonUntil {
-    AnimationSet animation;
+    private AnimationSet animation;
     private boolean isLikeButtonPressed = false;
     private boolean isEyeButtonPressed = false;
     private boolean isBackPackButtonPressed = false;

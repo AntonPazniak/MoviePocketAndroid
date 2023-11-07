@@ -24,4 +24,5 @@
     <string name="halloween">Halloween</string>
     <string name="login">Login</string>
     <string name="forgot_password">forgot password</string>
+    <string name="publish">Publish</string>
 </resources>

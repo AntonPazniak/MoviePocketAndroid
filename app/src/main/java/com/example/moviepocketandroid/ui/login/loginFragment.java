@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
@@ -62,22 +63,22 @@ public class loginFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Boolean b = mpAuthenticationAPI.postLogin(username, password);
-                        if (b) {
+                        Boolean authentication = mpAuthenticationAPI.postLogin(username, password);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigateUp();
+                                    if (authentication) {
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigateUp();
+                                    } else {
+                                        Toast.makeText(requireContext(), "Wrong password or username!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             });
-                        }
                     }
                 }).start();
             }
         });
-
-
     }
 
 }

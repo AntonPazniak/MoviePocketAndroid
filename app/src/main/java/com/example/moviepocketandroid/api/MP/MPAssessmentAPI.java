@@ -23,7 +23,6 @@ public class MPAssessmentAPI {
 
     String baseUrl = "http://moviepocket.projektstudencki.pl";
     OkHttpClient client = new OkHttpClient();
-    MPAuthenticationAPI mpAuthenticationAPI = new MPAuthenticationAPI();
 
     /**
      * Requests to the server get , post, getAll FavoriteMovie

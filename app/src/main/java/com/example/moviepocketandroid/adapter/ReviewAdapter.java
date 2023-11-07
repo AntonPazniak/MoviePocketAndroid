@@ -11,16 +11,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.review.Review;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private List<Review> reviews;
+    private OnReviewClickListener onReviewClickListener;
+
+    public void setOnReviewClickListener(OnReviewClickListener listener) {
+        this.onReviewClickListener = listener;
+    }
 
     public ReviewAdapter(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        Review review = reviews.get(position);
+        holder.bind(review);
+
+        // Set click listener for the review item
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onReviewClickListener != null) {
+                    int reviewId = Math.toIntExact(review.getId());
+                    onReviewClickListener.onReviewClick(reviewId);
+                }
+            }
+        });
     }
 
     @NonNull
@@ -30,10 +50,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         return new ReviewViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        Review review = reviews.get(position);
-        holder.bind(review);
+    public interface OnReviewClickListener {
+        void onReviewClick(int reviewId);
     }
 
     @Override
@@ -46,6 +64,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         private TextView textContent;
         private TextView textUsername;
         private TextView textDate;
+        private int idReview;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +79,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             textContent.setText(review.getContent());
             textUsername.setText(review.getUsername());
             textDate.setText(review.getDataCreated());
+            idReview = Math.toIntExact(review.getId());
         }
     }
 }

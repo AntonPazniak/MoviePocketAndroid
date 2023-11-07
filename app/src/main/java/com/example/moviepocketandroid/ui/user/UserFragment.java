@@ -33,6 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserFragment extends Fragment {
+    private UserViewModel viewModel;
+    private List<Movie> toWatch;
+    private List<Movie> favorites;
+    private List<Movie> watched;
+
     private View itemRecyclerViewMovie0, itemRecyclerViewMovie1, itemRecyclerViewMovie2;
     private View textView0, textView1, textView2;
     private TextView favoriteTextView, toWatchTextView, watchedTextView;
@@ -58,7 +63,7 @@ public class UserFragment extends Fragment {
             public void run() {
                 Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
 
-                if (!isAuthentication) {
+                if (!isAuthentication && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -118,18 +123,20 @@ public class UserFragment extends Fragment {
                         }
                     }
 
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void run() {
-                            toWatchTextView.setText("To watch movie");
-                            setMovies(movieToWatchRecyclerView, toWatch);
-                            favoriteTextView.setText("Favorite movie");
-                            setMovies(movieFavoriteRecyclerView, favorites);
-                            watchedTextView.setText("Watched movie");
-                            setMovies(movieWatchedRecyclerView, watched);
-                        }
-                    });
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void run() {
+                                toWatchTextView.setText("To watch movie");
+                                setMovies(movieToWatchRecyclerView, toWatch);
+                                favoriteTextView.setText("Favorite movie");
+                                setMovies(movieFavoriteRecyclerView, favorites);
+                                watchedTextView.setText("Watched movie");
+                                setMovies(movieWatchedRecyclerView, watched);
+                            }
+                        });
+                    }
                 }
             }
         }).start();

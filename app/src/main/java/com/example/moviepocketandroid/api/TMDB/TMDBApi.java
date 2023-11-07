@@ -137,6 +137,7 @@ public class TMDBApi {
 
         return actors;
     }
+
     private List<Movie> getSimilarFilmsById(int idMovie) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();

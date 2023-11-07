@@ -68,6 +68,15 @@
         <action
             android:id="@+id/action_movieFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_allReviewFragment"
+            app:destination="@id/allReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -110,4 +119,34 @@
         android:name="com.example.moviepocketandroid.ui.login.loginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/newReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment"
+        android:label="fragment_new_review"
+        tools:layout="@layout/fragment_new_review">
+        <action
+            android:id="@+id/action_newReviewFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.detail.DetailReviewFragment"
+        android:label="fragment_detail_review"
+        tools:layout="@layout/fragment_detail_review">
+        <action
+            android:id="@+id/action_detailReviewFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.all.AllReviewFragment"
+        android:label="fragment_all_review"
+        tools:layout="@layout/fragment_all_review">
+        <action
+            android:id="@+id/action_allReviewFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_allReviewFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+    </fragment>
 </navigation>
