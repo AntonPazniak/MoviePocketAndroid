@@ -74,12 +74,25 @@
 
         </ScrollView>
 
-        <ImageView
-            android:id="@+id/imageViewTrash"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/trash_pink"
-            android:visibility="invisible" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewTrash"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/trash_pink"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/imageViewEdit"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/edit_yellow"
+                android:visibility="invisible" />
+        </LinearLayout>
 
     </LinearLayout>
 

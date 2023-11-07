@@ -32,7 +32,7 @@ public class DetailReviewFragment extends Fragment {
     private TextView textContent;
     private TextView textUsername;
     private TextView textDate;
-    private ImageView trashImageView;
+    private ImageView trashImageView, editImageView;
     private int idReview;
     private MPReviewApi mpReviewApi = new MPReviewApi();
 
@@ -61,6 +61,7 @@ public class DetailReviewFragment extends Fragment {
         textTitle = view.findViewById(R.id.textViewTitle);
         textContent = view.findViewById(R.id.textViewContent);
         trashImageView = view.findViewById(R.id.imageViewTrash);
+        editImageView = view.findViewById(R.id.imageViewEdit);
 
         trashImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +79,26 @@ public class DetailReviewFragment extends Fragment {
                                 }
                             });
                         }
+                    }
+                }).start();
+            }
+        });
+        editImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editImageView.startAnimation(Animation.createAnimation());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Bundle args = new Bundle();
+                                args.putInt("idReview", idReview);
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_detailReviewFragment_to_newReviewFragment, args);
+                            }
+                        });
                     }
                 }).start();
             }
@@ -101,8 +122,10 @@ public class DetailReviewFragment extends Fragment {
                             textContent.setText(review.getContent());
                             if (authorship) {
                                 trashImageView.setVisibility(View.VISIBLE);
+                                editImageView.setVisibility(View.VISIBLE);
                             } else {
                                 trashImageView.setVisibility(View.GONE);
+                                editImageView.setVisibility(View.GONE);
                             }
                         }
                     });

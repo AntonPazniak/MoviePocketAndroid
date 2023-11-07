@@ -19,6 +19,7 @@ import android.widget.MultiAutoCompleteTextView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
+import com.example.moviepocketandroid.api.models.review.Review;
 
 public class NewReviewFragment extends Fragment {
 
@@ -51,34 +52,75 @@ public class NewReviewFragment extends Fragment {
         contentEditText = view.findViewById(R.id.multiTextContent);
         publishButton = view.findViewById(R.id.buttonPublish);
 
-        publishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title = String.valueOf(titleEditText.getText());
-                String content = String.valueOf(contentEditText.getText());
+        Bundle args = getArguments();
+        if (args != null) {
+            int idMovie = args.getInt("idMovie", -1);
+            int idReview = args.getInt("idReview", -1);
+            if (idMovie != -1) {
+                publishButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String title = String.valueOf(titleEditText.getText());
+                        String content = String.valueOf(contentEditText.getText());
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MPReviewApi mpReviewApi = new MPReviewApi();
+                                mpReviewApi.postReviewMovie(idMovie, title, content);
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigateUp();
+                                    }
+                                });
+                            }
+                        }).start();
 
+                    }
+                });
+            } else if (idReview != -1) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Bundle args = getArguments();
-                        if (args != null) {
-                            int idMovie = args.getInt("idMovie");
-                            MPReviewApi mpReviewApi = new MPReviewApi();
-                            mpReviewApi.postReviewMovie(idMovie, title, content);
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigateUp();
-                                }
-                            });
-                        }
+                        MPReviewApi mpReviewApi = new MPReviewApi();
+                        Review review = mpReviewApi.getReviewById(idReview);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                titleEditText.setText(review.getTitle());
+                                contentEditText.setText(review.getContent());
+                            }
+                        });
                     }
                 }).start();
 
-            }
-        });
+                publishButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String title = String.valueOf(titleEditText.getText());
+                        String content = String.valueOf(contentEditText.getText());
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MPReviewApi mpReviewApi = new MPReviewApi();
+                                mpReviewApi.editReviewMovie(idReview, title, content);
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigateUp();
+                                    }
+                                });
+                            }
+                        }).start();
 
+                    }
+                });
+
+            }
+
+        }
     }
 
 

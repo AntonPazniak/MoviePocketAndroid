@@ -152,4 +152,30 @@ public class MPReviewApi {
         return false;
     }
 
+    public Boolean editReviewMovie(int idReview, String title, String content) {
+        String url = baseUrl + "/movies/review/up";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idReview", String.valueOf(idReview))
+                .add("title", title)
+                .add("content", content)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
