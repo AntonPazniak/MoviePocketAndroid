@@ -235,7 +235,6 @@ public class MPReviewApi {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
                 .build();
 
         try {

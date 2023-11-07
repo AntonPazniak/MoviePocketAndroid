@@ -39,7 +39,7 @@ public class DetailReviewFragment extends Fragment {
     private int idReview;
     private MPReviewApi mpReviewApi = new MPReviewApi();
     private Boolean isLikeOrDisButton;
-    private Boolean authorship;
+    private Boolean authorship = false;
     private TextView textViewCountLikes, textViewCountDislikes;
 
     public static DetailReviewFragment newInstance() {
@@ -97,11 +97,15 @@ public class DetailReviewFragment extends Fragment {
             public void run() {
                 Bundle args = getArguments();
                 if (args != null) {
+
+                    Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
                     idReview = args.getInt("idReview");
                     Review review = mpReviewApi.getReviewById(idReview);
-                    authorship = mpReviewApi.getAuthorship(review.getId());
-                    isLikeOrDisButton = mpReviewApi.getLike(idReview);
-                    Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
+                    if (isAuthentication) {
+                        authorship = mpReviewApi.getAuthorship(review.getId());
+                        isLikeOrDisButton = mpReviewApi.getLike(idReview);
+                    }
+
                     int[] count = mpReviewApi.getCountLikes(idReview);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
