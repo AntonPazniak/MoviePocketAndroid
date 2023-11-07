@@ -15,12 +15,14 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.animation.Animation;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.models.review.Review;
 
@@ -32,9 +34,13 @@ public class DetailReviewFragment extends Fragment {
     private TextView textContent;
     private TextView textUsername;
     private TextView textDate;
-    private ImageView trashImageView, editImageView;
+    private ImageButton imageButton0, imageButton1;
+
     private int idReview;
     private MPReviewApi mpReviewApi = new MPReviewApi();
+    private Boolean isLikeOrDisButton;
+    private Boolean authorship;
+    private TextView textViewCountLikes, textViewCountDislikes;
 
     public static DetailReviewFragment newInstance() {
         return new DetailReviewFragment();
@@ -60,47 +66,29 @@ public class DetailReviewFragment extends Fragment {
         textDate = view.findViewById(R.id.textViewDate);
         textTitle = view.findViewById(R.id.textViewTitle);
         textContent = view.findViewById(R.id.textViewContent);
-        trashImageView = view.findViewById(R.id.imageViewTrash);
-        editImageView = view.findViewById(R.id.imageViewEdit);
+        imageButton0 = view.findViewById(R.id.imageButton0);
+        imageButton1 = view.findViewById(R.id.imageButton1);
 
-        trashImageView.setOnClickListener(new View.OnClickListener() {
+        textViewCountLikes = view.findViewById(R.id.textViewCountLikes);
+        textViewCountDislikes = view.findViewById(R.id.textViewCountDislikes);
+
+        imageButton0.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                trashImageView.startAnimation(Animation.createAnimation());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mpReviewApi.delReviewMovie(idReview)) {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigateUp();
-                                }
-                            });
-                        }
-                    }
-                }).start();
+            public void onClick(View view) {
+                if (authorship)
+                    onDelButtonClick();
+                else
+                    onLikeOrDisButtonClick(true);
             }
         });
-        editImageView.setOnClickListener(new View.OnClickListener() {
+
+        imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                editImageView.startAnimation(Animation.createAnimation());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Bundle args = new Bundle();
-                                args.putInt("idReview", idReview);
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigate(R.id.action_detailReviewFragment_to_newReviewFragment, args);
-                            }
-                        });
-                    }
-                }).start();
+            public void onClick(View view) {
+                if (authorship)
+                    onEditButtonClick();
+                else
+                    onLikeOrDisButtonClick(false);
             }
         });
 
@@ -111,7 +99,10 @@ public class DetailReviewFragment extends Fragment {
                 if (args != null) {
                     idReview = args.getInt("idReview");
                     Review review = mpReviewApi.getReviewById(idReview);
-                    Boolean authorship = mpReviewApi.getAuthorship(review.getId());
+                    authorship = mpReviewApi.getAuthorship(review.getId());
+                    isLikeOrDisButton = mpReviewApi.getLike(idReview);
+                    Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
+                    int[] count = mpReviewApi.getCountLikes(idReview);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -120,16 +111,90 @@ public class DetailReviewFragment extends Fragment {
                             textDate.setText(review.getDataCreated());
                             textTitle.setText(review.getTitle());
                             textContent.setText(review.getContent());
+                            textViewCountLikes.setText(String.valueOf(count[0]));
+                            textViewCountDislikes.setText(String.valueOf(count[1]));
+
                             if (authorship) {
-                                trashImageView.setVisibility(View.VISIBLE);
-                                editImageView.setVisibility(View.VISIBLE);
-                            } else {
-                                trashImageView.setVisibility(View.GONE);
-                                editImageView.setVisibility(View.GONE);
+                                imageButton0.setImageResource(R.drawable.trash_pink);
+                                imageButton1.setImageResource(R.drawable.edit_yellow);
+                                imageButton0.setVisibility(View.VISIBLE);
+                                imageButton1.setVisibility(View.VISIBLE);
+                            } else if (isLikeOrDisButton != null) {
+                                if (isLikeOrDisButton) {
+                                    imageButton0.setImageResource(R.drawable.finger_like_pink);
+                                } else {
+                                    imageButton1.setImageResource(R.drawable.finger_dislike_pink);
+                                }
+                            } else if (!isAuthentication) {
+                                imageButton0.setVisibility(View.GONE);
+                                imageButton1.setVisibility(View.GONE);
                             }
                         }
                     });
                 }
+            }
+        }).start();
+    }
+
+    private void onEditButtonClick() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bundle args = new Bundle();
+                        args.putInt("idReview", idReview);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_detailReviewFragment_to_newReviewFragment, args);
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void onDelButtonClick() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (mpReviewApi.delReviewMovie(idReview)) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigateUp();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    private void onLikeOrDisButtonClick(Boolean likeOrDis) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mpReviewApi.setLike(idReview, likeOrDis);
+                isLikeOrDisButton = mpReviewApi.getLike(idReview);
+                int[] count = mpReviewApi.getCountLikes(idReview);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textViewCountLikes.setText(String.valueOf(count[0]));
+                        textViewCountDislikes.setText(String.valueOf(count[1]));
+                        if (isLikeOrDisButton == null) {
+                            imageButton0.setImageResource(R.drawable.finger_like_blue);
+                            imageButton1.setImageResource(R.drawable.finger_dislike_blue);
+                        } else if (isLikeOrDisButton) {
+                            imageButton0.setImageResource(R.drawable.finger_like_pink);
+                            imageButton1.setImageResource(R.drawable.finger_dislike_blue);
+                        } else {
+                            imageButton0.setImageResource(R.drawable.finger_like_blue);
+                            imageButton1.setImageResource(R.drawable.finger_dislike_pink);
+                        }
+
+                    }
+                });
             }
         }).start();
     }

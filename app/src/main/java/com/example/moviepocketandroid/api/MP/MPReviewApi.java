@@ -22,6 +22,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.google.gson.Gson;
+
 public class MPReviewApi {
 
     String baseUrl = "http://moviepocket.projektstudencki.pl";
@@ -177,5 +179,78 @@ public class MPReviewApi {
         }
         return false;
     }
+
+    public Boolean getLike(int idReview) {
+        String url = baseUrl + "/movies/review/getLike?idReview=" + idReview;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return !response.body().string().equals("false");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Boolean setLike(int idReview, Boolean likeOrDis) {
+        String url = baseUrl + "/movies/review/setLike";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idReview", String.valueOf(idReview))
+                .add("like", String.valueOf(likeOrDis))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int[] getCountLikes(int idReview) {
+        String url = baseUrl + "/movies/review/getAllLike?idReview=" + idReview;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, int[].class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new int[]{0, 0};
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.ui.review.newrev;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
@@ -27,6 +29,7 @@ public class NewReviewFragment extends Fragment {
     private EditText titleEditText;
     private MultiAutoCompleteTextView contentEditText;
     private Button publishButton;
+    private TextView textViewHead, textViewTitle, textViewContent;
 
     public static NewReviewFragment newInstance() {
         return new NewReviewFragment();
@@ -44,6 +47,7 @@ public class NewReviewFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -51,12 +55,21 @@ public class NewReviewFragment extends Fragment {
         titleEditText = view.findViewById(R.id.editTextTitle);
         contentEditText = view.findViewById(R.id.multiTextContent);
         publishButton = view.findViewById(R.id.buttonPublish);
+        textViewHead = view.findViewById(R.id.textViewHead);
+
+        textViewTitle = view.findViewById(R.id.textView0);
+        textViewContent = view.findViewById(R.id.textView1);
+
+        textViewTitle.setText("Title");
+        textViewContent.setText("Content");
 
         Bundle args = getArguments();
         if (args != null) {
             int idMovie = args.getInt("idMovie", -1);
             int idReview = args.getInt("idReview", -1);
             if (idMovie != -1) {
+
+                textViewHead.setText("Create your review");
                 publishButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -86,8 +99,10 @@ public class NewReviewFragment extends Fragment {
                         MPReviewApi mpReviewApi = new MPReviewApi();
                         Review review = mpReviewApi.getReviewById(idReview);
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @SuppressLint("SetTextI18n")
                             @Override
                             public void run() {
+                                textViewHead.setText("Edit your review");
                                 titleEditText.setText(review.getTitle());
                                 contentEditText.setText(review.getContent());
                             }

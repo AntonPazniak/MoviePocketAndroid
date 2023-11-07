@@ -107,17 +107,19 @@ public class SearchFragment extends Fragment {
                 List<Movie> movies = tmdbApi.getPopularMovies();
                 List<Actor> actors = tmdbApi.getPopularActors();
                 List<Movie> tvSeries = tmdbApi.getPopularTVs();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void run() {
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
 
-                        setPopularMovie(movies);
-                        setPopularTVs(tvSeries);
-                        setActors(actors);
+                            setPopularMovie(movies);
+                            setPopularTVs(tvSeries);
+                            setActors(actors);
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         }).start();
     }

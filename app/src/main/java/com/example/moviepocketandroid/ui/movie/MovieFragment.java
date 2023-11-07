@@ -156,7 +156,7 @@ public class MovieFragment extends Fragment {
                 MPReviewApi mpApi = new MPReviewApi();
                 List<Review> reviews = mpApi.getReviewAllByIdMovie(idMovie);
 
-                if (movieInfoTMDB != null) {
+                if (movieInfoTMDB != null && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
