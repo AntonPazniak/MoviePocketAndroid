@@ -1,10 +1,7 @@
 package com.example.moviepocketandroid.api.MP;
 
-import com.example.moviepocketandroid.api.models.Movie;
 import com.google.common.net.MediaType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -19,7 +16,7 @@ import okhttp3.Response;
  * favorite films about the films that the user wants to watch and which he has watched.
  */
 
-public class MPAssessmentAPI {
+public class MPAssessmentApi {
 
     String baseUrl = "http://moviepocket.projektstudencki.pl";
     OkHttpClient client = new OkHttpClient();
@@ -40,7 +37,7 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {
@@ -61,7 +58,7 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {
@@ -82,19 +79,16 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
         try {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String str = response.body().string();
-                if (str.equals("[]"))
-                    return new int[]{};
-                else {
-                    return parsStringToArr(str);
-                }
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, int[].class);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,12 +98,12 @@ public class MPAssessmentAPI {
 
 
     public Boolean getToWatchMovie(int idMovie) {
-        String url = baseUrl + "/movies/towatch/get?id=" + idMovie;
+        String url = baseUrl + "/movies/towatch/get?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {
@@ -127,16 +121,15 @@ public class MPAssessmentAPI {
 
     public String postToWatchMovie(int idMovie) {
         String url = baseUrl + "/movies/towatch/set";
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 
         RequestBody requestBody = new FormBody.Builder()
-                .add("id", String.valueOf(idMovie))
+                .add("idMovie", String.valueOf(idMovie))
                 .build();
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {
@@ -157,19 +150,16 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
         try {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String str = response.body().string();
-                if (str.equals("[]"))
-                    return new int[]{};
-                else {
-                    return parsStringToArr(str);
-                }
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, int[].class);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,7 +173,7 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {
@@ -210,7 +200,7 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {
@@ -231,36 +221,21 @@ public class MPAssessmentAPI {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Cookie", MPAuthenticationAPI.getCookies())
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
         try {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String str = response.body().string();
-                if (str.equals("[]"))
-                    return new int[]{};
-                else {
-                    return parsStringToArr(str);
-                }
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, int[].class);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return new int[]{};
     }
-
-
-    public int[] parsStringToArr(String str) {
-        str = str.replaceAll("\\[|\\]|\\s", "");
-        String[] numberStrings = str.split(",");
-        int[] numbers = new int[numberStrings.length];
-        for (int i = 0; i < numberStrings.length; i++) {
-            numbers[i] = Integer.parseInt(numberStrings[i].trim());
-        }
-        return numbers;
-    }
-
 
 }

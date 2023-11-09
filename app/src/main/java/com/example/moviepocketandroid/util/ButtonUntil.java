@@ -7,8 +7,7 @@ import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.MP.MPAssessmentAPI;
-import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
+import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
 
 public class ButtonUntil {
     private AnimationSet animation;
@@ -17,7 +16,7 @@ public class ButtonUntil {
     private boolean isBackPackButtonPressed = false;
     private boolean isBinocularsButtonPressed = false;
     private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
-    private MPAssessmentAPI mpAssessmentAPI;
+    private MPAssessmentApi mpAssessmentAPI;
     private int idMovie;
 
     public ButtonUntil(ImageView imageEye, ImageView imageLike, ImageView imageBackPack, int idMovie) {
@@ -27,7 +26,7 @@ public class ButtonUntil {
         this.animation = createAnimation();
         this.idMovie = idMovie;
 
-        mpAssessmentAPI = new MPAssessmentAPI();
+        mpAssessmentAPI = new MPAssessmentApi();
 
         new Thread(new Runnable() {
             @Override

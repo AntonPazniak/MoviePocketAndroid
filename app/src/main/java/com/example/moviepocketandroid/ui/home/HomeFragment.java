@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +20,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.adapter.RatingAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
+import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
 import java.util.List;
@@ -37,6 +39,9 @@ public class HomeFragment extends Fragment {
     private TextView textTitlePopularMovie, textViewCinema;
     private ImageView imageBackMovie;
     private ImageView imagePosterMovie;
+
+    private RecyclerView recyclerView;
+    private RatingAdapter ratingAdapter;
 
 
     @Override
@@ -56,6 +61,8 @@ public class HomeFragment extends Fragment {
         textViewCinema = view.findViewById(R.id.textViewCinema);
 
         viewPager = view.findViewById(R.id.viewPager);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
 
         Random random = new Random();
         popularMovie = random.nextInt(10);
@@ -95,6 +102,20 @@ public class HomeFragment extends Fragment {
                                     navController.navigate(R.id.action_navigation_home_to_movieFragment, args);
                                 }
                             });
+
+//                            ratingAdapter = new RatingAdapter();
+//                            recyclerView.setAdapter(ratingAdapter);
+//                            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+//
+//                            recyclerView.smoothScrollToPosition(0);
+//
+//                            recyclerView.setLayoutManager(layoutManager);
+//
+//                            SnapHelper snapHelper = new LinearSnapHelper();
+//                            snapHelper.attachToRecyclerView(recyclerView);
+//
+//                            recyclerView.smoothScrollToPosition(1);
+
 
                         }
                     });

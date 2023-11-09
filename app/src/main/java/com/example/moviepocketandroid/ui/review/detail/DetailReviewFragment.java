@@ -1,28 +1,23 @@
 package com.example.moviepocketandroid.ui.review.detail;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.animation.Animation;
-import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.models.review.Review;
 
@@ -98,7 +93,7 @@ public class DetailReviewFragment extends Fragment {
                 Bundle args = getArguments();
                 if (args != null) {
 
-                    Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
+                    Boolean isAuthentication = MPAuthenticationApi.checkAuth();
                     idReview = args.getInt("idReview");
                     Review review = mpReviewApi.getReviewById(idReview);
                     if (isAuthentication) {

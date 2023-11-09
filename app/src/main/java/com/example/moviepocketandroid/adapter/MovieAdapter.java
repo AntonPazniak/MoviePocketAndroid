@@ -1,6 +1,7 @@
 package com.example.moviepocketandroid.adapter;
 
-import android.graphics.drawable.GradientDrawable;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -70,6 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private TextView textTitleMovie;
         private TextView textGenre;
         private TextView textRatingPoster;
+        private Context context;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,8 +80,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             textTitleMovie = itemView.findViewById(R.id.textNameActor);
             textGenre = itemView.findViewById(R.id.textGenre);
             textRatingPoster = itemView.findViewById(R.id.textRatingPoster);
+            context = itemView.getContext();
         }
 
+        @SuppressLint("ResourceAsColor")
         public void bind(Movie movie) {
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
@@ -94,17 +99,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             int backgroundColor;
             if (rating >= 8) {
-                backgroundColor = android.graphics.Color.parseColor("#F1B36E");
-            } else if (rating >= 5) {
-                backgroundColor = android.graphics.Color.parseColor("#75FBE2");
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.logoYellow));
+            } else if (rating > 4) {
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.logoBlue));
             } else {
-                backgroundColor = android.graphics.Color.parseColor("#E4416A");
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.logoPink));
             }
 
-            GradientDrawable backgroundDrawable = new GradientDrawable();
-            backgroundDrawable.setColor(backgroundColor);
-
-            textRatingPoster.setBackground(backgroundDrawable);
             textRatingPoster.setText(decimalFormat.format(rating));
 
             itemView.setOnClickListener(new View.OnClickListener() {

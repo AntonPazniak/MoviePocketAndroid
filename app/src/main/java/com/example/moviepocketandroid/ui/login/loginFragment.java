@@ -1,18 +1,8 @@
 package com.example.moviepocketandroid.ui.login;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 
 public class loginFragment extends Fragment {
 
@@ -53,7 +49,7 @@ public class loginFragment extends Fragment {
 
         buttonLogin = view.findViewById(R.id.buttonLogin);
 
-        MPAuthenticationAPI mpAuthenticationAPI = new MPAuthenticationAPI();
+        MPAuthenticationApi mpAuthenticationAPI = new MPAuthenticationApi();
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override

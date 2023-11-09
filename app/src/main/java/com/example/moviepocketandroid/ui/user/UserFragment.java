@@ -2,6 +2,10 @@ package com.example.moviepocketandroid.ui.user;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,22 +14,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
-import com.example.moviepocketandroid.adapter.MovieTokAdapter;
-import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
-import com.example.moviepocketandroid.api.MP.MPAssessmentAPI;
-import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
+import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.Movie;
 
@@ -61,7 +54,7 @@ public class UserFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Boolean isAuthentication = MPAuthenticationAPI.checkAuth();
+                Boolean isAuthentication = MPAuthenticationApi.checkAuth();
 
                 if (!isAuthentication && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
@@ -89,7 +82,7 @@ public class UserFragment extends Fragment {
                     favoriteTextView = textView1.findViewById(R.id.textView);
                     watchedTextView = textView2.findViewById(R.id.textView);
 
-                    MPAssessmentAPI mpAssessmentAPI = new MPAssessmentAPI();
+                    MPAssessmentApi mpAssessmentAPI = new MPAssessmentApi();
                     TMDBApi tmdbApi = new TMDBApi();
 
                     List<Movie> favorites = new ArrayList<>();
