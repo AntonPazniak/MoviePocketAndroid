@@ -1,17 +1,7 @@
 package com.example.moviepocketandroid.ui.person;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +9,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
+import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
@@ -112,7 +111,7 @@ public class PersonFragment extends Fragment {
                 List<Movie> movies = tmdbApi.getMoviesByIdActor(idPerson);
                 List<Movie> tvSeries = tmdbApi.getTVByIdActor(idPerson);
                 List<MovieImage> images = tmdbApi.getImagesByIdActor(idPerson);
-                if (actorTMDBS != null) {
+                if (actorTMDBS != null && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

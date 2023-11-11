@@ -2,17 +2,24 @@ package com.example.moviepocketandroid.api.MP;
 
 import android.webkit.CookieManager;
 
-import okhttp3.*;
-
 import java.io.IOException;
 
-public class MPAuthenticationAPI {
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class MPAuthenticationApi {
 
     private static String baseUrl = "http://moviepocket.projektstudencki.pl";
 
     public static String getCookies() {
         CookieManager cookieManager = CookieManager.getInstance();
-        return cookieManager.getCookie(baseUrl);
+        String cookie = cookieManager.getCookie(baseUrl);
+        if (cookie != null)
+            return cookie;
+        else return "";
     }
 
     public static Boolean checkAuth() {

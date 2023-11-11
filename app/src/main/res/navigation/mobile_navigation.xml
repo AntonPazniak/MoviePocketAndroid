@@ -68,6 +68,18 @@
         <action
             android:id="@+id/action_movieFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_allReviewFragment"
+            app:destination="@id/allReviewFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -83,7 +95,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchResultsFragment"
-        android:name="com.example.moviepocketandroid.ui.searchResults.SearchResultsFragment"
+        android:name="com.example.moviepocketandroid.ui.search.searchResults.SearchResultsFragment"
         android:label="fragment_search_results"
         tools:layout="@layout/fragment_search_results">
         <argument
@@ -110,4 +122,43 @@
         android:name="com.example.moviepocketandroid.ui.login.loginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/newReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment"
+        android:label="fragment_new_review"
+        tools:layout="@layout/fragment_new_review">
+        <action
+            android:id="@+id/action_newReviewFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.detail.DetailReviewFragment"
+        android:label="fragment_detail_review"
+        tools:layout="@layout/fragment_detail_review">
+        <action
+            android:id="@+id/action_detailReviewFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.all.AllReviewFragment"
+        android:label="fragment_all_review"
+        tools:layout="@layout/fragment_all_review">
+        <action
+            android:id="@+id/action_allReviewFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_allReviewFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.example.moviepocketandroid.ui.rating.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating">
+        <action
+            android:id="@+id/action_ratingFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
 </navigation>

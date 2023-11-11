@@ -33,10 +33,29 @@
 
             <include layout="@layout/item_recycler_view_movie" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="New" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="All" />
+            </LinearLayout>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewReview"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"></androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
 

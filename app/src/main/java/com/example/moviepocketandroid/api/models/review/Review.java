@@ -20,12 +20,12 @@ public class Review {
     private String username;
     private String dataCreated;
     private String dataUpdated;
-    private Long idMovie;
-    private Long id;
+    private int idMovie;
+    private int id;
     private int[] likes;
 
 
-    public Review(String title, String content, String username, String dataCreated, String dataUpdated, Long idMovie, Long id, int[] likes) {
+    public Review(String title, String content, String username, String dataCreated, String dataUpdated, int idMovie, int id, int[] likes) {
         this.title = title;
         this.content = content;
         this.username = username;
@@ -46,8 +46,8 @@ public class Review {
             String username = jsonObject.getString("username");
             String dataCreatedStr = jsonObject.getString("dataCreated");
             String dataUpdatedStr = jsonObject.getString("dataUpdated");
-            Long idMovie = jsonObject.getLong("idMovie");
-            Long id = jsonObject.getLong("id");
+            int idMovie = jsonObject.getInt("idMovie");
+            int id = jsonObject.getInt("id");
 
             String dataCreated = dataCreatedStr.substring(0, 10) + " " + dataCreatedStr.substring(11, 16);
             String dataUpdated = dataUpdatedStr.substring(0, 10) + " " + dataUpdatedStr.substring(11, 16);
@@ -96,11 +96,11 @@ public class Review {
         return dataUpdated;
     }
 
-    public Long getIdMovie() {
+    public int getIdMovie() {
         return idMovie;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

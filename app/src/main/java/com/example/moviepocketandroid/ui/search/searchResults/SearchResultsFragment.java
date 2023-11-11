@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.searchResults;
+package com.example.moviepocketandroid.ui.search.searchResults;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.adapter.ActorSearchAdapter;
-import com.example.moviepocketandroid.adapter.SearchAdapter;
+import com.example.moviepocketandroid.adapter.search.ActorSearchAdapter;
+import com.example.moviepocketandroid.adapter.search.SearchAdapter;
 import com.example.moviepocketandroid.api.models.Actor;
 import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;

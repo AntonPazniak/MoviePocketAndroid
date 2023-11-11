@@ -11,9 +11,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -70,6 +72,23 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
+        editTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String query = String.valueOf(editTextSearch.getText());
+                    if (!query.isEmpty()) {
+                        Bundle args = new Bundle();
+                        args.putString("query", query);
+
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_navigation_search_to_searchResultsFragment, args);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
 
     }
@@ -88,17 +107,19 @@ public class SearchFragment extends Fragment {
                 List<Movie> movies = tmdbApi.getPopularMovies();
                 List<Actor> actors = tmdbApi.getPopularActors();
                 List<Movie> tvSeries = tmdbApi.getPopularTVs();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void run() {
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
 
-                        setPopularMovie(movies);
-                        setPopularTVs(tvSeries);
-                        setActors(actors);
+                            setPopularMovie(movies);
+                            setPopularTVs(tvSeries);
+                            setActors(actors);
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         }).start();
     }
