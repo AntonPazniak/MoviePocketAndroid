@@ -2,6 +2,8 @@ package com.example.moviepocketandroid.api.MP;
 
 import android.webkit.CookieManager;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 import okhttp3.FormBody;
@@ -49,7 +51,7 @@ public class MPAuthenticationApi {
 
     public boolean postLogin(String email, String password) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://moviepocket.projektstudencki.pl/login";
+        String url = baseUrl + "/login";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", email)
@@ -81,5 +83,82 @@ public class MPAuthenticationApi {
         }
         return false;
     }
+
+    public boolean postRegistration(String username, String email, String password) {
+        OkHttpClient client = new OkHttpClient();
+        String url = baseUrl + "/registration";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .add("username", username)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public Boolean existsUserByEmail(String email) {
+        OkHttpClient client = new OkHttpClient();
+        String url = baseUrl + "/registration/exist/email?email=" + email;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, boolean.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public Boolean existsUserByUsername(String username) {
+        OkHttpClient client = new OkHttpClient();
+        String url = baseUrl + "/registration/exist/username?username=" + username;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, boolean.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
 }

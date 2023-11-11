@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,11 +17,12 @@ import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
+import com.google.android.material.button.MaterialButton;
 
 public class loginFragment extends Fragment {
 
     private EditText editTextPassword, editTextUsername;
-    private Button buttonLogin;
+    private MaterialButton buttonLogin, buttonRegistration;
 
     public static loginFragment newInstance() {
         return new loginFragment();
@@ -48,8 +48,18 @@ public class loginFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.editTextPassword);
 
         buttonLogin = view.findViewById(R.id.buttonLogin);
+        buttonRegistration = view.findViewById(R.id.buttonRegistration);
 
         MPAuthenticationApi mpAuthenticationAPI = new MPAuthenticationApi();
+
+        buttonRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_loginFragment_to_registrationFragment);
+            }
+
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +76,7 @@ public class loginFragment extends Fragment {
                                     if (authentication) {
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
+                                        Toast.makeText(requireContext(), "Successfully!", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(requireContext(), "Wrong password or username!", Toast.LENGTH_SHORT).show();
                                     }
