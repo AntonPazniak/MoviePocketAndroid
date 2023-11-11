@@ -32,4 +32,6 @@
     <string name="email_address">Email address</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="restore_password">Restore password</string>
+    <string name="send">Send</string>
 </resources>

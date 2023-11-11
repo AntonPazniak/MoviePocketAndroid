@@ -6,7 +6,7 @@
     android:layout_height="293dp">
 
     <FrameLayout
-        android:layout_width="415dp"
+        android:layout_width="match_parent"
         android:layout_height="229dp"
         android:layout_margin="8dp"
         tools:ignore="MissingConstraints">

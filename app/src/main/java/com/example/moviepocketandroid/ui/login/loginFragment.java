@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class loginFragment extends Fragment {
 
     private EditText editTextPassword, editTextUsername;
     private MaterialButton buttonLogin, buttonRegistration;
+    private TextView textViewForgot;
 
     public static loginFragment newInstance() {
         return new loginFragment();
@@ -50,7 +52,18 @@ public class loginFragment extends Fragment {
         buttonLogin = view.findViewById(R.id.buttonLogin);
         buttonRegistration = view.findViewById(R.id.buttonRegistration);
 
+        textViewForgot = view.findViewById(R.id.textViewForgot);
+
         MPAuthenticationApi mpAuthenticationAPI = new MPAuthenticationApi();
+
+        textViewForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_loginFragment_to_lostPasswordFragment);
+            }
+
+        });
 
         buttonRegistration.setOnClickListener(new View.OnClickListener() {
             @Override

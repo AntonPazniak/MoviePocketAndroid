@@ -161,4 +161,30 @@ public class MPAuthenticationApi {
     }
 
 
+    public boolean postLostPassword(String username) {
+        OkHttpClient client = new OkHttpClient();
+        String url = baseUrl + "/lostpassword/setEmail";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", username)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }
