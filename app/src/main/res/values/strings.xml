@@ -27,4 +27,14 @@
     <string name="publish">Publish</string>
     <string name="rate">Rate</string>
     <string name="delete">Delete</string>
+    <string name="registration">Registration</string>
+    <string name="username">Username</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="restore_password">Restore password</string>
+    <string name="send">Send</string>
+    <string name="bio">bio</string>
+    <string name="save">Save</string>
+    <string name="logout">Logout</string>
 </resources>

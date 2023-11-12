@@ -109,6 +109,17 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
+    public Movie(int id, String posterPath, String title, List<String> genres, double voteAverage) {
+        this.id = id;
+        if (!posterPath.equals("null"))
+            this.posterPath = POSTER_BASE_URL + posterPath;
+        else
+            this.posterPath = STANDARD_URL;
+        this.title = title;
+        this.genres = genres;
+        this.voteAverage = voteAverage;
+    }
+
     public static Movie parsMovie(String movieInfoJson) {
         Movie movie = null;
         try {
@@ -121,12 +132,29 @@ public class Movie {
             List<String> genres = getGenresText(genreIds);
             double voteAverage = jsonObject.getDouble("vote_average");
 
-            movie = new Movie(id,posterPath,title,releaseDate,genres,voteAverage);
-        }catch (JSONException e) {
+            movie = new Movie(id, posterPath, title, releaseDate, genres, voteAverage);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return movie;
     }
+
+    public static Movie parsMovieFast(String movieInfoJson) {
+        Movie movie = null;
+        try {
+            JSONObject jsonObject = new JSONObject(movieInfoJson);
+            int id = jsonObject.getInt("id");
+            String posterPath = jsonObject.getString("poster_path");
+            String title = jsonObject.getString("title");
+            List<String> genres = parseArray(jsonObject.getJSONArray("genres"), "name");
+            double voteAverage = jsonObject.getDouble("vote_average");
+            movie = new Movie(id, posterPath, title, genres, voteAverage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return movie;
+    }
+
     public static Movie parseMovieInfo(String movieInfoJson) {
         Movie movie = null;
         try {
@@ -202,7 +230,24 @@ public class Movie {
             List<String> genres = getGenresText(genreIds);
             String releaseDate = jsonObject.getString("first_air_date");
             double voteAverage = jsonObject.getDouble("vote_average");
-            movie = new Movie(id,posterPath,name,releaseDate,genres,voteAverage);
+            movie = new Movie(id, posterPath, name, releaseDate, genres, voteAverage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return movie;
+    }
+
+    public static Movie parsTVFast(String tvSeriesInfoJson) {
+        Movie movie = null;
+        try {
+            JSONObject jsonObject = new JSONObject(tvSeriesInfoJson);
+            int id = jsonObject.getInt("id");
+            id = id * -1;
+            String posterPath = jsonObject.getString("poster_path");
+            String name = jsonObject.getString("name");
+            List<String> genres = parseArray(jsonObject.getJSONArray("genres"), "name");
+            double voteAverage = jsonObject.getDouble("vote_average");
+            movie = new Movie(id, posterPath, name, genres, voteAverage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -260,25 +305,25 @@ public class Movie {
             int numberOfSeasons = jsonObject.getInt("number_of_seasons");
             int numberOfEpisodes = jsonObject.getInt("number_of_episodes");
 
-            List<TVSeason> seasons = new ArrayList<>();
-            JSONArray seasonsArray = jsonObject.getJSONArray("seasons");
-            for (int i = 0; i < seasonsArray.length(); i++) {
-                JSONObject seasonObject = seasonsArray.getJSONObject(i);
-                TVSeason season = new TVSeason(seasonObject.getString("air_date"),
-                        seasonObject.getInt("episode_count"),
-                        seasonObject.getInt("id"),
-                        seasonObject.getString("name"),
-                        seasonObject.getString("overview"),
-                        seasonObject.getString("poster_path"),
-                        seasonObject.getInt("season_number"),
-                        seasonObject.getDouble("vote_average"));
-                seasons.add(season);
-            }
+//            List<TVSeason> seasons = new ArrayList<>();
+//            JSONArray seasonsArray = jsonObject.getJSONArray("seasons");
+//            for (int i = 0; i < seasonsArray.length(); i++) {
+//                JSONObject seasonObject = seasonsArray.getJSONObject(i);
+//                TVSeason season = new TVSeason(seasonObject.getString("air_date"),
+//                        seasonObject.getInt("episode_count"),
+//                        seasonObject.getInt("id"),
+//                        seasonObject.getString("name"),
+//                        seasonObject.getString("overview"),
+//                        seasonObject.getString("poster_path"),
+//                        seasonObject.getInt("season_number"),
+//                        seasonObject.getDouble("vote_average"));
+//                seasons.add(season);
+//            }
             List<String> productionCountries = parseArray(jsonObject.getJSONArray("production_countries"), "name");
 
             JSONArray productionCompanies = jsonObject.getJSONArray("created_by");
             List<String> genres = parseArray(jsonObject.getJSONArray("genres"), "name");
-            tvSeries  = new Movie(true, backdropPath, "", 0, genres, "", id, "imdbId", originalLanguage, originalTitle,
+            tvSeries = new Movie(true, backdropPath, "", 0, genres, "", id, "imdbId", originalLanguage, originalTitle,
                     overview, popularity, posterPath, null, productionCountries, releaseDate, 0, 0,
                     null, status, tagline, title, false, voteAverage, voteCount);
         } catch (JSONException e) {

@@ -3,11 +3,12 @@ package com.example.moviepocketandroid.ui.login;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,11 +19,15 @@ import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
+import com.google.android.material.button.MaterialButton;
+
+import java.util.Objects;
 
 public class loginFragment extends Fragment {
 
     private EditText editTextPassword, editTextUsername;
-    private Button buttonLogin;
+    private MaterialButton buttonLogin, buttonRegistration;
+    private TextView textViewForgot;
 
     public static loginFragment newInstance() {
         return new loginFragment();
@@ -48,33 +53,76 @@ public class loginFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.editTextPassword);
 
         buttonLogin = view.findViewById(R.id.buttonLogin);
+        buttonRegistration = view.findViewById(R.id.buttonRegistration);
+
+        textViewForgot = view.findViewById(R.id.textViewForgot);
 
         MPAuthenticationApi mpAuthenticationAPI = new MPAuthenticationApi();
+
+        textViewForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_loginFragment_to_lostPasswordFragment);
+            }
+
+        });
+
+        buttonRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_loginFragment_to_registrationFragment);
+            }
+
+        });
+
+        editTextUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String email = Objects.requireNonNull(editTextUsername.getText()).toString();
+                if (!hasFocus) {
+                    if (!isValidEmail(email)) {
+                        editTextUsername.setError("Enter a correct email");
+                    }
+
+                }
+            }
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = String.valueOf(editTextUsername.getText());
-                String password = String.valueOf(editTextPassword.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Boolean authentication = mpAuthenticationAPI.postLogin(username, password);
+                if (editTextUsername.getError() == null) {
+                    String username = String.valueOf(editTextUsername.getText());
+                    String password = String.valueOf(editTextPassword.getText());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Boolean authentication = mpAuthenticationAPI.postLogin(username, password);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (authentication) {
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
+                                        Toast.makeText(requireContext(), "Successfully!", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(requireContext(), "Wrong password or username!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-                    }
-                }).start();
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "Enter correct information", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private boolean isValidEmail(CharSequence email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 }

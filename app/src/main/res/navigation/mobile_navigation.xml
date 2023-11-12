@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.example.moviepocketandroid.ui.user.UserFragment"
+        android:name="com.example.moviepocketandroid.ui.user.nb.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user">
         <action
@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_userEditFragment"
+            app:destination="@id/userEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieFragment"
@@ -77,9 +80,6 @@
         <action
             android:id="@+id/action_movieFragment_to_allReviewFragment"
             app:destination="@id/allReviewFragment" />
-        <action
-            android:id="@+id/action_movieFragment_to_ratingFragment"
-            app:destination="@id/ratingFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -121,7 +121,14 @@
         android:id="@+id/loginFragment"
         android:name="com.example.moviepocketandroid.ui.login.loginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_lostPasswordFragment"
+            app:destination="@id/lostPasswordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newReviewFragment"
         android:name="com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment"
@@ -153,12 +160,18 @@
             app:destination="@id/detailReviewFragment" />
     </fragment>
     <fragment
-        android:id="@+id/ratingFragment"
-        android:name="com.example.moviepocketandroid.ui.rating.RatingFragment"
-        android:label="fragment_rating"
-        tools:layout="@layout/fragment_rating">
-        <action
-            android:id="@+id/action_ratingFragment_to_movieFragment"
-            app:destination="@id/movieFragment" />
-    </fragment>
+        android:id="@+id/registrationFragment"
+        android:name="com.example.moviepocketandroid.ui.registration.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/lostPasswordFragment"
+        android:name="com.example.moviepocketandroid.ui.lostPasswoed.LostPasswordFragment"
+        android:label="fragment_lost_password"
+        tools:layout="@layout/fragment_lost_password" />
+    <fragment
+        android:id="@+id/userEditFragment"
+        android:name="com.example.moviepocketandroid.ui.user.edit.UserEditFragment"
+        android:label="fragment_user_edit"
+        tools:layout="@layout/fragment_user_edit" />
 </navigation>
