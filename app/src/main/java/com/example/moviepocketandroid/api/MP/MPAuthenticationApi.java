@@ -46,7 +46,6 @@ public class MPAuthenticationApi {
         }
 
         return false;
-
     }
 
     public boolean postLogin(String email, String password) {
@@ -184,6 +183,30 @@ public class MPAuthenticationApi {
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    public static Boolean logout() {
+        OkHttpClient client = new OkHttpClient();
+        String url = baseUrl + "/logout";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

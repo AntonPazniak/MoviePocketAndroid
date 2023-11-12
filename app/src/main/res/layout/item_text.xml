@@ -10,7 +10,7 @@
         android:layout_height="28dp"
         android:layout_marginStart="5dp"
         android:textColor="@color/logoBlue"
-        android:textSize="20dp"
+        android:textSize="20sp"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

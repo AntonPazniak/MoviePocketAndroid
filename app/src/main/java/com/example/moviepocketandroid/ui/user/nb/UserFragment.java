@@ -1,10 +1,11 @@
-package com.example.moviepocketandroid.ui.user;
+package com.example.moviepocketandroid.ui.user.nb;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,8 +20,10 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
+import com.example.moviepocketandroid.api.MP.MPUserApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +36,9 @@ public class UserFragment extends Fragment {
 
     private View itemRecyclerViewMovie0, itemRecyclerViewMovie1, itemRecyclerViewMovie2;
     private View textView0, textView1, textView2;
-    private TextView favoriteTextView, toWatchTextView, watchedTextView;
+    private TextView favoriteTextView, toWatchTextView, watchedTextView, textViewUsername;
     private RecyclerView movieFavoriteRecyclerView, movieToWatchRecyclerView, movieWatchedRecyclerView;
-
+    private ImageButton imageButtonSettings;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -81,9 +84,22 @@ public class UserFragment extends Fragment {
                     toWatchTextView = textView0.findViewById(R.id.textView);
                     favoriteTextView = textView1.findViewById(R.id.textView);
                     watchedTextView = textView2.findViewById(R.id.textView);
+                    textViewUsername = view.findViewById(R.id.textViewUsername);
+                    imageButtonSettings = view.findViewById(R.id.imageButtonSettings);
+
+                    imageButtonSettings.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_userFragment_to_userEditFragment);
+                        }
+
+                    });
 
                     MPAssessmentApi mpAssessmentAPI = new MPAssessmentApi();
                     TMDBApi tmdbApi = new TMDBApi();
+
+                    User user = MPUserApi.getUserInfo();
 
                     List<Movie> favorites = new ArrayList<>();
                     List<Movie> toWatch = new ArrayList<>();
@@ -92,7 +108,7 @@ public class UserFragment extends Fragment {
                     int[] arr = mpAssessmentAPI.getAllFavoriteMovie();
                     int numMoviesToDisplay = Math.min(6, arr.length);
                     for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
+                        Movie movie = tmdbApi.getMovie(arr[i]);
                         if (movie != null) {
                             favorites.add(movie);
                         }
@@ -101,7 +117,7 @@ public class UserFragment extends Fragment {
                     arr = mpAssessmentAPI.getAllToWatchMovie();
                     numMoviesToDisplay = Math.min(6, arr.length);
                     for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
+                        Movie movie = tmdbApi.getMovie(arr[i]);
                         if (movie != null) {
                             toWatch.add(movie);
                         }
@@ -110,7 +126,7 @@ public class UserFragment extends Fragment {
                     arr = mpAssessmentAPI.getAllWatchedMovie();
                     numMoviesToDisplay = Math.min(6, arr.length);
                     for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
+                        Movie movie = tmdbApi.getMovie(arr[i]);
                         if (movie != null) {
                             watched.add(movie);
                         }
@@ -121,7 +137,9 @@ public class UserFragment extends Fragment {
                             @SuppressLint("SetTextI18n")
                             @Override
                             public void run() {
-                                toWatchTextView.setText("To watch movie");
+                                assert user != null;
+                                textViewUsername.setText(user.getUsername());
+                                toWatchTextView.setText("Watchlist");
                                 setMovies(movieToWatchRecyclerView, toWatch);
                                 favoriteTextView.setText("Favorite movie");
                                 setMovies(movieFavoriteRecyclerView, favorites);

@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.example.moviepocketandroid.ui.user.UserFragment"
+        android:name="com.example.moviepocketandroid.ui.user.nb.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user">
         <action
@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_userEditFragment"
+            app:destination="@id/userEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieFragment"
@@ -166,4 +169,9 @@
         android:name="com.example.moviepocketandroid.ui.lostPasswoed.LostPasswordFragment"
         android:label="fragment_lost_password"
         tools:layout="@layout/fragment_lost_password" />
+    <fragment
+        android:id="@+id/userEditFragment"
+        android:name="com.example.moviepocketandroid.ui.user.edit.UserEditFragment"
+        android:label="fragment_user_edit"
+        tools:layout="@layout/fragment_user_edit" />
 </navigation>

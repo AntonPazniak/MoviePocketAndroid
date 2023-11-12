@@ -6,20 +6,20 @@ import static com.example.moviepocketandroid.api.models.Movie.parseMovieInfo;
 import static com.example.moviepocketandroid.api.models.Movie.parseMoviePopular;
 
 import com.example.moviepocketandroid.api.models.Actor;
-import com.example.moviepocketandroid.api.models.MovieImage;
 import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.MovieImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class TMDBApi {
 
@@ -35,24 +35,58 @@ public class TMDBApi {
             return getTVsInfo(Math.abs(id));
     }
 
+    public Movie getMovie(int id) {
+        if (id > 0)
+            return getMovieFast(id);
+        else
+            return getTVsFast(Math.abs(id));
+    }
+
     public List<Actor> getActorsByIdMovie(int id) {
         if (id > 0)
             return getActorsByIdFilm(id);
         else
             return getActorsByIdTV(Math.abs(id));
     }
-    public List<MovieImage> getImagesByIdMovie(int id){
+
+    public List<MovieImage> getImagesByIdMovie(int id) {
         if (id > 0)
             return getImagesByIdFilm(id);
         else
             return getImagesByIdTV(Math.abs(id));
     }
-    public List<Movie> getSimilarMoviesById(int id){
+
+    public List<Movie> getSimilarMoviesById(int id) {
         if (id > 0)
             return getSimilarFilmsById(id);
         else
             return getSimilarTVById(Math.abs(id));
     }
+
+    private Movie getMovieFast(int movieId) {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                return Movie.parsMovieFast(responseBody);
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private Movie getMovieDetails(int movieId) {
         OkHttpClient client = new OkHttpClient();
 
@@ -362,6 +396,26 @@ public class TMDBApi {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 return Movie.parseTVSeriesInfo(responseBody);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Movie getTVsFast(int idTV) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://api.themoviedb.org/3/tv/" + idTV + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                return Movie.parsTVFast(responseBody);
             }
         } catch (IOException e) {
             e.printStackTrace();
