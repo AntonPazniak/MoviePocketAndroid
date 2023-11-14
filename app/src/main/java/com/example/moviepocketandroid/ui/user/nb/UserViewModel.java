@@ -2,7 +2,7 @@ package com.example.moviepocketandroid.ui.user.nb;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.util.List;
 

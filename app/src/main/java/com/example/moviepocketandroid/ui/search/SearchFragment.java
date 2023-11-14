@@ -2,15 +2,6 @@ package com.example.moviepocketandroid.ui.search;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +11,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
-import com.example.moviepocketandroid.api.models.Actor;
-import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
+import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.Person;
 
 import java.util.List;
 
@@ -105,7 +104,7 @@ public class SearchFragment extends Fragment {
             public void run() {
                 TMDBApi tmdbApi = new TMDBApi();
                 List<Movie> movies = tmdbApi.getPopularMovies();
-                List<Actor> actors = tmdbApi.getPopularActors();
+                List<Person> actors = tmdbApi.getPopularActors();
                 List<Movie> tvSeries = tmdbApi.getPopularTVs();
                 if (isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
@@ -166,7 +165,7 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private void setActors(List<Actor> actors) {
+    private void setActors(List<Person> actors) {
         if (actors != null) {
             textActorsRecyclerView.setText("Popular actors:");
             actorsAdapter = new ActorsAdapter(actors);

@@ -25,9 +25,9 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.Actor;
-import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.models.MovieImage;
+import com.example.moviepocketandroid.api.models.ImageMovie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.Person;
 
 import java.util.List;
 
@@ -107,10 +107,10 @@ public class PersonFragment extends Fragment {
             @Override
             public void run() {
                 TMDBApi tmdbApi = new TMDBApi();
-                Actor actorTMDBS = tmdbApi.getPersonById(idPerson);
+                Person actorTMDBS = tmdbApi.getPersonById(idPerson);
                 List<Movie> movies = tmdbApi.getMoviesByIdActor(idPerson);
                 List<Movie> tvSeries = tmdbApi.getTVByIdActor(idPerson);
-                List<MovieImage> images = tmdbApi.getImagesByIdActor(idPerson);
+                List<ImageMovie> images = tmdbApi.getImagesByIdActor(idPerson);
                 if (actorTMDBS != null && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -127,7 +127,7 @@ public class PersonFragment extends Fragment {
         }).start();
     }
 
-    private void setImagePerson(Actor actor) {
+    private void setImagePerson(Person actor) {
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(requireContext())
@@ -137,26 +137,26 @@ public class PersonFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private void setInfoPerson(Actor actor) {
-        if (!actor.getName().equals("null"))
+    private void setInfoPerson(Person actor) {
+        if (actor.getName() != null)
             textNamePerson.setText(actor.getName());
-        if (!actor.getPlaceOfBirth().equals("null"))
+        if (actor.getPlaceOfBirth() != null)
             textPlaceBirth.setText(actor.getPlaceOfBirth());
-        if (!actor.getBiography().equals("")) {
+        if (actor.getBiography() != null) {
             textViewOverview.setText("Biography");
             textOverview.setText(actor.getBiography());
         } else
             viewOverview.setVisibility(View.GONE);
-        if (!actor.getDeathDay().equals("null") && !actor.getBiography().equals("null")) {
+        if (actor.getDeathday() != null && actor.getBiography() != null) {
             textBirthday.setText("Birthday: " + actor.getBirthday());
-            textDeathDay.setText("DeathDay: " + actor.getDeathDay());
-        } else if (!actor.getBirthday().equals("null"))
+            textDeathDay.setText("DeathDay: " + actor.getDeathday());
+        } else if (actor.getBirthday() != null)
             textBirthday.setText("Birthday: " + actor.getBirthday());
 
     }
 
     @SuppressLint("SetTextI18n")
-    private void setImages(List<MovieImage> images) {
+    private void setImages(List<ImageMovie> images) {
         if (images.size() > 0) {
             textImages.setText("Images:");
             movieImagesAdapter = new ImagesAdapter(images);

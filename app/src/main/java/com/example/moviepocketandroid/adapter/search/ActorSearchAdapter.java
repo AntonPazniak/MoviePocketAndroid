@@ -13,16 +13,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Actor;
+import com.example.moviepocketandroid.api.models.Person;
 
 import java.util.List;
 
 public class ActorSearchAdapter extends RecyclerView.Adapter<ActorSearchAdapter.ActorViewHolder> {
 
-    private List<Actor> actors;
+    private List<Person> actors;
     private OnActorClickListener onActorClickListener;
 
-    public ActorSearchAdapter(List<Actor> actors) {
+    public ActorSearchAdapter(List<Person> actors) {
         this.actors = actors;
     }
 
@@ -39,7 +39,7 @@ public class ActorSearchAdapter extends RecyclerView.Adapter<ActorSearchAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ActorViewHolder holder, int position) {
-        Actor actor = actors.get(position);
+        Person actor = actors.get(position);
         holder.bind(actor);
 
         int desiredHeightDp = 110;
@@ -73,7 +73,7 @@ public class ActorSearchAdapter extends RecyclerView.Adapter<ActorSearchAdapter.
             textGenres = itemView.findViewById(R.id.textGenres);
         }
 
-        public void bind(Actor actor) {
+        public void bind(Person actor) {
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(itemView.getContext())

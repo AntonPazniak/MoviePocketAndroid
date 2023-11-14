@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.api.models;
+package com.example.moviepocketandroid.api.models.user;
 
 public class User {
 

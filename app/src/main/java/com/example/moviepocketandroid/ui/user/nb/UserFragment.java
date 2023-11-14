@@ -22,8 +22,8 @@ import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.models.User;
+import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,7 @@ public class UserFragment extends Fragment {
     private TextView favoriteTextView, toWatchTextView, watchedTextView, textViewUsername;
     private RecyclerView movieFavoriteRecyclerView, movieToWatchRecyclerView, movieWatchedRecyclerView;
     private ImageButton imageButtonSettings;
+    private User user;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -99,7 +100,7 @@ public class UserFragment extends Fragment {
                     MPAssessmentApi mpAssessmentAPI = new MPAssessmentApi();
                     TMDBApi tmdbApi = new TMDBApi();
 
-                    User user = MPUserApi.getUserInfo();
+                    user = MPUserApi.getUserInfo();
 
                     List<Movie> favorites = new ArrayList<>();
                     List<Movie> toWatch = new ArrayList<>();
@@ -108,7 +109,7 @@ public class UserFragment extends Fragment {
                     int[] arr = mpAssessmentAPI.getAllFavoriteMovie();
                     int numMoviesToDisplay = Math.min(6, arr.length);
                     for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getMovie(arr[i]);
+                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
                         if (movie != null) {
                             favorites.add(movie);
                         }
@@ -117,7 +118,7 @@ public class UserFragment extends Fragment {
                     arr = mpAssessmentAPI.getAllToWatchMovie();
                     numMoviesToDisplay = Math.min(6, arr.length);
                     for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getMovie(arr[i]);
+                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
                         if (movie != null) {
                             toWatch.add(movie);
                         }
@@ -126,11 +127,12 @@ public class UserFragment extends Fragment {
                     arr = mpAssessmentAPI.getAllWatchedMovie();
                     numMoviesToDisplay = Math.min(6, arr.length);
                     for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getMovie(arr[i]);
+                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
                         if (movie != null) {
                             watched.add(movie);
                         }
                     }
+
 
                     if (isAdded()) {
                         requireActivity().runOnUiThread(new Runnable() {
@@ -145,6 +147,19 @@ public class UserFragment extends Fragment {
                                 setMovies(movieFavoriteRecyclerView, favorites);
                                 watchedTextView.setText("Watched movie");
                                 setMovies(movieWatchedRecyclerView, watched);
+
+                                textViewUsername.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Bundle args = new Bundle();
+                                        assert user != null;
+                                        args.putString("username", user.getUsername());
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_userFragment_to_userPageFragment, args);
+                                    }
+
+                                });
+
                             }
                         });
                     }

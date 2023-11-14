@@ -3,6 +3,10 @@ package com.example.moviepocketandroid.ui.search.searchResults;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,17 +16,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.search.ActorSearchAdapter;
 import com.example.moviepocketandroid.adapter.search.SearchAdapter;
-import com.example.moviepocketandroid.api.models.Actor;
-import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
+import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.Person;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class SearchResultsFragment extends Fragment {
     private TextView textMovies, textTVs, textPersons;
 
     private List<Movie> movies;
-    private List<Actor> actors;
+    private List<Person> actors;
     private List<Movie> tvSeries;
 
     private boolean isMovies = true;

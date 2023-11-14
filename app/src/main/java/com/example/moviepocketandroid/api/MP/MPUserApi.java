@@ -1,6 +1,7 @@
 package com.example.moviepocketandroid.api.MP;
 
-import com.example.moviepocketandroid.api.models.User;
+import com.example.moviepocketandroid.api.models.user.User;
+import com.example.moviepocketandroid.api.models.user.UserPage;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -113,6 +114,29 @@ public class MPUserApi {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static UserPage getUserByUsername(String username) {
+        String url = baseUrl + "/user/" + username;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, UserPage.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

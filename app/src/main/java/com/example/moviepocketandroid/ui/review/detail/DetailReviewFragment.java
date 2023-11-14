@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class DetailReviewFragment extends Fragment {
     private Boolean isLikeOrDisButton;
     private Boolean authorship = false;
     private TextView textViewCountLikes, textViewCountDislikes;
+    private ImageView imageViewAvatar;
 
     public static DetailReviewFragment newInstance() {
         return new DetailReviewFragment();
@@ -63,6 +65,7 @@ public class DetailReviewFragment extends Fragment {
         textContent = view.findViewById(R.id.textViewContent);
         imageButton0 = view.findViewById(R.id.imageButton0);
         imageButton1 = view.findViewById(R.id.imageButton1);
+        imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
 
         textViewCountLikes = view.findViewById(R.id.textViewCountLikes);
         textViewCountDislikes = view.findViewById(R.id.textViewCountDislikes);
@@ -107,7 +110,7 @@ public class DetailReviewFragment extends Fragment {
                         @Override
                         public void run() {
                             textUsername.setText(review.getUsername());
-                            textDate.setText(review.getDataCreated());
+                            textDate.setText(review.getDataCreated().toString());
                             textTitle.setText(review.getTitle());
                             textContent.setText(review.getContent());
                             textViewCountLikes.setText(String.valueOf(count[0]));
@@ -128,6 +131,19 @@ public class DetailReviewFragment extends Fragment {
                                 imageButton0.setVisibility(View.GONE);
                                 imageButton1.setVisibility(View.GONE);
                             }
+
+                            imageViewAvatar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Bundle args = new Bundle();
+                                    args.putString("username", review.getUsername());
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigate(R.id.action_detailReviewFragment_to_userPageFragment, args);
+                                }
+
+                            });
+
+
                         }
                     });
                 }

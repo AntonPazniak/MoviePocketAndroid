@@ -1,7 +1,5 @@
 package com.example.moviepocketandroid.api.MP;
 
-import static com.example.moviepocketandroid.api.models.review.Review.parseReview;
-
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.google.gson.Gson;
 
@@ -38,8 +36,9 @@ public class MPReviewApi {
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String responseBody = response.body().string();
-                review = parseReview(responseBody);
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, Review.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,9 +83,12 @@ public class MPReviewApi {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 JSONArray reviewArray = new JSONArray(responseBody);
+
+                Gson gson = new Gson();
+
                 for (int i = 0; i < reviewArray.length(); i++) {
                     JSONObject reviewObject = reviewArray.getJSONObject(i);
-                    Review review = parseReview(reviewObject.toString());
+                    Review review = gson.fromJson(reviewObject.toString(), Review.class);
                     if (review != null) {
                         reviews.add(review);
                     }
@@ -97,6 +99,7 @@ public class MPReviewApi {
         }
         return reviews;
     }
+
 
     public Boolean postReviewMovie(int idMovie, String title, String content) {
         List<Review> reviews = new ArrayList<>();

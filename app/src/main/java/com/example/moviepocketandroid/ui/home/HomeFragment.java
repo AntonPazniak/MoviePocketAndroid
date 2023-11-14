@@ -22,7 +22,7 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
 import com.example.moviepocketandroid.adapter.RatingAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
 import java.util.List;

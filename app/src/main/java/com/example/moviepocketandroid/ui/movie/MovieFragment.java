@@ -35,9 +35,9 @@ import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.Actor;
-import com.example.moviepocketandroid.api.models.Movie;
-import com.example.moviepocketandroid.api.models.MovieImage;
+import com.example.moviepocketandroid.api.models.ImageMovie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.Person;
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.ui.dialog.RatingDialog;
 import com.example.moviepocketandroid.util.ButtonUntil;
@@ -151,9 +151,9 @@ public class MovieFragment extends Fragment {
             public void run() {
                 TMDBApi tmdbApi = new TMDBApi();
                 Movie movieInfoTMDB = tmdbApi.getInfoMovie(idMovie);
-                List<Actor> actors = tmdbApi.getActorsByIdMovie(idMovie);
+                List<Person> actors = tmdbApi.getActorsByIdMovie(idMovie);
                 List<Movie> movies = tmdbApi.getSimilarMoviesById(idMovie);
-                List<MovieImage> images = tmdbApi.getImagesByIdMovie(idMovie);
+                List<ImageMovie> images = tmdbApi.getImagesByIdMovie(idMovie);
                 String movieTrailerUrl = tmdbApi.getMovieTrailerUrl(idMovie);
                 Boolean isAuthentication = MPAuthenticationApi.checkAuth();
 
@@ -248,26 +248,28 @@ public class MovieFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void setMovieInfo(Movie movie) {
         StringBuilder s = new StringBuilder();
-        if (!movie.getProductionCountries().isEmpty()) {
-            s.append(movie.getProductionCountries().get(0));
+        if (movie.getProductionCountries() != null) {
+            s.append(movie.getProductionCountries().get(0).getName());
             for (int i = 1; i < movie.getProductionCountries().size(); i++) {
                 s.append(", ");
-                s.append(movie.getProductionCountries().get(i));
+                s.append(movie.getProductionCountries().get(i).getName());
             }
             textCountry.setText(s);
         }
         StringBuilder genders = new StringBuilder();
-        if (!movie.getReleaseDate().isEmpty())
+        if (movie.getReleaseDate() != null) {
             if (movie.getId() > 0) {
                 textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", " + movie.getRuntime() + " mins");
             } else {
-                textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", Seasons: " + movie.getNumberOfEpisodes() + " Episodes: " + movie.getNumberOfEpisodes());
+                textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", Seasons: " + movie.getSeasons().size());
             }
-        if (!movie.getGenres().isEmpty()) {
-            genders.append(movie.getGenres().get(0));
+        }
+
+        if (movie.getGenres() != null) {
+            genders.append(movie.getGenres().get(0).getName());
             for (int i = 1; i < movie.getGenres().size(); i++) {
                 genders.append(", ");
-                genders.append(movie.getGenres().get(i));
+                genders.append(movie.getGenres().get(i).getName());
             }
             textCategories.setText(genders);
         }
@@ -316,7 +318,7 @@ public class MovieFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private void setMovieImages(List<MovieImage> images) {
+    private void setMovieImages(List<ImageMovie> images) {
         if (images.size() > 0) {
             textImages.setText("Images:");
             movieImagesAdapter = new ImagesAdapter(images);
@@ -328,7 +330,7 @@ public class MovieFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private void setMovieActors(List<Actor> actors) {
+    private void setMovieActors(List<Person> actors) {
         if (actors.size() > 0) {
             textActorsRecyclerView.setText("Actors:");
             actorsAdapter = new ActorsAdapter(actors);
