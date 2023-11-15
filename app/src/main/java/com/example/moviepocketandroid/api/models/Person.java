@@ -1,9 +1,11 @@
 package com.example.moviepocketandroid.api.models;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Person {
+public class Person implements Serializable {
 
     private final String BASE_URL = "https://image.tmdb.org/t/p/w500";
     private final String STANDARD_POSTER_URL = "https://github.com/prymakD/MoviePocket/raw/16f04a6063f407cec8ee8eab29a4bd25c4ae111b/src/main/frontend/src/images/person.png";

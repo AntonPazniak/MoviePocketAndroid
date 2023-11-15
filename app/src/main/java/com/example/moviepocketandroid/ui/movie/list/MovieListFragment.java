@@ -27,6 +27,7 @@ import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class MovieListFragment extends Fragment {
     private RecyclerView recyclerViewList;
     private LinearLayout linearLayoutAuthor;
     private ImageView imageViewAvatar;
+    private List<Movie> movies = new ArrayList<>();
+    private MovieList movieList;
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -68,8 +71,19 @@ public class MovieListFragment extends Fragment {
         textViewDate = view.findViewById(R.id.textViewDate);
         imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
 
+
         Bundle args = getArguments();
-        if (args != null) {
+        if (savedInstanceState != null) {
+            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+            int idList = args.getInt("idList", -1);
+            if (idList > 0) {
+                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
+                setMovie();
+                setListInf();
+            } else {
+                setMovie();
+            }
+        } else if (args != null) {
             int idList = args.getInt("idList", -1);
             if (idList > 0) {
                 loadListInf(idList);
@@ -85,9 +99,8 @@ public class MovieListFragment extends Fragment {
             @Override
             public void run() {
 
-                MovieList movieList = (MovieList) MPListApi.getListById(idList);
+                movieList = MPListApi.getListById(idList);
                 if (movieList != null) {
-                    List<Movie> movies = new ArrayList<>();
                     for (int i : movieList.getIdMovies())
                         movies.add(TMDBApi.getInfoMovie(i));
 
@@ -95,8 +108,8 @@ public class MovieListFragment extends Fragment {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                setMovie(movies);
-                                setListInf(movieList);
+                                setMovie();
+                                setListInf();
                             }
                         });
                     }
@@ -107,18 +120,17 @@ public class MovieListFragment extends Fragment {
     }
 
     private void loadMovieDetails(int[] moviesArr) {
-
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                List<Movie> movies = loadMovie(moviesArr);
+                movies = loadMovie(moviesArr);
 
                 if (isAdded()) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            setMovie(movies);
+                            setMovie();
                         }
                     });
                 }
@@ -138,7 +150,7 @@ public class MovieListFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private void setMovie(List<Movie> movies) {
+    private void setMovie() {
         if (movies.size() > 0) {
             movieAdapter = new MovieAdapter(movies);
             recyclerViewList.setAdapter(movieAdapter);
@@ -158,7 +170,7 @@ public class MovieListFragment extends Fragment {
         }
     }
 
-    private void setListInf(MovieList movieList) {
+    private void setListInf() {
         linearLayoutAuthor.setVisibility(View.VISIBLE);
         textViewUsername.setText(movieList.getUsername());
         textViewDate.setText(movieList.getCreate().toString());
@@ -175,6 +187,13 @@ public class MovieListFragment extends Fragment {
 
         });
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("movies", (Serializable) movies);
+        outState.putSerializable("movieList", (Serializable) movieList);
     }
 
 

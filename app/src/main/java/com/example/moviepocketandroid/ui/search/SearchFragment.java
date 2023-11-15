@@ -23,9 +23,10 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
@@ -36,6 +37,9 @@ public class SearchFragment extends Fragment {
     private TextView textActorsRecyclerView, textMoviesRecyclerView, textTVRecyclerView;
     private ImageButton buttonSearch;
     private EditText editTextSearch;
+    private List<Movie> movies;
+    private List<Person> actors;
+    private List<Movie> tvSeries;
 
 
     @Override
@@ -58,6 +62,48 @@ public class SearchFragment extends Fragment {
 
         loadMovieDetails();
 
+
+        if (savedInstanceState != null) {
+            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+            actors = (List<Person>) savedInstanceState.getSerializable("actors");
+            tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
+            setInfo();
+        } else {
+            loadMovieDetails();
+        }
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // TODO: Use the ViewModel
+    }
+
+    private void loadMovieDetails() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                movies = TMDBApi.getPopularMovies();
+                actors = TMDBApi.getPopularActors();
+                tvSeries = TMDBApi.getPopularTVs();
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            setInfo();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    private void setInfo() {
+        setPopularMovie(movies);
+        setPopularTVs(tvSeries);
+        setActors(actors);
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,39 +134,6 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
-
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // TODO: Use the ViewModel
-    }
-
-    private void loadMovieDetails() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                TMDBApi tmdbApi = new TMDBApi();
-                List<Movie> movies = tmdbApi.getPopularMovies();
-                List<Person> actors = tmdbApi.getPopularActors();
-                List<Movie> tvSeries = tmdbApi.getPopularTVs();
-                if (isAdded()) {
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void run() {
-
-                            setPopularMovie(movies);
-                            setPopularTVs(tvSeries);
-                            setActors(actors);
-
-                        }
-                    });
-                }
-            }
-        }).start();
     }
 
     @SuppressLint("SetTextI18n")
@@ -185,6 +198,15 @@ public class SearchFragment extends Fragment {
                 }
             });
         }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("movies", (Serializable) movies);
+        outState.putSerializable("actors", (Serializable) actors);
+        outState.putSerializable("tvSeries", (Serializable) tvSeries);
     }
 
 }

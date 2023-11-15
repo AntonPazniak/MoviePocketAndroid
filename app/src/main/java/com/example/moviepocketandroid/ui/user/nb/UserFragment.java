@@ -110,8 +110,10 @@ public class UserFragment extends Fragment {
             toWatchArr = savedInstanceState.getIntArray("toWatchArr");
             favoritesArr = savedInstanceState.getIntArray("favoritesArr");
             watchedArr = savedInstanceState.getIntArray("watchedArr");
-
-            setInfo();
+            if (user != null)
+                setInfo();
+            else
+                loadMovieDet();
         } else
             loadMovieDet();
     }

@@ -26,9 +26,10 @@ import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.ImageMovie;
-import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class PersonFragment extends Fragment {
@@ -43,6 +44,10 @@ public class PersonFragment extends Fragment {
     private MovieAdapter tvAdapter;
     private View viewImages, viewMovie, viewTvs, viewOverview;
     private boolean isExpanded = false;
+    private Person person;
+    private List<Movie> movies;
+    private List<Movie> tvSeries;
+    private List<ImageMovie> images;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,11 +78,52 @@ public class PersonFragment extends Fragment {
         textViewOverview = view.findViewById(R.id.textViewOverview);
         viewOverview = view.findViewById(R.id.viewOverview);
 
+        if (savedInstanceState != null) {
+            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+            person = (Person) savedInstanceState.getSerializable("person");
+            tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
+            images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
+            if (movies != null)
+                setInfo();
+        }
         Bundle args = getArguments();
         if (args != null) {
-            int idMovie = args.getInt("idPerson");
-            loadPersonDetails(idMovie);
+            int idPerson = args.getInt("idPerson");
+            loadPersonDetails(idPerson);
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(PersonViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+    private void loadPersonDetails(int idPerson) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                person = TMDBApi.getPersonById(idPerson);
+                movies = TMDBApi.getMoviesByIdActor(idPerson);
+                tvSeries = TMDBApi.getTVByIdActor(idPerson);
+                images = TMDBApi.getImagesByIdActor(idPerson);
+
+                if (person != null && isAdded()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setInfo();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+
+    private void setInfo() {
+
 
         textOverview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,39 +138,11 @@ public class PersonFragment extends Fragment {
                 isExpanded = !isExpanded;
             }
         });
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(PersonViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
-    private void loadPersonDetails(int idPerson){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                TMDBApi tmdbApi = new TMDBApi();
-                Person actorTMDBS = tmdbApi.getPersonById(idPerson);
-                List<Movie> movies = tmdbApi.getMoviesByIdActor(idPerson);
-                List<Movie> tvSeries = tmdbApi.getTVByIdActor(idPerson);
-                List<ImageMovie> images = tmdbApi.getImagesByIdActor(idPerson);
-                if (actorTMDBS != null && isAdded()) {
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setImagePerson(actorTMDBS);
-                            setInfoPerson(actorTMDBS);
-                            setImages(images);
-                            setMovies(movies);
-                            setTVs(tvSeries);
-                        }
-                    });
-                }
-            }
-        }).start();
+        setImagePerson(person);
+        setInfoPerson(person);
+        setImages(images);
+        setMovies(movies);
+        setTVs(tvSeries);
     }
 
     private void setImagePerson(Person actor) {
@@ -157,7 +175,7 @@ public class PersonFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setImages(List<ImageMovie> images) {
-        if (images.size() > 0) {
+        if (images != null) {
             textImages.setText("Images:");
             movieImagesAdapter = new ImagesAdapter(images);
             imagesRecyclerView.setAdapter(movieImagesAdapter);
@@ -169,7 +187,7 @@ public class PersonFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setMovies(List<Movie> movies) {
-        if (movies.size() > 0) {
+        if (movies != null) {
             textMoviesRecyclerView.setText("Movies:");
             movieAdapter = new MovieAdapter(movies);
             moviesRecyclerView.setAdapter(movieAdapter);
@@ -191,7 +209,7 @@ public class PersonFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setTVs(List<Movie> tv) {
-        if (tv.size() > 0) {
+        if (tv != null) {
             textTVRecyclerView.setText("TV Series:");
             tvAdapter = new MovieAdapter(tv);
             tvRecyclerView.setAdapter(tvAdapter);
@@ -209,6 +227,16 @@ public class PersonFragment extends Fragment {
             });
         } else
             viewTvs.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("movies", (Serializable) movies);
+        outState.putSerializable("person", person);
+        outState.putSerializable("tvSeries", (Serializable) tvSeries);
+        outState.putSerializable("images", (Serializable) images);
     }
 
 }
