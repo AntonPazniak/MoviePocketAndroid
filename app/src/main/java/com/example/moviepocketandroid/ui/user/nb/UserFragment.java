@@ -106,28 +106,28 @@ public class UserFragment extends Fragment {
                     List<Movie> toWatch = new ArrayList<>();
                     List<Movie> watched = new ArrayList<>();
 
-                    int[] arr = mpAssessmentAPI.getAllFavoriteMovie();
-                    int numMoviesToDisplay = Math.min(6, arr.length);
-                    for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
+                    int[] favoritesArr = mpAssessmentAPI.getAllFavoriteMovie();
+                    int numMoviesToDisplay = Math.min(6, favoritesArr.length);
+                    for (int i = favoritesArr.length - 1; i >= favoritesArr.length - numMoviesToDisplay; i--) {
+                        Movie movie = tmdbApi.getInfoMovie(favoritesArr[i]);
                         if (movie != null) {
                             favorites.add(movie);
                         }
                     }
 
-                    arr = mpAssessmentAPI.getAllToWatchMovie();
-                    numMoviesToDisplay = Math.min(6, arr.length);
-                    for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
+                    int[] toWatchArr = mpAssessmentAPI.getAllToWatchMovie();
+                    numMoviesToDisplay = Math.min(6, toWatchArr.length);
+                    for (int i = toWatchArr.length - 1; i >= toWatchArr.length - numMoviesToDisplay; i--) {
+                        Movie movie = tmdbApi.getInfoMovie(toWatchArr[i]);
                         if (movie != null) {
                             toWatch.add(movie);
                         }
                     }
 
-                    arr = mpAssessmentAPI.getAllWatchedMovie();
-                    numMoviesToDisplay = Math.min(6, arr.length);
-                    for (int i = arr.length - 1; i >= arr.length - numMoviesToDisplay; i--) {
-                        Movie movie = tmdbApi.getInfoMovie(arr[i]);
+                    int[] watchedArr = mpAssessmentAPI.getAllWatchedMovie();
+                    numMoviesToDisplay = Math.min(6, watchedArr.length);
+                    for (int i = watchedArr.length - 1; i >= watchedArr.length - numMoviesToDisplay; i--) {
+                        Movie movie = tmdbApi.getInfoMovie(watchedArr[i]);
                         if (movie != null) {
                             watched.add(movie);
                         }
@@ -159,6 +159,40 @@ public class UserFragment extends Fragment {
                                     }
 
                                 });
+
+                                toWatchTextView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Bundle args = new Bundle();
+                                        args.putIntArray("movies", toWatchArr);
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                                    }
+
+                                });
+
+                                favoriteTextView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Bundle args = new Bundle();
+                                        args.putIntArray("movies", favoritesArr);
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                                    }
+
+                                });
+
+                                watchedTextView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Bundle args = new Bundle();
+                                        args.putIntArray("movies", watchedArr);
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                                    }
+
+                                });
+
 
                             }
                         });

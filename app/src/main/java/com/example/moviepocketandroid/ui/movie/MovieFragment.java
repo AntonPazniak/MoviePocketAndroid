@@ -248,7 +248,7 @@ public class MovieFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void setMovieInfo(Movie movie) {
         StringBuilder s = new StringBuilder();
-        if (movie.getProductionCountries() != null) {
+        if (movie.getProductionCountries() != null && !movie.getProductionCountries().isEmpty()) {
             s.append(movie.getProductionCountries().get(0).getName());
             for (int i = 1; i < movie.getProductionCountries().size(); i++) {
                 s.append(", ");

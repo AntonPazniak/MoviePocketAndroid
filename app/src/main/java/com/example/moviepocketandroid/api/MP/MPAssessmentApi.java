@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.api.MP;
 
+import com.example.moviepocketandroid.util.StringUnit;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 
@@ -18,8 +19,9 @@ import okhttp3.Response;
 
 public class MPAssessmentApi {
 
-    String baseUrl = "http://moviepocket.projektstudencki.pl";
-    OkHttpClient client = new OkHttpClient();
+    private final String baseUrl = StringUnit.baseServerUrl;
+
+    private OkHttpClient client = new OkHttpClient();
 
     /**
      * Requests to the server get , post, getAll FavoriteMovie

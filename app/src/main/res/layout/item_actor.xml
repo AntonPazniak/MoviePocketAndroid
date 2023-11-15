@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top|center"
-        android:textSize="12dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/imageActor"
         app:layout_constraintStart_toStartOf="@+id/imageActor"
         app:layout_constraintTop_toBottomOf="@+id/textNameActor"

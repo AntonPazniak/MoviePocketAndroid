@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api.MP;
 
 import android.webkit.CookieManager;
 
+import com.example.moviepocketandroid.util.StringUnit;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import okhttp3.Response;
 
 public class MPAuthenticationApi {
 
-    private static String baseUrl = "http://moviepocket.projektstudencki.pl";
+    private static final String baseUrl = StringUnit.baseServerUrl;
 
     public static String getCookies() {
         CookieManager cookieManager = CookieManager.getInstance();

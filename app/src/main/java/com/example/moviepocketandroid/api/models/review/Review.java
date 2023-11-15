@@ -1,8 +1,6 @@
 package com.example.moviepocketandroid.api.models.review;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import java.util.Date;
 
 public class Review {
@@ -25,19 +23,6 @@ public class Review {
         this.idMovie = idMovie;
         this.id = id;
         this.likes = likes;
-    }
-
-    // Метод для парсинга JSON-массива в массив целых чисел
-    private static int[] parseJSONArrayToIntegerArray(JSONArray jsonArray) {
-        int[] result = new int[jsonArray.length()];
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                result[i] = jsonArray.getInt(i);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
     public String getTitle() {

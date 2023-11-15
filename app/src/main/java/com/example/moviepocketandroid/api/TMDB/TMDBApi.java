@@ -23,35 +23,35 @@ public class TMDBApi {
     private static final String API_KEY = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGEzNWQ1OGZkMTI0OTdiMTExZTRkZDFjNGE0YzAwNCIsInN1YiI6IjY0NDUyZGMwNjUxZmNmMDYxNzliZmY5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.expCnsMxBP9wfZab438BOkfl0VPQJftRFG7WPkSRyD0";
     private static final String language = "us-US";
 
-    public Movie getInfoMovie(int id) {
+    public static Movie getInfoMovie(int id) {
         if (id > 0)
             return getMovieDetails(id);
         else
             return getTVsInfo(Math.abs(id));
     }
 
-    public List<Person> getActorsByIdMovie(int id) {
+    public static List<Person> getActorsByIdMovie(int id) {
         if (id > 0)
             return getActorsByIdFilm(id);
         else
             return getActorsByIdTV(Math.abs(id));
     }
 
-    public List<ImageMovie> getImagesByIdMovie(int id) {
+    public static List<ImageMovie> getImagesByIdMovie(int id) {
         if (id > 0)
             return getImagesByIdFilm(id);
         else
             return getImagesByIdTV(Math.abs(id));
     }
 
-    public List<Movie> getSimilarMoviesById(int id) {
+    public static List<Movie> getSimilarMoviesById(int id) {
         if (id > 0)
             return getSimilarFilmsById(id);
         else
             return getSimilarTVById(Math.abs(id));
     }
 
-    private Movie getMovieDetails(int movieId) {
+    private static Movie getMovieDetails(int movieId) {
         OkHttpClient client = new OkHttpClient();
 
         String url = "https://api.themoviedb.org/3/movie/" + movieId + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -76,7 +76,7 @@ public class TMDBApi {
         }
     }
 
-    public List<Movie> getPopularMovies() {
+    public static List<Movie> getPopularMovies() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/movie/popular?" + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -107,7 +107,7 @@ public class TMDBApi {
         return movieList;
     }
 
-    public List<Person> getActorsByIdFilm(int idMovie) {
+    public static List<Person> getActorsByIdFilm(int idMovie) {
         OkHttpClient client = new OkHttpClient();
         List<Person> actors = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/movie/" + idMovie + "/credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -138,7 +138,7 @@ public class TMDBApi {
         return actors;
     }
 
-    private List<Movie> getSimilarFilmsById(int idMovie) {
+    private static List<Movie> getSimilarFilmsById(int idMovie) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/movie/" + idMovie + "/similar?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -168,7 +168,7 @@ public class TMDBApi {
         return movieList;
     }
 
-    public List<Person> getPopularActors() {
+    public static List<Person> getPopularActors() {
         OkHttpClient client = new OkHttpClient();
         List<Person> actors = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/person/popular?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -199,7 +199,7 @@ public class TMDBApi {
         return actors;
     }
 
-    public List<Movie> getSearchResultsMovie(String query) {
+    public static List<Movie> getSearchResultsMovie(String query) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movies = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/search/movie?language=" + language + "&query=" + query + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -231,7 +231,7 @@ public class TMDBApi {
     }
 
 
-    private List<ImageMovie> getImagesByIdFilm(int idMovie) {
+    private static List<ImageMovie> getImagesByIdFilm(int idMovie) {
         OkHttpClient client = new OkHttpClient();
         List<ImageMovie> images = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/movie/" + idMovie + "/images?api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -267,8 +267,7 @@ public class TMDBApi {
     }
 
 
-
-    public String getMovieTrailerUrl(int movieId) {
+    public static String getMovieTrailerUrl(int movieId) {
         OkHttpClient client = new OkHttpClient();
         String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
@@ -298,7 +297,7 @@ public class TMDBApi {
         return null;
     }
 
-    public List<Movie> getNowPlayingMovie() {
+    public static List<Movie> getNowPlayingMovie() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/movie/now_playing?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -329,7 +328,7 @@ public class TMDBApi {
         return movieList;
     }
 
-    public List<Movie> getPopularTVs() {
+    public static List<Movie> getPopularTVs() {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvs = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/tv/popular?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -361,7 +360,7 @@ public class TMDBApi {
     }
 
 
-    public Movie getTVsInfo(int idTV) {
+    public static Movie getTVsInfo(int idTV) {
         OkHttpClient client = new OkHttpClient();
         String url = "https://api.themoviedb.org/3/tv/" + idTV + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
 
@@ -385,7 +384,7 @@ public class TMDBApi {
         return null;
     }
 
-    public List<Person> getActorsByIdTV(int idTV) {
+    public static List<Person> getActorsByIdTV(int idTV) {
         OkHttpClient client = new OkHttpClient();
         List<Person> actors = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/tv/" + idTV + "/credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -416,7 +415,7 @@ public class TMDBApi {
         return actors;
     }
 
-    private List<Movie> getSimilarTVById(int idTV) {
+    private static List<Movie> getSimilarTVById(int idTV) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvs = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/tv/" + idTV + "/similar?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -448,7 +447,7 @@ public class TMDBApi {
     }
 
 
-    public List<ImageMovie> getImagesByIdTV(int idTV) {
+    public static List<ImageMovie> getImagesByIdTV(int idTV) {
         OkHttpClient client = new OkHttpClient();
         List<ImageMovie> images = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/tv/" + idTV + "/images?api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -478,7 +477,7 @@ public class TMDBApi {
         return images;
     }
 
-    public List<Movie> getSearchResultsTV(String query) {
+    public static List<Movie> getSearchResultsTV(String query) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvSeriesList = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/search/tv?query=" + query + "&language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -509,7 +508,7 @@ public class TMDBApi {
         return tvSeriesList;
     }
 
-    public Person getPersonById(int idPerson) {
+    public static Person getPersonById(int idPerson) {
         OkHttpClient client = new OkHttpClient();
         String url = "https://api.themoviedb.org/3/person/" + idPerson + "?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
         Request request = new Request.Builder()
@@ -532,7 +531,7 @@ public class TMDBApi {
         }
     }
 
-    public List<Movie> getMoviesByIdActor(int idActor) {
+    public static List<Movie> getMoviesByIdActor(int idActor) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> movieList = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/person/" + idActor + "/movie_credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -563,7 +562,7 @@ public class TMDBApi {
         return movieList;
     }
 
-    public List<Movie> getTVByIdActor(int idActor) {
+    public static List<Movie> getTVByIdActor(int idActor) {
         OkHttpClient client = new OkHttpClient();
         List<Movie> tvList = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/person/" + idActor + "/tv_credits?language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -583,7 +582,7 @@ public class TMDBApi {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
                     if (movie != null) {
-
+                        movie.setId(movie.getId() * (-1));
                         tvList.add(movie);
                     }
                 }
@@ -595,7 +594,7 @@ public class TMDBApi {
         return tvList;
     }
 
-    public List<ImageMovie> getImagesByIdActor(int idActor) {
+    public static List<ImageMovie> getImagesByIdActor(int idActor) {
         OkHttpClient client = new OkHttpClient();
         List<ImageMovie> images = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/person/" + idActor + "/images?api_key=1da35d58fd12497b111e4dd1c4a4c004";
@@ -626,7 +625,7 @@ public class TMDBApi {
         return images;
     }
 
-    public List<Person> getSearchResultsPerson(String query) {
+    public static List<Person> getSearchResultsPerson(String query) {
         OkHttpClient client = new OkHttpClient();
         List<Person> actors = new ArrayList<>();
         String url = "https://api.themoviedb.org/3/search/person?query=" + query + "&language=" + language + "&api_key=1da35d58fd12497b111e4dd1c4a4c004";

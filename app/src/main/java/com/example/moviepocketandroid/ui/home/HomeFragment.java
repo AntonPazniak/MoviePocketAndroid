@@ -21,7 +21,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
 import com.example.moviepocketandroid.adapter.RatingAdapter;
+import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
+import com.example.moviepocketandroid.api.models.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
@@ -35,13 +37,15 @@ public class HomeFragment extends Fragment {
     private List<Movie> movieInfoTMDBList;
     private FragmentHomeBinding binding;
     private int popularMovie;
+    private int idListMovie;
 
-    private TextView textTitlePopularMovie, textViewCinema;
+    private TextView textTitlePopularMovie, textViewCinema, textViewNameList;
     private ImageView imageBackMovie;
     private ImageView imagePosterMovie;
 
     private RecyclerView recyclerView;
     private RatingAdapter ratingAdapter;
+    private ImageView imageViewBack;
 
 
     @Override
@@ -64,8 +68,13 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
 
+
+        imageViewBack = view.findViewById(R.id.imageViewBack);
+        textViewNameList = view.findViewById(R.id.textViewNameList);
+
         Random random = new Random();
         popularMovie = random.nextInt(10);
+
 
         new Thread(new Runnable() {
             @Override
@@ -73,6 +82,13 @@ public class HomeFragment extends Fragment {
                 TMDBApi tmdbApi = new TMDBApi();
                 movieInfoTMDBList = tmdbApi.getPopularMovies();
                 List<Movie> nowPlayMovie = tmdbApi.getNowPlayingMovie();
+                MovieList movieList = MPListApi.getListById(2);
+                assert movieList != null;
+                idListMovie = random.nextInt(movieList.getIdMovies().size());
+
+                Movie movie = TMDBApi.getInfoMovie(movieList.getIdMovies().get(idListMovie));
+
+
                 if (!movieInfoTMDBList.isEmpty()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -103,18 +119,23 @@ public class HomeFragment extends Fragment {
                                 }
                             });
 
-//                            ratingAdapter = new RatingAdapter();
-//                            recyclerView.setAdapter(ratingAdapter);
-//                            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-//
-//                            recyclerView.smoothScrollToPosition(0);
-//
-//                            recyclerView.setLayoutManager(layoutManager);
-//
-//                            SnapHelper snapHelper = new LinearSnapHelper();
-//                            snapHelper.attachToRecyclerView(recyclerView);
-//
-//                            recyclerView.smoothScrollToPosition(1);
+                            Glide.with(requireContext())
+                                    .load(movie.getBackdropPath())
+                                    .apply(requestOptions)
+                                    .into(imageViewBack);
+                            textViewNameList.setVisibility(View.VISIBLE);
+                            textViewCinema.setVisibility(View.VISIBLE);
+
+                            imageViewBack.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Bundle args = new Bundle();
+                                    args.putInt("idList", 2);
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigate(R.id.action_navigation_home_to_movieListFragment, args);
+                                }
+
+                            });
 
 
                         }

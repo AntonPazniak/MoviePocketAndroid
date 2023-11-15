@@ -1,31 +1,37 @@
 package com.example.moviepocketandroid.api.models;
 
-import java.util.Date;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class MovieList {
-
+    @SerializedName("id")
     private int id;
-    private String title;
-    private String content;
-    private List<String> categoriesList;
-    private List<Integer> idMovies;
-    private int[] likeOrDis;
-    private String username;
-    private Date create;
-    private Date update;
 
-    public MovieList(int id, String title, String content, List<String> categoriesList, List<Integer> idMovies, int[] likeOrDis, String username, Date create, Date update) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.categoriesList = categoriesList;
-        this.idMovies = idMovies;
-        this.likeOrDis = likeOrDis;
-        this.username = username;
-        this.create = create;
-        this.update = update;
-    }
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("content")
+    private String content;
+
+    @SerializedName("categoriesList")
+    private List<String> categoriesList;
+
+    @SerializedName("idMovies")
+    private List<Integer> idMovies;
+
+    @SerializedName("likeOrDis")
+    private List<Integer> likeOrDis;
+
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("create")
+    private String create;
+
+    @SerializedName("update")
+    private String update;
+
 
     public int getId() {
         return id;
@@ -67,11 +73,11 @@ public class MovieList {
         this.idMovies = idMovies;
     }
 
-    public int[] getLikeOrDis() {
+    public List<Integer> getLikeOrDis() {
         return likeOrDis;
     }
 
-    public void setLikeOrDis(int[] likeOrDis) {
+    public void setLikeOrDis(List<Integer> likeOrDis) {
         this.likeOrDis = likeOrDis;
     }
 
@@ -83,19 +89,19 @@ public class MovieList {
         this.username = username;
     }
 
-    public Date getCreate() {
+    public String getCreate() {
         return create;
     }
 
-    public void setCreate(Date create) {
+    public void setCreate(String create) {
         this.create = create;
     }
 
-    public Date getUpdate() {
+    public String getUpdate() {
         return update;
     }
 
-    public void setUpdate(Date update) {
+    public void setUpdate(String update) {
         this.update = update;
     }
 }

@@ -83,7 +83,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
-            if (movie.getReleaseDate() != null)
+            if (movie.getReleaseDate() != null && movie.getReleaseDate().length() > 4)
                 textYear.setText(movie.getReleaseDate().substring(0, 4));
             StringBuilder genders = new StringBuilder();
             if (movie.getGenres() != null) {
