@@ -14,9 +14,9 @@ import okhttp3.Response;
 public class MPRatingApi {
 
     private static final String baseUrl = StringUnit.baseServerUrl;
-    private OkHttpClient client = new OkHttpClient();
+    private static OkHttpClient client = new OkHttpClient();
 
-    public int getRatingUserByIdMovie(int idMovie) {
+    public static int getRatingUserByIdMovie(int idMovie) {
         String url = baseUrl + "/movies/rating/get?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
@@ -40,7 +40,7 @@ public class MPRatingApi {
         return 0;
     }
 
-    public Boolean postRatingUserByIdMovie(int idMovie, int rating) {
+    public static Boolean postRatingUserByIdMovie(int idMovie, int rating) {
         String url = baseUrl + "/movies/rating/set";
 
         RequestBody requestBody = new FormBody.Builder()
@@ -65,7 +65,7 @@ public class MPRatingApi {
         return false;
     }
 
-    public Boolean delRatingUserByIdMovie(int idMovie) {
+    public static Boolean delRatingUserByIdMovie(int idMovie) {
         String url = baseUrl + "/movies/rating/del";
 
         RequestBody requestBody = new FormBody.Builder()

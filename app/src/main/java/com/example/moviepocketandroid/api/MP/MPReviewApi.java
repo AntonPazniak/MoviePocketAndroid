@@ -19,10 +19,10 @@ import okhttp3.Response;
 
 public class MPReviewApi {
 
-    String baseUrl = "http://moviepocket.projektstudencki.pl";
-    OkHttpClient client = new OkHttpClient();
+    private static String baseUrl = "http://moviepocket.projektstudencki.pl";
+    private static OkHttpClient client = new OkHttpClient();
 
-    public Review getReviewById(int idReview) {
+    public static Review getReviewById(int idReview) {
         Review review = null;
         String url = baseUrl + "/movies/review/get?idReview=" + idReview;
 
@@ -46,7 +46,7 @@ public class MPReviewApi {
         return review;
     }
 
-    public Boolean getAuthorship(int idReview) {
+    public static Boolean getAuthorship(int idReview) {
         String url = baseUrl + "/movies/review/getAuthorship?idReview=" + idReview;
 
         Request request = new Request.Builder()
@@ -68,7 +68,7 @@ public class MPReviewApi {
         return false;
     }
 
-    public List<Review> getReviewAllByIdMovie(int idMovie) {
+    public static List<Review> getReviewAllByIdMovie(int idMovie) {
         List<Review> reviews = new ArrayList<>();
         String url = baseUrl + "/movies/review/getAllByMovie?idMovie=" + idMovie;
 
@@ -101,7 +101,7 @@ public class MPReviewApi {
     }
 
 
-    public Boolean postReviewMovie(int idMovie, String title, String content) {
+    public static Boolean postReviewMovie(int idMovie, String title, String content) {
         List<Review> reviews = new ArrayList<>();
         String url = baseUrl + "/movies/review/set";
 
@@ -128,7 +128,7 @@ public class MPReviewApi {
         return false;
     }
 
-    public Boolean delReviewMovie(int idReview) {
+    public static Boolean delReviewMovie(int idReview) {
         String url = baseUrl + "/movies/review/del";
 
         RequestBody requestBody = new FormBody.Builder()
@@ -152,7 +152,7 @@ public class MPReviewApi {
         return false;
     }
 
-    public Boolean editReviewMovie(int idReview, String title, String content) {
+    public static Boolean editReviewMovie(int idReview, String title, String content) {
         String url = baseUrl + "/movies/review/up";
 
         RequestBody requestBody = new FormBody.Builder()
@@ -178,7 +178,7 @@ public class MPReviewApi {
         return false;
     }
 
-    public Boolean getLike(int idReview) {
+    public static Boolean getLike(int idReview) {
         String url = baseUrl + "/movies/review/getLike?idReview=" + idReview;
 
         Request request = new Request.Builder()
@@ -200,7 +200,7 @@ public class MPReviewApi {
         return null;
     }
 
-    public Boolean setLike(int idReview, Boolean likeOrDis) {
+    public static Boolean setLike(int idReview, Boolean likeOrDis) {
         String url = baseUrl + "/movies/review/setLike";
 
         RequestBody requestBody = new FormBody.Builder()
@@ -227,7 +227,7 @@ public class MPReviewApi {
         return false;
     }
 
-    public int[] getCountLikes(int idReview) {
+    public static int[] getCountLikes(int idReview) {
         String url = baseUrl + "/movies/review/getAllLike?idReview=" + idReview;
 
         Request request = new Request.Builder()

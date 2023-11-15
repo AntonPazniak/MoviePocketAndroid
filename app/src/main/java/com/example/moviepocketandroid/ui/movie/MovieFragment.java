@@ -36,12 +36,13 @@ import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.ImageMovie;
-import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.ui.dialog.RatingDialog;
 import com.example.moviepocketandroid.util.ButtonUntil;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -65,6 +66,14 @@ public class MovieFragment extends Fragment {
     private Button button2, button;
     private View view;
     private Context context;
+    private Movie movie;
+    private List<Person> actors;
+    private List<Movie> similarMovies;
+    private List<ImageMovie> images;
+    private String movieTrailerUrl;
+    private Boolean isAuthentication;
+    private List<Review> reviews;
+    private int idMovie, rating;
 
 
     public static MovieFragment newInstance() {
@@ -121,85 +130,55 @@ public class MovieFragment extends Fragment {
 
         context = view.getContext();
         this.view = view;
+        if (savedInstanceState != null) {
+            movie = (Movie) savedInstanceState.getSerializable("movie");
+            images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
+            similarMovies = (List<Movie>) savedInstanceState.getSerializable("similarMovies");
+            actors = (List<Person>) savedInstanceState.getSerializable("actors");
+            reviews = (List<Review>) savedInstanceState.getSerializable("reviews");
+            idMovie = savedInstanceState.getInt("idMovie");
+            movieTrailerUrl = savedInstanceState.getString("movieTrailerUrl");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    isAuthentication = MPAuthenticationApi.checkAuth();
+                    if (movie != null && isAdded()) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setInfo();
+                            }
+                        });
+                    }
+                }
+            }).start();
+
+        }
 
         Bundle args = getArguments();
         if (args != null) {
-            int idMovie = args.getInt("idMovie");
+            idMovie = args.getInt("idMovie");
             loadMovieDetails(idMovie);
         }
-
-
-        textOverview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isExpanded) {
-                    textOverview.setMaxLines(5);
-                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
-                } else {
-                    textOverview.setMaxLines(Integer.MAX_VALUE);
-                    textOverview.setEllipsize(null);
-                }
-                isExpanded = !isExpanded;
-            }
-        });
-
     }
-
     private void loadMovieDetails(int idMovie) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                TMDBApi tmdbApi = new TMDBApi();
-                Movie movieInfoTMDB = tmdbApi.getInfoMovie(idMovie);
-                List<Person> actors = tmdbApi.getActorsByIdMovie(idMovie);
-                List<Movie> movies = tmdbApi.getSimilarMoviesById(idMovie);
-                List<ImageMovie> images = tmdbApi.getImagesByIdMovie(idMovie);
-                String movieTrailerUrl = tmdbApi.getMovieTrailerUrl(idMovie);
-                Boolean isAuthentication = MPAuthenticationApi.checkAuth();
+                movie = TMDBApi.getInfoMovie(idMovie);
+                actors = TMDBApi.getActorsByIdMovie(idMovie);
+                similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
+                images = TMDBApi.getImagesByIdMovie(idMovie);
+                movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
+                isAuthentication = MPAuthenticationApi.checkAuth();
+                reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
 
-
-                MPReviewApi mpApi = new MPReviewApi();
-                List<Review> reviews = mpApi.getReviewAllByIdMovie(idMovie);
-
-                MPRatingApi mpRatingApi = new MPRatingApi();
-                int rating = mpRatingApi.getRatingUserByIdMovie(idMovie);
-
-                if (movieInfoTMDB != null && isAdded()) {
+                if (movie != null && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (isAuthentication) {
-                                setButtons(movieInfoTMDB);
-                                RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
-                                button2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Bundle args = new Bundle();
-                                        args.putInt("idMovie", movieInfoTMDB.getId());
-
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
-                                    }
-                                });
-                                button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Bundle args = new Bundle();
-                                        args.putInt("idMovie", movieInfoTMDB.getId());
-
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
-                                    }
-                                });
-                            }
-                            setPosterAndTitle(movieInfoTMDB);
-                            setMovieInfo(movieInfoTMDB);
-                            setMovieRating(movieInfoTMDB);
-                            setMovieTrailer(movieTrailerUrl);
-                            setMovieImages(images);
-                            setMovieActors(actors);
-                            setMovieSimilar(movies);
-                            setMovieReview(reviews);
+                            setInfo();
                         }
                     });
                 }
@@ -207,6 +186,60 @@ public class MovieFragment extends Fragment {
         }).start();
     }
 
+    private void setInfo() {
+        setButtonsReview();
+        setPosterAndTitle(movie);
+        setMovieInfo(movie);
+        setMovieRating(movie);
+        setMovieTrailer(movieTrailerUrl);
+        setMovieImages(images);
+        setMovieActors(actors);
+        setMovieSimilar(similarMovies);
+        setMovieReview(reviews);
+    }
+
+    private void setButtonsReview() {
+        if (isAuthentication) {
+
+            setButtons(movie);
+            RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
+            button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", movie.getId());
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                }
+            });
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", movie.getId());
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
+                }
+            });
+        } else {
+            button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                }
+            });
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                }
+            });
+        }
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -273,6 +306,19 @@ public class MovieFragment extends Fragment {
             }
             textCategories.setText(genders);
         }
+        textOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExpanded) {
+                    textOverview.setMaxLines(5);
+                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textOverview.setMaxLines(Integer.MAX_VALUE);
+                    textOverview.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
+            }
+        });
     }
 
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
@@ -393,5 +439,15 @@ public class MovieFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("movie", (Serializable) movie);
+        outState.putSerializable("images", (Serializable) images);
+        outState.putSerializable("similarMovies", (Serializable) similarMovies);
+        outState.putSerializable("actors", (Serializable) actors);
+        outState.putSerializable("reviews", (Serializable) reviews);
+        outState.putInt("idMovie", idMovie);
+        outState.putString("movieTrailerUrl", movieTrailerUrl);
+    }
 }
