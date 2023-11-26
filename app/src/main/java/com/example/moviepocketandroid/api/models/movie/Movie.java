@@ -1,8 +1,13 @@
 package com.example.moviepocketandroid.api.models.movie;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class Movie implements Serializable {
@@ -218,8 +223,24 @@ public class Movie implements Serializable {
         return productionCountries;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public Date getReleaseDate() {
+        try {
+            String date;
+            if (id > 0) {
+                date = releaseDate;
+            } else {
+                date = firstAirDate;
+            }
+            if (!date.isEmpty()) {
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                return dateFormat.parse(date);
+            } else {
+                return null;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public int getRevenue() {

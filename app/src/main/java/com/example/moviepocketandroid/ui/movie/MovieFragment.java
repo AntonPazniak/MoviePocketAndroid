@@ -44,6 +44,7 @@ import com.example.moviepocketandroid.util.ButtonUntil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MovieFragment extends Fragment {
@@ -130,13 +131,17 @@ public class MovieFragment extends Fragment {
 
         context = view.getContext();
         this.view = view;
+
+        Bundle args = getArguments();
+        if (args != null) {
+            idMovie = args.getInt("idMovie");
+        }
         if (savedInstanceState != null) {
             movie = (Movie) savedInstanceState.getSerializable("movie");
             images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
             similarMovies = (List<Movie>) savedInstanceState.getSerializable("similarMovies");
             actors = (List<Person>) savedInstanceState.getSerializable("actors");
             reviews = (List<Review>) savedInstanceState.getSerializable("reviews");
-            idMovie = savedInstanceState.getInt("idMovie");
             movieTrailerUrl = savedInstanceState.getString("movieTrailerUrl");
             new Thread(new Runnable() {
                 @Override
@@ -149,30 +154,30 @@ public class MovieFragment extends Fragment {
                                 setInfo();
                             }
                         });
-                    }
+                    } else
+                        loadMovieDetails(idMovie);
                 }
             }).start();
 
-        }
-
-        Bundle args = getArguments();
-        if (args != null) {
-            idMovie = args.getInt("idMovie");
+        } else
             loadMovieDetails(idMovie);
-        }
+
+
     }
     private void loadMovieDetails(int idMovie) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                movie = TMDBApi.getInfoMovie(idMovie);
-                actors = TMDBApi.getActorsByIdMovie(idMovie);
-                similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
-                images = TMDBApi.getImagesByIdMovie(idMovie);
-                movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
                 isAuthentication = MPAuthenticationApi.checkAuth();
-                reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
-                rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
+                if (movie == null) {
+                    movie = TMDBApi.getInfoMovie(idMovie);
+                    actors = TMDBApi.getActorsByIdMovie(idMovie);
+                    similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
+                    images = TMDBApi.getImagesByIdMovie(idMovie);
+                    movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
+                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                    rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
+                }
 
                 if (movie != null && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
@@ -240,6 +245,7 @@ public class MovieFragment extends Fragment {
             });
         }
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -248,21 +254,31 @@ public class MovieFragment extends Fragment {
     }
 
     private void setButtons(Movie movie) {
-        ButtonUntil buttonUntil;
-        if (movie.getStatus().equals("Planned")) {
-            imageBinoculars.setVisibility(View.VISIBLE);
-            imageBackPack.setVisibility(View.VISIBLE);
-            imageEye.setVisibility(View.GONE);
-            imageLike.setVisibility(View.GONE);
-            buttonUntil = new ButtonUntil(imageBackPack, imageBinoculars, movie.getId());
+        if (movie.getReleaseDate() != null && movie.getReleaseDate().after(new Date())) {
+            movieNotReleased();
         } else {
-            imageEye.setVisibility(View.VISIBLE);
-            imageLike.setVisibility(View.VISIBLE);
-            imageBackPack.setVisibility(View.VISIBLE);
-            imageBinoculars.setVisibility(View.GONE);
-            buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack, movie.getId());
+            movieReleased();
         }
     }
+
+    private void movieNotReleased() {
+        ButtonUntil buttonUntil;
+        imageBinoculars.setVisibility(View.VISIBLE);
+        imageBackPack.setVisibility(View.VISIBLE);
+        imageEye.setVisibility(View.GONE);
+        imageLike.setVisibility(View.GONE);
+        buttonUntil = new ButtonUntil(imageBackPack, imageBinoculars, movie.getId());
+    }
+
+    private void movieReleased() {
+        ButtonUntil buttonUntil;
+        imageEye.setVisibility(View.VISIBLE);
+        imageLike.setVisibility(View.VISIBLE);
+        imageBackPack.setVisibility(View.VISIBLE);
+        imageBinoculars.setVisibility(View.GONE);
+        buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack, movie.getId());
+    }
+
 
     private void setPosterAndTitle(Movie movie) {
         RequestOptions requestOptions = new RequestOptions()
@@ -291,10 +307,11 @@ public class MovieFragment extends Fragment {
         }
         StringBuilder genders = new StringBuilder();
         if (movie.getReleaseDate() != null) {
+            int year = movie.getReleaseDate().getYear() + 1900;
             if (movie.getId() > 0) {
-                textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", " + movie.getRuntime() + " mins");
+                textMinutes.setText(year + ", " + movie.getRuntime() + " mins");
             } else {
-                textMinutes.setText(movie.getReleaseDate().substring(0, 4) + ", Seasons: " + movie.getSeasons().size());
+                textMinutes.setText(year + ", Seasons: " + movie.getSeasons().size());
             }
         }
 
@@ -365,7 +382,7 @@ public class MovieFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setMovieImages(List<ImageMovie> images) {
-        if (images.size() > 0) {
+        if (images != null) {
             textImages.setText("Images:");
             movieImagesAdapter = new ImagesAdapter(images);
             imagesRecyclerView.setAdapter(movieImagesAdapter);
@@ -377,7 +394,7 @@ public class MovieFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setMovieActors(List<Person> actors) {
-        if (actors.size() > 0) {
+        if (actors != null) {
             textActorsRecyclerView.setText("Actors:");
             actorsAdapter = new ActorsAdapter(actors);
             actorsRecyclerView.setAdapter(actorsAdapter);
@@ -400,7 +417,7 @@ public class MovieFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setMovieSimilar(List<Movie> movies) {
-        if (movies.size() > 0) {
+        if (movies != null) {
             textMoviesRecyclerView.setText("Similar:");
             movieAdapter = new MovieAdapter(movies);
             moviesRecyclerView.setAdapter(movieAdapter);
@@ -421,7 +438,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void setMovieReview(List<Review> reviews) {
-        if (reviews.size() > 0) {
+        if (reviews != null) {
             reviewAdapter = new ReviewAdapter(reviews);
             reviewRecyclerView.setAdapter(reviewAdapter);
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -447,7 +464,6 @@ public class MovieFragment extends Fragment {
         outState.putSerializable("similarMovies", (Serializable) similarMovies);
         outState.putSerializable("actors", (Serializable) actors);
         outState.putSerializable("reviews", (Serializable) reviews);
-        outState.putInt("idMovie", idMovie);
         outState.putString("movieTrailerUrl", movieTrailerUrl);
     }
 }

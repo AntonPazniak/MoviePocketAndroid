@@ -122,16 +122,14 @@ public class UserFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                MPAssessmentApi mpAssessmentAPI = new MPAssessmentApi();
-
+                favoritesArr = MPAssessmentApi.getAllFavoriteMovie();
+                toWatchArr = MPAssessmentApi.getAllToWatchMovie();
+                watchedArr = MPAssessmentApi.getAllWatchedMovie();
                 user = MPUserApi.getUserInfo();
 
                 favorites = new ArrayList<>();
                 toWatch = new ArrayList<>();
                 watched = new ArrayList<>();
-
-                favoritesArr = mpAssessmentAPI.getAllFavoriteMovie();
                 int numMoviesToDisplay = Math.min(6, favoritesArr.length);
                 for (int i = favoritesArr.length - 1; i >= favoritesArr.length - numMoviesToDisplay; i--) {
                     Movie movie = TMDBApi.getInfoMovie(favoritesArr[i]);
@@ -139,8 +137,6 @@ public class UserFragment extends Fragment {
                         favorites.add(movie);
                     }
                 }
-
-                toWatchArr = mpAssessmentAPI.getAllToWatchMovie();
                 numMoviesToDisplay = Math.min(6, toWatchArr.length);
                 for (int i = toWatchArr.length - 1; i >= toWatchArr.length - numMoviesToDisplay; i--) {
                     Movie movie = TMDBApi.getInfoMovie(toWatchArr[i]);
@@ -148,25 +144,23 @@ public class UserFragment extends Fragment {
                         toWatch.add(movie);
                     }
                 }
-
-                watchedArr = mpAssessmentAPI.getAllWatchedMovie();
                 numMoviesToDisplay = Math.min(6, watchedArr.length);
                 for (int i = watchedArr.length - 1; i >= watchedArr.length - numMoviesToDisplay; i--) {
                     Movie movie = TMDBApi.getInfoMovie(watchedArr[i]);
                     if (movie != null) {
                         watched.add(movie);
                     }
-                }
 
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void run() {
+                                setInfo();
+                            }
+                        });
 
-                if (isAdded()) {
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void run() {
-                            setInfo();
-                        }
-                    });
+                    }
                 }
             }
         }).start();

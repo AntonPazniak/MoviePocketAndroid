@@ -99,7 +99,7 @@ public class MovieTokAdapter extends RecyclerView.Adapter<MovieTokAdapter.MovieV
                     .apply(requestOptions)
                     .into(imageViewPoster);
             textViewTitle.setText(movie.getTitle());
-            textViewReleaseDate.setText(movie.getReleaseDate());
+            textViewReleaseDate.setText(movie.getReleaseDate().toString());
             textViewOverview.setText(movie.getOverview());
             StringBuilder s = new StringBuilder();
 //            if (!movie.getProductionCountries().isEmpty()) {

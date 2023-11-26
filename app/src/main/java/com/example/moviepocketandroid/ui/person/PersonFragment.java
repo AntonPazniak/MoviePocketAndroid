@@ -104,10 +104,12 @@ public class PersonFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                person = TMDBApi.getPersonById(idPerson);
-                movies = TMDBApi.getMoviesByIdActor(idPerson);
-                tvSeries = TMDBApi.getTVByIdActor(idPerson);
-                images = TMDBApi.getImagesByIdActor(idPerson);
+                if (person == null) {
+                    person = TMDBApi.getPersonById(idPerson);
+                    movies = TMDBApi.getMoviesByIdActor(idPerson);
+                    tvSeries = TMDBApi.getTVByIdActor(idPerson);
+                    images = TMDBApi.getImagesByIdActor(idPerson);
+                }
 
                 if (person != null && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {

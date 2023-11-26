@@ -87,13 +87,14 @@ public class HomeFragment extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    moviePopular = TMDBApi.getPopularMovies();
-                    nowPlayMovie = TMDBApi.getNowPlayingMovie();
-                    movieList = MPListApi.getListById(2);
-                    assert movieList != null;
-
-                    movieFromLIst = TMDBApi.getInfoMovie(movieList.getIdMovies().get(idListMovie));
-
+                    if (moviePopular == null) {
+                        moviePopular = TMDBApi.getPopularMovies();
+                        nowPlayMovie = TMDBApi.getNowPlayingMovie();
+                        movieList = MPListApi.getListById(2);
+                        if (movieList != null) {
+                            movieFromLIst = TMDBApi.getInfoMovie(movieList.getIdMovies().get(idListMovie));
+                        }
+                    }
 
                     if (!moviePopular.isEmpty()) {
                         requireActivity().runOnUiThread(new Runnable() {

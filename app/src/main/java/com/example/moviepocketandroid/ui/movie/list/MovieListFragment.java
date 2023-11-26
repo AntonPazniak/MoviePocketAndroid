@@ -98,7 +98,6 @@ public class MovieListFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 movieList = MPListApi.getListById(idList);
                 if (movieList != null) {
                     for (int i : movieList.getIdMovies())
@@ -151,7 +150,7 @@ public class MovieListFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setMovie() {
-        if (movies.size() > 0) {
+        if (movies != null) {
             movieAdapter = new MovieAdapter(movies);
             recyclerViewList.setAdapter(movieAdapter);
 

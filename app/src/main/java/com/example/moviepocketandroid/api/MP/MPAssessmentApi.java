@@ -193,7 +193,6 @@ public class MPAssessmentApi {
 
     public static String postWatchedMovie(int idMovie) {
         String url = baseUrl + "/movies/watched/set";
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idMovie", String.valueOf(idMovie))
@@ -238,6 +237,55 @@ public class MPAssessmentApi {
             e.printStackTrace();
         }
         return new int[]{};
+    }
+
+
+    public static Boolean postMovieTracing(int idMovie) {
+        String url = baseUrl + "/movies/tracking/set";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idMovie", String.valueOf(idMovie))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Boolean getMovieTracing(int idMovie) {
+        String url = baseUrl + "/movies/tracking/get?idMovie=" + idMovie;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, Boolean.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
