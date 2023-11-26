@@ -1,6 +1,7 @@
 package com.example.moviepocketandroid.adapter;
 
-import android.graphics.drawable.GradientDrawable;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,13 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -47,18 +49,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movies.get(position);
         holder.bind(movie);
-
-        // Set desired width and height for the movie item (if needed)
-        int desiredWidthDp = 115;
-        int desiredHeightDp = 200;
-        float density = holder.itemView.getResources().getDisplayMetrics().density;
-        int desiredWidthPx = (int) (desiredWidthDp * density);
-    int desiredHeightPx = (int) (desiredHeightDp * density);
-    ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-    layoutParams.width = desiredWidthPx;
-    layoutParams.height = desiredHeightPx;
-        holder.itemView.setLayoutParams(layoutParams);
-}
+    }
 
     @Override
     public int getItemCount() {
@@ -70,6 +61,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private TextView textTitleMovie;
         private TextView textGenre;
         private TextView textRatingPoster;
+        private Context context;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,8 +69,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             textTitleMovie = itemView.findViewById(R.id.textNameActor);
             textGenre = itemView.findViewById(R.id.textGenre);
             textRatingPoster = itemView.findViewById(R.id.textRatingPoster);
+            context = itemView.getContext();
         }
 
+        @SuppressLint("ResourceAsColor")
         public void bind(Movie movie) {
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
@@ -87,24 +81,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
-            if (!movie.getGenres().isEmpty())
-                textGenre.setText(movie.getGenres().get(0));
+            if (movie.getGenres() != null)
+                textGenre.setText(movie.getGenres().get(0).getName());
             double rating = movie.getVoteAverage();
             DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
             int backgroundColor;
             if (rating >= 8) {
-                backgroundColor = android.graphics.Color.parseColor("#F1B36E");
-            } else if (rating >= 5) {
-                backgroundColor = android.graphics.Color.parseColor("#75FBE2");
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.logoYellow));
+            } else if (rating > 4) {
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.logoBlue));
             } else {
-                backgroundColor = android.graphics.Color.parseColor("#E4416A");
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.logoPink));
             }
 
-            GradientDrawable backgroundDrawable = new GradientDrawable();
-            backgroundDrawable.setColor(backgroundColor);
-
-            textRatingPoster.setBackground(backgroundDrawable);
             textRatingPoster.setText(decimalFormat.format(rating));
 
             itemView.setOnClickListener(new View.OnClickListener() {

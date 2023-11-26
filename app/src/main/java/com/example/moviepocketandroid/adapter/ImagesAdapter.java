@@ -18,18 +18,18 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.MovieImage;
+import com.example.moviepocketandroid.api.models.ImageMovie;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.MovieImageViewHolder> {
 
-    private List<MovieImage> movieImages;
+    private List<ImageMovie> movieImages;
     private List<Integer> imageWidths;
     private List<Integer> imageHeights;
 
-    public ImagesAdapter(List<MovieImage> movieImages) {
+    public ImagesAdapter(List<ImageMovie> movieImages) {
         this.movieImages = movieImages;
         imageWidths = new ArrayList<>();
         imageHeights = new ArrayList<>();
@@ -44,7 +44,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.MovieImage
 
     @Override
     public void onBindViewHolder(@NonNull MovieImageViewHolder holder, int position) {
-        MovieImage movieImage = movieImages.get(position);
+        ImageMovie movieImage = movieImages.get(position);
 
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);

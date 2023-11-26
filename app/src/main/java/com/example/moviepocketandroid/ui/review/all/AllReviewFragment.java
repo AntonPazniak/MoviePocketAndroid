@@ -1,7 +1,5 @@
 package com.example.moviepocketandroid.ui.review.all;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,9 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
-import com.example.moviepocketandroid.api.MP.MPAuthenticationAPI;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.models.review.Review;
 

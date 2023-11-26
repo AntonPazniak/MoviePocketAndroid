@@ -21,7 +21,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/moviesRecyclerView"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="180dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"

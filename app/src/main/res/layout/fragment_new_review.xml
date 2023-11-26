@@ -72,6 +72,7 @@
             android:gravity="top"
             android:textColor="@color/white" />
 
+
     </LinearLayout>
 
 </FrameLayout>
