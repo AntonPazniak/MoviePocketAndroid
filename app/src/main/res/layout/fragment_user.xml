@@ -13,79 +13,94 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|start"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textViewUsername"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@color/logoPink"
-                android:textSize="25sp" />
-
-            <ImageButton
-                android:id="@+id/imageButtonSettings"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="end"
-                android:background="@color/black"
-                android:padding="10dp"
-                android:src="@drawable/settings" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <include
-                android:id="@+id/textView0"
-                layout="@layout/item_text" />
-
-        </LinearLayout>
-
-        <include
-            android:id="@+id/itemRecyclerViewMovie0"
-            layout="@layout/item_recycler_view_movie_user" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-
-            <include
-                android:id="@+id/textView1"
-                layout="@layout/item_text" />
-
-        </LinearLayout>
-
-        <include
-            android:id="@+id/itemRecyclerViewMovie1"
-            layout="@layout/item_recycler_view_movie_user" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <include
-                android:id="@+id/textView2"
-                layout="@layout/item_text"
+            <LinearLayout
                 android:layout_width="match_parent"
-                tools:ignore="IncludeLayoutParam" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:orientation="horizontal">
 
-        <include
-            android:id="@+id/itemRecyclerViewMovie2"
-            layout="@layout/item_recycler_view_movie_user" />
+                    <TextView
+                        android:id="@+id/textViewUsername"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="@color/logoPink"
+                        android:textSize="25sp" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonSettings"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="end"
+                        android:background="@color/black"
+                        android:padding="10dp"
+                        android:src="@drawable/settings" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/textView0"
+                        layout="@layout/item_text" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/itemRecyclerViewMovie0"
+                    layout="@layout/item_recycler_view_movie_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <include
+                        android:id="@+id/textView1"
+                        layout="@layout/item_text" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/itemRecyclerViewMovie1"
+                    layout="@layout/item_recycler_view_movie_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/textView2"
+                        layout="@layout/item_text"
+                        android:layout_width="match_parent"
+                        tools:ignore="IncludeLayoutParam" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/itemRecyclerViewMovie2"
+                    layout="@layout/item_recycler_view_movie_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
 
 
     </LinearLayout>

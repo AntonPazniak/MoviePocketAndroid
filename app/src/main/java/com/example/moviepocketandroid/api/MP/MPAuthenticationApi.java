@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api.MP;
 
 import android.webkit.CookieManager;
 
+import com.example.moviepocketandroid.util.StringUnit;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import okhttp3.Response;
 
 public class MPAuthenticationApi {
 
-    private static String baseUrl = "http://moviepocket.projektstudencki.pl";
+    private static final String baseUrl = StringUnit.baseServerUrl;
 
     public static String getCookies() {
         CookieManager cookieManager = CookieManager.getInstance();
@@ -48,7 +49,7 @@ public class MPAuthenticationApi {
         return false;
     }
 
-    public boolean postLogin(String email, String password) {
+    public static boolean postLogin(String email, String password) {
         OkHttpClient client = new OkHttpClient();
         String url = baseUrl + "/login";
 
@@ -83,7 +84,7 @@ public class MPAuthenticationApi {
         return false;
     }
 
-    public boolean postRegistration(String username, String email, String password) {
+    public static boolean postRegistration(String username, String email, String password) {
         OkHttpClient client = new OkHttpClient();
         String url = baseUrl + "/registration";
 
@@ -111,7 +112,7 @@ public class MPAuthenticationApi {
         return false;
     }
 
-    public Boolean existsUserByEmail(String email) {
+    public static Boolean existsUserByEmail(String email) {
         OkHttpClient client = new OkHttpClient();
         String url = baseUrl + "/registration/exist/email?email=" + email;
 
@@ -135,7 +136,7 @@ public class MPAuthenticationApi {
         return false;
     }
 
-    public Boolean existsUserByUsername(String username) {
+    public static Boolean existsUserByUsername(String username) {
         OkHttpClient client = new OkHttpClient();
         String url = baseUrl + "/registration/exist/username?username=" + username;
 
@@ -160,7 +161,7 @@ public class MPAuthenticationApi {
     }
 
 
-    public boolean postLostPassword(String username) {
+    public static boolean postLostPassword(String username) {
         OkHttpClient client = new OkHttpClient();
         String url = baseUrl + "/lostpassword/setEmail";
 

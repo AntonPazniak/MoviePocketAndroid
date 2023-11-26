@@ -3,6 +3,10 @@ package com.example.moviepocketandroid.ui.search.searchResults;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,18 +16,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.search.ActorSearchAdapter;
 import com.example.moviepocketandroid.adapter.search.SearchAdapter;
-import com.example.moviepocketandroid.api.models.Actor;
-import com.example.moviepocketandroid.api.models.Movie;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
+import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class SearchResultsFragment extends Fragment {
@@ -36,7 +36,7 @@ public class SearchResultsFragment extends Fragment {
     private TextView textMovies, textTVs, textPersons;
 
     private List<Movie> movies;
-    private List<Actor> actors;
+    private List<Person> actors;
     private List<Movie> tvSeries;
 
     private boolean isMovies = true;
@@ -64,11 +64,19 @@ public class SearchResultsFragment extends Fragment {
         textTVs = view.findViewById(R.id.textTVs);
         textPersons = view.findViewById(R.id.textPersons);
 
-        Bundle args = getArguments();
-        if (args != null) {
-            String query = args.getString("query");
-            loadMovieDetails(query);
-            textQuery.setText("Results: " + query);
+
+        if (savedInstanceState != null) {
+            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+            actors = (List<Person>) savedInstanceState.getSerializable("actors");
+            tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
+            setInfo();
+        } else {
+            Bundle args = getArguments();
+            if (args != null) {
+                String query = args.getString("query");
+                loadMovieDetails(query);
+                textQuery.setText("Results: " + query);
+            }
         }
 
 
@@ -78,81 +86,83 @@ public class SearchResultsFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                TMDBApi movieTMDBApi = new TMDBApi();
-                movies = movieTMDBApi.getSearchResultsMovie(query);
-                tvSeries = movieTMDBApi.getSearchResultsTV(query);
-                System.out.println(tvSeries.size());
-                actors = movieTMDBApi.getSearchResultsPerson(query);
+                movies = TMDBApi.getSearchResultsMovie(query);
+                tvSeries = TMDBApi.getSearchResultsTV(query);
+                actors = TMDBApi.getSearchResultsPerson(query);
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (movies != null) {
-                            searchAdapter = new SearchAdapter(movies);
-                            searchRecyclerView.setAdapter(searchAdapter);
-                            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-                            searchRecyclerView.setLayoutManager(layoutManager2);
-                            searchAdapter.setOnMovieClickListener(new SearchAdapter.OnMovieClickListener() {
-                                @Override
-                                public void onMovieClick(int movieId) {
-                                    Bundle args = new Bundle();
-                                    args.putInt("idMovie", movieId);
-
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigate(R.id.action_searchResultsFragment_to_movieFragment, args);
-                                }
-                            });
-                        }
-                        textMovies.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (!isMovies) {
-                                    isMovies = true;
-                                    isPersons = false;
-                                    isTVs = false;
-                                    textMovies.setTextColor(Color.parseColor("#E4416A"));
-                                    textTVs.setTextColor(Color.parseColor("#75FBE2"));
-                                    textPersons.setTextColor(Color.parseColor("#75FBE2"));
-                                    setMovie();
-
-                                }
-                            }
-                        });
-
-                        textTVs.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (!isTVs) {
-                                    isTVs = true;
-                                    isPersons = false;
-                                    isMovies = false;
-                                    textMovies.setTextColor(Color.parseColor("#75FBE2"));
-                                    textTVs.setTextColor(Color.parseColor("#E4416A"));
-                                    textPersons.setTextColor(Color.parseColor("#75FBE2"));
-                                    setTV();
-
-                                }
-                            }
-                        });
-
-                        textPersons.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (!isPersons) {
-                                    isPersons = true;
-                                    isTVs = false;
-                                    isMovies = false;
-                                    textMovies.setTextColor(Color.parseColor("#75FBE2"));
-                                    textTVs.setTextColor(Color.parseColor("#75FBE2"));
-                                    textPersons.setTextColor(Color.parseColor("#E4416A"));
-                                    setPerson();
-                                }
-                            }
-                        });
-
+                        setInfo();
                     }
                 });
             }
         }).start();
+    }
+
+
+    private void setInfo() {
+        if (movies != null) {
+            searchAdapter = new SearchAdapter(movies);
+            searchRecyclerView.setAdapter(searchAdapter);
+            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+            searchRecyclerView.setLayoutManager(layoutManager2);
+            searchAdapter.setOnMovieClickListener(new SearchAdapter.OnMovieClickListener() {
+                @Override
+                public void onMovieClick(int movieId) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", movieId);
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_searchResultsFragment_to_movieFragment, args);
+                }
+            });
+        }
+        textMovies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isMovies) {
+                    isMovies = true;
+                    isPersons = false;
+                    isTVs = false;
+                    textMovies.setTextColor(Color.parseColor("#E4416A"));
+                    textTVs.setTextColor(Color.parseColor("#75FBE2"));
+                    textPersons.setTextColor(Color.parseColor("#75FBE2"));
+                    setMovie();
+
+                }
+            }
+        });
+
+        textTVs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isTVs) {
+                    isTVs = true;
+                    isPersons = false;
+                    isMovies = false;
+                    textMovies.setTextColor(Color.parseColor("#75FBE2"));
+                    textTVs.setTextColor(Color.parseColor("#E4416A"));
+                    textPersons.setTextColor(Color.parseColor("#75FBE2"));
+                    setTV();
+
+                }
+            }
+        });
+
+        textPersons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isPersons) {
+                    isPersons = true;
+                    isTVs = false;
+                    isMovies = false;
+                    textMovies.setTextColor(Color.parseColor("#75FBE2"));
+                    textTVs.setTextColor(Color.parseColor("#75FBE2"));
+                    textPersons.setTextColor(Color.parseColor("#E4416A"));
+                    setPerson();
+                }
+            }
+        });
     }
 
     private void setMovie() {
@@ -211,6 +221,14 @@ public class SearchResultsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // TODO: Use the ViewModel
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("movies", (Serializable) movies);
+        outState.putSerializable("actors", (Serializable) actors);
+        outState.putSerializable("tvSeries", (Serializable) tvSeries);
     }
 
 }

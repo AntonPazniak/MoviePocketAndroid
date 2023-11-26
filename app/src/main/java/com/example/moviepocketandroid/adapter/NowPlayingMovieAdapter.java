@@ -1,6 +1,5 @@
 package com.example.moviepocketandroid.adapter;
 
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class NowPlayingMovieAdapter extends RecyclerView.Adapter<NowPlayingMovieAdapter.NowPlayingMovieViewHolder> {
@@ -84,7 +82,7 @@ public class NowPlayingMovieAdapter extends RecyclerView.Adapter<NowPlayingMovie
 
             textViewTitle.setText(movie.getTitle());
             StringBuilder genders = new StringBuilder();
-            if (!movie.getGenres().isEmpty()) {
+            if (movie.getGenres() != null) {
                 genders.append(movie.getGenres().get(0));
                 for (int i = 1; i < movie.getGenres().size(); i++) {
                     genders.append(", ");

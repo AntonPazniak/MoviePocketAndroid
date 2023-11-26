@@ -20,7 +20,7 @@ import androidx.navigation.Navigation;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
-import com.example.moviepocketandroid.api.models.User;
+import com.example.moviepocketandroid.api.models.user.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 

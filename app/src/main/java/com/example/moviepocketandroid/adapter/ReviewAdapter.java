@@ -3,6 +3,7 @@ package com.example.moviepocketandroid.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,6 +65,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         private TextView textContent;
         private TextView textUsername;
         private TextView textDate;
+        private ImageView imageViewAvatar;
         private int idReview;
 
         public ReviewViewHolder(@NonNull View itemView) {
@@ -78,7 +80,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             textTitle.setText(review.getTitle());
             textContent.setText(review.getContent());
             textUsername.setText(review.getUsername());
-            textDate.setText(review.getDataCreated());
+            textDate.setText(review.getDataCreated().toString());
             idReview = Math.toIntExact(review.getId());
         }
     }

@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.util.List;
 
@@ -83,10 +83,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
-            if(movie.getReleaseDate().length()>4)
-                textYear.setText(movie.getReleaseDate().substring(0, 4));
+            if (movie.getReleaseDate() != null) {
+                int year = movie.getReleaseDate().getYear() + 1900;
+                textYear.setText(String.valueOf(year));
+            }
             StringBuilder genders = new StringBuilder();
-            if(!movie.getGenres().isEmpty()) {
+            if (movie.getGenres() != null) {
                 genders.append(movie.getGenres().get(0));
                 for (int i = 1; i < movie.getGenres().size(); i++) {
                     genders.append(",");

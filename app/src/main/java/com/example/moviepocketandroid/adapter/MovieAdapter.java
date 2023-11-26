@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Movie;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -49,18 +49,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movies.get(position);
         holder.bind(movie);
-
-        // Set desired width and height for the movie item (if needed)
-        int desiredWidthDp = 115;
-        int desiredHeightDp = 200;
-        float density = holder.itemView.getResources().getDisplayMetrics().density;
-        int desiredWidthPx = (int) (desiredWidthDp * density);
-    int desiredHeightPx = (int) (desiredHeightDp * density);
-    ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-    layoutParams.width = desiredWidthPx;
-    layoutParams.height = desiredHeightPx;
-        holder.itemView.setLayoutParams(layoutParams);
-}
+    }
 
     @Override
     public int getItemCount() {
@@ -92,8 +81,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
-            if (!movie.getGenres().isEmpty())
-                textGenre.setText(movie.getGenres().get(0));
+            if (movie.getGenres() != null)
+                textGenre.setText(movie.getGenres().get(0).getName());
             double rating = movie.getVoteAverage();
             DecimalFormat decimalFormat = new DecimalFormat("#.#");
 

@@ -16,7 +16,6 @@ public class ButtonUntil {
     private boolean isBackPackButtonPressed = false;
     private boolean isBinocularsButtonPressed = false;
     private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
-    private MPAssessmentApi mpAssessmentAPI;
     private int idMovie;
 
     public ButtonUntil(ImageView imageEye, ImageView imageLike, ImageView imageBackPack, int idMovie) {
@@ -26,14 +25,12 @@ public class ButtonUntil {
         this.animation = createAnimation();
         this.idMovie = idMovie;
 
-        mpAssessmentAPI = new MPAssessmentApi();
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-                isLikeButtonPressed = !mpAssessmentAPI.getFavoriteMovie(idMovie);
-                isBackPackButtonPressed = !mpAssessmentAPI.getToWatchMovie(idMovie);
-                isEyeButtonPressed = !mpAssessmentAPI.getWatchedMovie(idMovie);
+                isLikeButtonPressed = !MPAssessmentApi.getFavoriteMovie(idMovie);
+                isBackPackButtonPressed = !MPAssessmentApi.getToWatchMovie(idMovie);
+                isEyeButtonPressed = !MPAssessmentApi.getWatchedMovie(idMovie);
                 eyeButtonPressed();
                 backPackButtonPressed();
                 likeButtonPressed();
@@ -46,7 +43,7 @@ public class ButtonUntil {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        mpAssessmentAPI.postWatchedMovie(idMovie);
+                        MPAssessmentApi.postWatchedMovie(idMovie);
                     }
                 }).start();
                 eyeButtonPressed();
@@ -58,7 +55,7 @@ public class ButtonUntil {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        mpAssessmentAPI.postToWatchMovie(idMovie);
+                        MPAssessmentApi.postToWatchMovie(idMovie);
                     }
                 }).start();
                 backPackButtonPressed();
@@ -70,7 +67,7 @@ public class ButtonUntil {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        mpAssessmentAPI.postFavoriteMovie(idMovie);
+                        MPAssessmentApi.postFavoriteMovie(idMovie);
                     }
                 }).start();
                 likeButtonPressed();
@@ -84,9 +81,25 @@ public class ButtonUntil {
         this.animation = createAnimation();
         this.idMovie = idMovie;
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                isBinocularsButtonPressed = !MPAssessmentApi.getMovieTracing(idMovie);
+                isBackPackButtonPressed = !MPAssessmentApi.getToWatchMovie(idMovie);
+                backPackButtonPressed();
+                binocularsButtonPressed();
+            }
+        }).start();
+
         imageBackPack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MPAssessmentApi.postToWatchMovie(idMovie);
+                    }
+                }).start();
                 backPackButtonPressed();
             }
         });
@@ -94,6 +107,12 @@ public class ButtonUntil {
         imageBinoculars.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MPAssessmentApi.postMovieTracing(idMovie);
+                    }
+                }).start();
                 binocularsButtonPressed();
             }
         });
@@ -134,10 +153,6 @@ public class ButtonUntil {
             imageEye.setImageResource(R.drawable.eye_green);
         isEyeButtonPressed = !isEyeButtonPressed;
         imageEye.startAnimation(animation);
-    }
-
-    private void login() {
-
     }
 
 

@@ -19,39 +19,52 @@
             <include layout="@layout/item_poster_and_back" />
 
             <TextView
-                android:id="@+id/textViewOverview"
+                android:id="@+id/textViewNameList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/halloween"
-                android:textColor="@color/logoYellow"
-                android:textSize="40dp"
+                android:fontFamily="@font/simphony"
+                android:paddingTop="20dp"
+                android:text="@string/merry_christmas"
+                android:textColor="@color/red"
+                android:textSize="40sp"
+                android:visibility="invisible"
                 tools:ignore="MissingConstraints" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
+                android:id="@+id/imageFrameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="170dp">
+                android:layout_height="match_parent"
+                tools:ignore="MissingConstraints">
 
                 <ImageView
-                    android:id="@+id/imagePumpkin"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/pumpkin"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/imageViewBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.497"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_duo_dark" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/textViewCinema"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/kingthings_christmas"
                 android:text="@string/now_at_the_cinema"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:visibility="invisible" />
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:textColor="@color/logoBlue"
+                android:textSize="30sp"
+                android:visibility="invisible"
+                tools:ignore="MissingConstraints" />
 
 
             <androidx.viewpager2.widget.ViewPager2

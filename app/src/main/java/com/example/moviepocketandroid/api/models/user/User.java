@@ -1,6 +1,8 @@
-package com.example.moviepocketandroid.api.models;
+package com.example.moviepocketandroid.api.models.user;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private int id;
     private String username;

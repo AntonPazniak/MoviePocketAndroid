@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.api.MP;
 
+import com.example.moviepocketandroid.util.StringUnit;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 
@@ -18,14 +19,15 @@ import okhttp3.Response;
 
 public class MPAssessmentApi {
 
-    String baseUrl = "http://moviepocket.projektstudencki.pl";
-    OkHttpClient client = new OkHttpClient();
+    private static final String baseUrl = StringUnit.baseServerUrl;
+
+    private static OkHttpClient client = new OkHttpClient();
 
     /**
      * Requests to the server get , post, getAll FavoriteMovie
      */
 
-    public String postFavoriteMovie(int idMovie) {
+    public static String postFavoriteMovie(int idMovie) {
 
         String url = baseUrl + "/movies/favorite/set";
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
@@ -52,7 +54,7 @@ public class MPAssessmentApi {
         return null;
     }
 
-    public Boolean getFavoriteMovie(int idMovie) {
+    public static Boolean getFavoriteMovie(int idMovie) {
         String url = baseUrl + "/movies/favorite/get?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
@@ -73,7 +75,7 @@ public class MPAssessmentApi {
         return false;
     }
 
-    public int[] getAllFavoriteMovie() {
+    public static int[] getAllFavoriteMovie() {
         String url = baseUrl + "/movies/favorite/all";
 
         Request request = new Request.Builder()
@@ -97,7 +99,7 @@ public class MPAssessmentApi {
     }
 
 
-    public Boolean getToWatchMovie(int idMovie) {
+    public static Boolean getToWatchMovie(int idMovie) {
         String url = baseUrl + "/movies/towatch/get?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
@@ -119,7 +121,7 @@ public class MPAssessmentApi {
     }
 
 
-    public String postToWatchMovie(int idMovie) {
+    public static String postToWatchMovie(int idMovie) {
         String url = baseUrl + "/movies/towatch/set";
 
         RequestBody requestBody = new FormBody.Builder()
@@ -144,7 +146,7 @@ public class MPAssessmentApi {
         return null;
     }
 
-    public int[] getAllToWatchMovie() {
+    public static int[] getAllToWatchMovie() {
         String url = baseUrl + "/movies/towatch/all";
 
         Request request = new Request.Builder()
@@ -167,7 +169,7 @@ public class MPAssessmentApi {
         return new int[]{};
     }
 
-    public Boolean getWatchedMovie(int idMovie) {
+    public static Boolean getWatchedMovie(int idMovie) {
         String url = baseUrl + "/movies/watched/get?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
@@ -189,9 +191,8 @@ public class MPAssessmentApi {
     }
 
 
-    public String postWatchedMovie(int idMovie) {
+    public static String postWatchedMovie(int idMovie) {
         String url = baseUrl + "/movies/watched/set";
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idMovie", String.valueOf(idMovie))
@@ -215,7 +216,7 @@ public class MPAssessmentApi {
         return null;
     }
 
-    public int[] getAllWatchedMovie() {
+    public static int[] getAllWatchedMovie() {
         String url = baseUrl + "/movies/watched/allByUser";
 
         Request request = new Request.Builder()
@@ -236,6 +237,55 @@ public class MPAssessmentApi {
             e.printStackTrace();
         }
         return new int[]{};
+    }
+
+
+    public static Boolean postMovieTracing(int idMovie) {
+        String url = baseUrl + "/movies/tracking/set";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idMovie", String.valueOf(idMovie))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Boolean getMovieTracing(int idMovie) {
+        String url = baseUrl + "/movies/tracking/get?idMovie=" + idMovie;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, Boolean.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

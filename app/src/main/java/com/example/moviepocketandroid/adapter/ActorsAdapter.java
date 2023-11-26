@@ -13,13 +13,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Actor;
+import com.example.moviepocketandroid.api.models.Person;
 
 import java.util.List;
 
 public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewHolder> {
 
-    private List<Actor> actors;
+    private List<Person> actors;
     private OnActorClickListener onActorClickListener;
 
     public interface OnActorClickListener {
@@ -30,7 +30,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
         this.onActorClickListener = listener;
     }
 
-    public ActorsAdapter(List<Actor> actors) {
+    public ActorsAdapter(List<Person> actors) {
         this.actors = actors;
     }
 
@@ -43,20 +43,8 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
 
     @Override
     public void onBindViewHolder(@NonNull ActorViewHolder holder, int position) {
-        Actor actor = actors.get(position);
+        Person actor = actors.get(position);
         holder.bind(actor);
-
-        int desiredWidthDp = 115;
-        int desiredHeightDp = 220;
-
-        float density = holder.itemView.getResources().getDisplayMetrics().density;
-        int desiredWidthPx = (int) (desiredWidthDp * density);
-        int desiredHeightPx = (int) (desiredHeightDp * density);
-
-        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-        layoutParams.width = desiredWidthPx;
-        layoutParams.height = desiredHeightPx;
-        holder.itemView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -75,7 +63,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
             textGenre = itemView.findViewById(R.id.textGenre);
         }
 
-        public void bind(Actor actor) {
+        public void bind(Person actor) {
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(itemView.getContext())
@@ -83,7 +71,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
                     .apply(requestOptions)
                     .into(imageActor);
             textNameActor.setText(actor.getName());
-            if(actor.getCharacter()!=null)
+            if (actor.getCharacter() != null)
                 textGenre.setText(actor.getCharacter());
 
             // Set click listener for the actor item
