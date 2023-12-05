@@ -114,7 +114,6 @@ public class HomeFragment extends Fragment {
 
         Random random = new Random();
         id = random.nextInt(10);
-        idListMovie = random.nextInt(movieList.getIdMovies().size());
 
 
         RequestOptions requestOptions = new RequestOptions()
@@ -143,13 +142,25 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Glide.with(requireContext())
-                .load(movieFromLIst.getBackdropPath())
-                .apply(requestOptions)
-                .into(imageViewBack);
-        textViewNameList.setVisibility(View.VISIBLE);
-        textViewCinema.setVisibility(View.VISIBLE);
+        imagePosterMovie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                int idMovie = moviePopular.get(id).getId();
+                args.putInt("idMovie", idMovie);
 
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_navigation_home_to_movieFragment, args);
+            }
+        });
+
+
+    }
+
+    private void setMainLIst() {
+
+        Random random = new Random();
+        idListMovie = random.nextInt(movieList.getIdMovies().size());
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,17 +173,15 @@ public class HomeFragment extends Fragment {
         });
 
 
-        imagePosterMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                int idMovie = moviePopular.get(id).getId();
-                args.putInt("idMovie", idMovie);
+        RequestOptions requestOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_navigation_home_to_movieFragment, args);
-            }
-        });
+        Glide.with(requireContext())
+                .load(movieFromLIst.getBackdropPath())
+                .apply(requestOptions)
+                .into(imageViewBack);
+        textViewNameList.setVisibility(View.VISIBLE);
+        textViewCinema.setVisibility(View.VISIBLE);
 
     }
 

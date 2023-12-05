@@ -1,10 +1,13 @@
 package com.example.moviepocketandroid.api.MP;
 
+import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.StringUnit;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -21,7 +24,11 @@ public class MPAssessmentApi {
 
     private static final String baseUrl = StringUnit.baseServerUrl;
 
-    private static OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = new OkHttpClient();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .create();
+
 
     /**
      * Requests to the server get , post, getAll FavoriteMovie

@@ -1,27 +1,14 @@
 package com.example.moviepocketandroid.api.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Rating {
     private int id;
     private int rating;
 
-    public Rating(int id, int rating) {
-        this.id = id;
-        this.rating = rating;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
 }

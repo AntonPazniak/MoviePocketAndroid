@@ -44,7 +44,7 @@ import com.example.moviepocketandroid.util.ButtonUntil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MovieFragment extends Fragment {
@@ -254,7 +254,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void setButtons(Movie movie) {
-        if (movie.getReleaseDate() != null && movie.getReleaseDate().after(new Date())) {
+        if (movie.getReleaseDate() != null && movie.getReleaseDate().isAfter(LocalDate.now())) {
             movieNotReleased();
         } else {
             movieReleased();
@@ -307,7 +307,7 @@ public class MovieFragment extends Fragment {
         }
         StringBuilder genders = new StringBuilder();
         if (movie.getReleaseDate() != null) {
-            int year = movie.getReleaseDate().getYear() + 1900;
+            int year = movie.getReleaseDate().getYear();
             if (movie.getId() > 0) {
                 textMinutes.setText(year + ", " + movie.getRuntime() + " mins");
             } else {
