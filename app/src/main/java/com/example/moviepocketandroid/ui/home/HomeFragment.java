@@ -20,7 +20,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
-import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
@@ -90,10 +89,10 @@ public class HomeFragment extends Fragment {
                     if (moviePopular == null) {
                         moviePopular = TMDBApi.getPopularMovies();
                         nowPlayMovie = TMDBApi.getNowPlayingMovie();
-                        movieList = MPListApi.getListById(2);
-                        if (movieList != null) {
-                            movieFromLIst = TMDBApi.getInfoMovie(movieList.getIdMovies().get(idListMovie));
-                        }
+//                        movieList = MPListApi.getListById(2);
+//                        if (movieList != null) {
+//                            movieFromLIst = TMDBApi.getInfoMovie(movieList.getIdMovies().get(idListMovie));
+//                        }
                     }
 
                     if (!moviePopular.isEmpty()) {
@@ -157,33 +156,33 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void setMainLIst() {
-
-        Random random = new Random();
-        idListMovie = random.nextInt(movieList.getIdMovies().size());
-        imageViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putInt("idList", 2);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_navigation_home_to_movieListFragment, args);
-            }
-
-        });
-
-
-        RequestOptions requestOptions = new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
-
-        Glide.with(requireContext())
-                .load(movieFromLIst.getBackdropPath())
-                .apply(requestOptions)
-                .into(imageViewBack);
-        textViewNameList.setVisibility(View.VISIBLE);
-        textViewCinema.setVisibility(View.VISIBLE);
-
-    }
+//    private void setMainLIst() {
+//
+//        Random random = new Random();
+//        idListMovie = random.nextInt(movieList.getIdMovies().size());
+//        imageViewBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Bundle args = new Bundle();
+//                args.putInt("idList", 2);
+//                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+//                navController.navigate(R.id.action_navigation_home_to_movieListFragment, args);
+//            }
+//
+//        });
+//
+//
+//        RequestOptions requestOptions = new RequestOptions()
+//                .diskCacheStrategy(DiskCacheStrategy.ALL);
+//
+//        Glide.with(requireContext())
+//                .load(movieFromLIst.getBackdropPath())
+//                .apply(requestOptions)
+//                .into(imageViewBack);
+//        textViewNameList.setVisibility(View.VISIBLE);
+//        textViewCinema.setVisibility(View.VISIBLE);
+//
+//    }
 
     @Override
     public void onDestroyView() {

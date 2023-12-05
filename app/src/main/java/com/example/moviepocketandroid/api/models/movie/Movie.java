@@ -150,7 +150,7 @@ public class Movie implements Serializable {
     }
 
     public String getTitle() {
-        if (id > 0)
+        if (title != null)
             return title;
         else
             return name;

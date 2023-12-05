@@ -35,12 +35,11 @@ public class MovieListFragment extends Fragment {
 
     private MovieListViewModel mViewModel;
     private TextView textViewTitle, textViewContent, textViewUsername, textViewDate;
-    private MovieAdapter movieAdapter;
     private RecyclerView recyclerViewList;
     private LinearLayout linearLayoutAuthor;
     private ImageView imageViewAvatar;
-    private List<Movie> movies = new ArrayList<>();
     private MovieList movieList;
+    private List<Movie> movies;
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -74,10 +73,11 @@ public class MovieListFragment extends Fragment {
 
         Bundle args = getArguments();
         if (savedInstanceState != null) {
-            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
             int idList = args.getInt("idList", -1);
             if (idList > 0) {
                 movieList = (MovieList) savedInstanceState.getSerializable("movieList");
+                assert movieList != null;
+                movies = movieList.getMovies();
                 setMovie();
                 setListInf();
             } else {
@@ -88,8 +88,8 @@ public class MovieListFragment extends Fragment {
             if (idList > 0) {
                 loadListInf(idList);
             } else {
-                int[] movies = args.getIntArray("movies");
-                loadMovieDetails(movies);
+                movies = (List<Movie>) args.getSerializable("watchedListKey");
+                setMovie();
             }
         }
     }
@@ -99,10 +99,9 @@ public class MovieListFragment extends Fragment {
             @Override
             public void run() {
                 movieList = MPListApi.getListById(idList);
+                assert movieList != null;
+                movies = movieList.getMovies();
                 if (movieList != null) {
-                    for (int i : movieList.getIdMovies())
-                        movies.add(TMDBApi.getInfoMovie(i));
-
                     if (isAdded()) {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
@@ -116,25 +115,6 @@ public class MovieListFragment extends Fragment {
             }
         }).start();
 
-    }
-
-    private void loadMovieDetails(int[] moviesArr) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                movies = loadMovie(moviesArr);
-
-                if (isAdded()) {
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            setMovie();
-                        }
-                    });
-                }
-            }
-        }).start();
     }
 
     private List<Movie> loadMovie(int[] moviesArr) {
@@ -151,7 +131,7 @@ public class MovieListFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void setMovie() {
         if (movies != null) {
-            movieAdapter = new MovieAdapter(movies);
+            MovieAdapter movieAdapter = new MovieAdapter(movies);
             recyclerViewList.setAdapter(movieAdapter);
 
             GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false);
@@ -191,7 +171,6 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("movies", (Serializable) movies);
         outState.putSerializable("movieList", (Serializable) movieList);
     }
 

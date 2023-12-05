@@ -72,7 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             context = itemView.getContext();
         }
 
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint({"ResourceAsColor", "SetTextI18n"})
         public void bind(Movie movie) {
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
@@ -81,12 +81,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
-            if (movie.getGenres() != null)
+            if (movie.getGenres() != null && !movie.getGenres().isEmpty()) {
                 textGenre.setText(movie.getGenres().get(0).getName());
+            }
+
             double rating = movie.getVoteAverage();
             DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
-            int backgroundColor;
             if (rating >= 8) {
                 textRatingPoster.setBackgroundColor(ContextCompat
                         .getColor(context, R.color.logoYellow));

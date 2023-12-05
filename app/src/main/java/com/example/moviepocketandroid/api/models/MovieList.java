@@ -1,38 +1,31 @@
 package com.example.moviepocketandroid.api.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.example.moviepocketandroid.api.models.movie.Genre;
+import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MovieList implements Serializable {
-    @SerializedName("id")
     private int id;
-
-    @SerializedName("title")
     private String title;
-
-    @SerializedName("content")
     private String content;
-
-    @SerializedName("categoriesList")
-    private List<String> categoriesList;
-
-    @SerializedName("idMovies")
-    private List<Integer> idMovies;
-
-    @SerializedName("likeOrDis")
-    private List<Integer> likeOrDis;
-
-    @SerializedName("username")
+    private List<Genre> genres;
+    private List<Movie> movies;
+    private int[] likeOrDis;
     private String username;
-
-    @SerializedName("create")
-    private String create;
-
-    @SerializedName("update")
-    private String update;
-
+    private LocalDate create;
+    private LocalDate update;
 
     public int getId() {
         return id;
@@ -58,27 +51,27 @@ public class MovieList implements Serializable {
         this.content = content;
     }
 
-    public List<String> getCategoriesList() {
-        return categoriesList;
+    public List<Genre> getGenres() {
+        return genres;
     }
 
-    public void setCategoriesList(List<String> categoriesList) {
-        this.categoriesList = categoriesList;
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
-    public List<Integer> getIdMovies() {
-        return idMovies;
+    public List<Movie> getMovies() {
+        return movies;
     }
 
-    public void setIdMovies(List<Integer> idMovies) {
-        this.idMovies = idMovies;
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 
-    public List<Integer> getLikeOrDis() {
+    public int[] getLikeOrDis() {
         return likeOrDis;
     }
 
-    public void setLikeOrDis(List<Integer> likeOrDis) {
+    public void setLikeOrDis(int[] likeOrDis) {
         this.likeOrDis = likeOrDis;
     }
 
@@ -90,19 +83,19 @@ public class MovieList implements Serializable {
         this.username = username;
     }
 
-    public String getCreate() {
+    public LocalDate getCreate() {
         return create;
     }
 
-    public void setCreate(String create) {
+    public void setCreate(LocalDate create) {
         this.create = create;
     }
 
-    public String getUpdate() {
+    public LocalDate getUpdate() {
         return update;
     }
 
-    public void setUpdate(String update) {
+    public void setUpdate(LocalDate update) {
         this.update = update;
     }
 }

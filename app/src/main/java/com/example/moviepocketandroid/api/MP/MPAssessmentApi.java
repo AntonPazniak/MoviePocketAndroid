@@ -1,13 +1,20 @@
 package com.example.moviepocketandroid.api.MP;
 
+import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.StringUnit;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -74,7 +81,9 @@ public class MPAssessmentApi {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                return !response.body().string().equals("false");
+                assert response.body() != null;
+                String responseString = response.body().string();
+                return gson.fromJson(responseString, boolean.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,8 +91,9 @@ public class MPAssessmentApi {
         return false;
     }
 
-    public static int[] getAllFavoriteMovie() {
+    public static List<Movie> getAllFavoriteMovie() {
         String url = baseUrl + "/movies/favorite/all";
+        List<Movie> movies = new ArrayList<>();
 
         Request request = new Request.Builder()
                 .url(url)
@@ -95,14 +105,23 @@ public class MPAssessmentApi {
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String responseString = response.body().string();
-                Gson gson = new Gson();
-                return gson.fromJson(responseString, int[].class);
+                String responseBody = response.body().string();
+                JSONArray resultsArray = new JSONArray(responseBody);
+
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
+                    if (movie != null) {
+                        movies.add(movie);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
-        return new int[]{};
+        return movies;
     }
 
 
@@ -119,7 +138,9 @@ public class MPAssessmentApi {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                return !response.body().string().equals("false");
+                assert response.body() != null;
+                String responseString = response.body().string();
+                return gson.fromJson(responseString, boolean.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,9 +174,9 @@ public class MPAssessmentApi {
         return null;
     }
 
-    public static int[] getAllToWatchMovie() {
+    public static List<Movie> getAllToWatchMovie() {
         String url = baseUrl + "/movies/towatch/all";
-
+        List<Movie> movies = new ArrayList<>();
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -166,14 +187,23 @@ public class MPAssessmentApi {
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String responseString = response.body().string();
-                Gson gson = new Gson();
-                return gson.fromJson(responseString, int[].class);
+                String responseBody = response.body().string();
+                JSONArray resultsArray = new JSONArray(responseBody);
+
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
+                    if (movie != null) {
+                        movies.add(movie);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
-        return new int[]{};
+        return movies;
     }
 
     public static Boolean getWatchedMovie(int idMovie) {
@@ -223,9 +253,9 @@ public class MPAssessmentApi {
         return null;
     }
 
-    public static int[] getAllWatchedMovie() {
+    public static List<Movie> getAllWatchedMovie() {
         String url = baseUrl + "/movies/watched/allByUser";
-
+        List<Movie> movies = new ArrayList<>();
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -236,14 +266,23 @@ public class MPAssessmentApi {
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                String responseString = response.body().string();
-                Gson gson = new Gson();
-                return gson.fromJson(responseString, int[].class);
+                String responseBody = response.body().string();
+                JSONArray resultsArray = new JSONArray(responseBody);
+
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject movieObject = resultsArray.getJSONObject(i);
+                    Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
+                    if (movie != null) {
+                        movies.add(movie);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
-        return new int[]{};
+        return movies;
     }
 
 
