@@ -1,15 +1,16 @@
 package com.example.moviepocketandroid.api.models.movie;
 
-import android.annotation.SuppressLint;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Movie implements Serializable {
     private final String BASE_URL = "https://image.tmdb.org/t/p/w500";
     private final String STANDARD_POSTER_URL = "https://github.com/prymakD/MoviePocket/raw/16f04a6063f407cec8ee8eab29a4bd25c4ae111b/src/main/frontend/src/images/person.png";
@@ -60,7 +61,7 @@ public class Movie implements Serializable {
     private List<ProductionCountry> productionCountries;
 
     @SerializedName("release_date")
-    private String releaseDate;
+    private LocalDate releaseDate;
 
     @SerializedName("revenue")
     private int revenue;
@@ -96,7 +97,7 @@ public class Movie implements Serializable {
     private List<Integer> episodeRunTime;
 
     @SerializedName("first_air_date")
-    private String firstAirDate;
+    private LocalDate firstAirDate;
 
     @SerializedName("in_production")
     private boolean inProduction;
@@ -144,8 +145,12 @@ public class Movie implements Serializable {
             return STANDARD_POSTER_URL;
     }
 
+    public String getBackdropPath() {
+        return BASE_URL + backdropPath;
+    }
+
     public String getTitle() {
-        if (id > 0)
+        if (title != null)
             return title;
         else
             return name;
@@ -163,10 +168,6 @@ public class Movie implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getBASE_URL() {
         return BASE_URL;
     }
@@ -177,10 +178,6 @@ public class Movie implements Serializable {
 
     public boolean isAdult() {
         return adult;
-    }
-
-    public String getBackdropPath() {
-        return BASE_URL + backdropPath;
     }
 
     public Object getBelongsToCollection() {
@@ -223,24 +220,8 @@ public class Movie implements Serializable {
         return productionCountries;
     }
 
-    public Date getReleaseDate() {
-        try {
-            String date;
-            if (id > 0) {
-                date = releaseDate;
-            } else {
-                date = firstAirDate;
-            }
-            if (!date.isEmpty()) {
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                return dateFormat.parse(date);
-            } else {
-                return null;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public LocalDate getReleaseDate() {
+        return releaseDate;
     }
 
     public int getRevenue() {
@@ -279,7 +260,7 @@ public class Movie implements Serializable {
         return episodeRunTime;
     }
 
-    public String getFirstAirDate() {
+    public LocalDate getFirstAirDate() {
         return firstAirDate;
     }
 
@@ -333,5 +314,9 @@ public class Movie implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

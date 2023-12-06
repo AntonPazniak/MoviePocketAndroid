@@ -21,12 +21,10 @@ import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
-import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.user.User;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,8 +41,6 @@ public class UserFragment extends Fragment {
     private ImageButton imageButtonSettings;
     private User user;
 
-
-    int[] favoritesArr, toWatchArr, watchedArr;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -107,9 +103,6 @@ public class UserFragment extends Fragment {
 
             user = (User) savedInstanceState.getSerializable("user");
 
-            toWatchArr = savedInstanceState.getIntArray("toWatchArr");
-            favoritesArr = savedInstanceState.getIntArray("favoritesArr");
-            watchedArr = savedInstanceState.getIntArray("watchedArr");
             if (user != null)
                 setInfo();
             else
@@ -122,46 +115,23 @@ public class UserFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                favoritesArr = MPAssessmentApi.getAllFavoriteMovie();
-                toWatchArr = MPAssessmentApi.getAllToWatchMovie();
-                watchedArr = MPAssessmentApi.getAllWatchedMovie();
+
+                favorites = MPAssessmentApi.getAllFavoriteMovie();
+                toWatch = MPAssessmentApi.getAllToWatchMovie();
+                watched = MPAssessmentApi.getAllWatchedMovie();
                 user = MPUserApi.getUserInfo();
 
-                favorites = new ArrayList<>();
-                toWatch = new ArrayList<>();
-                watched = new ArrayList<>();
-                int numMoviesToDisplay = Math.min(6, favoritesArr.length);
-                for (int i = favoritesArr.length - 1; i >= favoritesArr.length - numMoviesToDisplay; i--) {
-                    Movie movie = TMDBApi.getInfoMovie(favoritesArr[i]);
-                    if (movie != null) {
-                        favorites.add(movie);
-                    }
-                }
-                numMoviesToDisplay = Math.min(6, toWatchArr.length);
-                for (int i = toWatchArr.length - 1; i >= toWatchArr.length - numMoviesToDisplay; i--) {
-                    Movie movie = TMDBApi.getInfoMovie(toWatchArr[i]);
-                    if (movie != null) {
-                        toWatch.add(movie);
-                    }
-                }
-                numMoviesToDisplay = Math.min(6, watchedArr.length);
-                for (int i = watchedArr.length - 1; i >= watchedArr.length - numMoviesToDisplay; i--) {
-                    Movie movie = TMDBApi.getInfoMovie(watchedArr[i]);
-                    if (movie != null) {
-                        watched.add(movie);
-                    }
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            setInfo();
+                        }
+                    });
 
-                    if (isAdded()) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @SuppressLint("SetTextI18n")
-                            @Override
-                            public void run() {
-                                setInfo();
-                            }
-                        });
-
-                    }
                 }
+
             }
         }).start();
     }
@@ -194,7 +164,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();
-                args.putIntArray("movies", toWatchArr);
+                args.putSerializable("watchedListKey", (Serializable) watched);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                 navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
             }
@@ -205,7 +175,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();
-                args.putIntArray("movies", favoritesArr);
+                args.putSerializable("watchedListKey", (Serializable) favorites);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                 navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
             }
@@ -216,7 +186,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();
-                args.putIntArray("movies", watchedArr);
+                args.putSerializable("watchedListKey", (Serializable) toWatch);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                 navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
             }
@@ -259,9 +229,6 @@ public class UserFragment extends Fragment {
         outState.putSerializable("favoritesKey", (Serializable) favorites);
         outState.putSerializable("watchedKey", (Serializable) watched);
         outState.putSerializable("user", user);
-        outState.putIntArray("toWatchArr", toWatchArr);
-        outState.putIntArray("favoritesArr", favoritesArr);
-        outState.putIntArray("watchedArr", watchedArr);
     }
 
 }

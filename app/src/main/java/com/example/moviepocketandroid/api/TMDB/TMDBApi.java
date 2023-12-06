@@ -1,15 +1,18 @@
 package com.example.moviepocketandroid.api.TMDB;
 
 import com.example.moviepocketandroid.api.models.ImageMovie;
-import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +24,12 @@ public class TMDBApi {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3";
     private static final String API_KEY = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGEzNWQ1OGZkMTI0OTdiMTExZTRkZDFjNGE0YzAwNCIsInN1YiI6IjY0NDUyZGMwNjUxZmNmMDYxNzliZmY5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.expCnsMxBP9wfZab438BOkfl0VPQJftRFG7WPkSRyD0";
-    private static final String language = "us-US";
+    private static final String language = "us-USd";
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .create();
+
 
     public static Movie getInfoMovie(int id) {
         if (id > 0)
@@ -66,7 +74,6 @@ public class TMDBApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, Movie.class);
             } else
                 return null;
@@ -91,7 +98,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -122,7 +128,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray castArray = jsonObject.getJSONArray("cast");
-                Gson gson = new Gson();
                 for (int i = 0; i < castArray.length(); i++) {
                     JSONObject actorObject = castArray.getJSONObject(i);
                     Person person = gson.fromJson(actorObject.toString(), Person.class);
@@ -153,7 +158,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -183,7 +187,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject actorObject = resultsArray.getJSONObject(i);
                     Person person = gson.fromJson(actorObject.toString(), Person.class);
@@ -214,7 +217,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -248,8 +250,6 @@ public class TMDBApi {
 
                 if (responseObject.has("backdrops")) {
                     JSONArray imageArray = responseObject.getJSONArray("backdrops");
-
-                    Gson gson = new Gson();
                     for (int i = 0; i < imageArray.length(); i++) {
                         JSONObject imageObject = imageArray.getJSONObject(i);
                         ImageMovie imageMovie = gson.fromJson(imageObject.toString(), ImageMovie.class);
@@ -312,7 +312,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -343,7 +342,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -373,7 +371,6 @@ public class TMDBApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 Movie movie = gson.fromJson(responseString, Movie.class);
                 movie.setId(movie.getId() * (-1));
                 return movie;
@@ -399,7 +396,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray castArray = jsonObject.getJSONArray("cast");
-                Gson gson = new Gson();
                 for (int i = 0; i < castArray.length(); i++) {
                     JSONObject actorObject = castArray.getJSONObject(i);
                     Person person = gson.fromJson(actorObject.toString(), Person.class);
@@ -430,7 +426,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -461,7 +456,6 @@ public class TMDBApi {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 JSONArray imageArray = new JSONArray(responseBody);
-                Gson gson = new Gson();
                 for (int i = 0; i < imageArray.length(); i++) {
                     JSONObject reviewObject = imageArray.getJSONObject(i);
                     ImageMovie imageMovie = gson.fromJson(reviewObject.toString(), ImageMovie.class);
@@ -491,7 +485,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -520,7 +513,6 @@ public class TMDBApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, Person.class);
             } else {
                 return null;
@@ -546,7 +538,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("cast");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -577,7 +568,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("cast");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieObject = resultsArray.getJSONObject(i);
                     Movie movie = gson.fromJson(movieObject.toString(), Movie.class);
@@ -609,7 +599,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("profiles");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject reviewObject = resultsArray.getJSONObject(i);
                     ImageMovie imageMovie = gson.fromJson(reviewObject.toString(), ImageMovie.class);
@@ -639,7 +628,6 @@ public class TMDBApi {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
-                Gson gson = new Gson();
                 for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject actorObject = resultsArray.getJSONObject(i);
                     Person person = gson.fromJson(actorObject.toString(), Person.class);

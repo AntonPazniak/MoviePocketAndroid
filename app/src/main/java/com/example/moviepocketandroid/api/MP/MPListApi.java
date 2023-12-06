@@ -1,14 +1,17 @@
 package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.StringUnit;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,10 @@ import okhttp3.Response;
 public class MPListApi {
 
     private static final String baseUrl = StringUnit.baseServerUrl;
-    private static OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = new OkHttpClient();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .create();
 
 
     public static MovieList getListById(int idList) {
@@ -32,11 +38,9 @@ public class MPListApi {
 
         try {
             Response response = client.newCall(request).execute();
-
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, MovieList.class);
             }
         } catch (IOException e) {
