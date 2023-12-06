@@ -1,7 +1,7 @@
 package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.review.Review;
-import com.example.moviepocketandroid.util.StringUnit;
+import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -20,7 +20,7 @@ import okhttp3.Response;
 
 public class MPReviewApi {
 
-    private static final String baseUrl = StringUnit.baseServerUrl;
+    private static final String baseUrl = Utils.baseServerUrl;
     private static OkHttpClient client = new OkHttpClient();
 
     public static Review getReviewById(int idReview) {

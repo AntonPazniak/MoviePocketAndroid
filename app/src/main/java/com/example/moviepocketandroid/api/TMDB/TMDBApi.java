@@ -455,7 +455,8 @@ public class TMDBApi {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
-                JSONArray imageArray = new JSONArray(responseBody);
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray imageArray = jsonObject.getJSONArray("backdrops");
                 for (int i = 0; i < imageArray.length(); i++) {
                     JSONObject reviewObject = imageArray.getJSONObject(i);
                     ImageMovie imageMovie = gson.fromJson(reviewObject.toString(), ImageMovie.class);

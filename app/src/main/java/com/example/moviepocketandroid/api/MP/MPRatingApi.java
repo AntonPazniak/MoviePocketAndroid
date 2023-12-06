@@ -1,6 +1,6 @@
 package com.example.moviepocketandroid.api.MP;
 
-import com.example.moviepocketandroid.util.StringUnit;
+import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import okhttp3.Response;
 
 public class MPRatingApi {
 
-    private static final String baseUrl = StringUnit.baseServerUrl;
+    private static final String baseUrl = Utils.baseServerUrl;
     private static OkHttpClient client = new OkHttpClient();
 
     public static int getRatingUserByIdMovie(int idMovie) {

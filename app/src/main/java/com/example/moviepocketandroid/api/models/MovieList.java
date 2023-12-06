@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api.models;
 
 import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.util.Utils;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class MovieList implements Serializable {
     private String username;
     private LocalDate create;
     private LocalDate update;
+    private Long poster;
 
     public int getId() {
         return id;
@@ -97,5 +99,13 @@ public class MovieList implements Serializable {
 
     public void setUpdate(LocalDate update) {
         this.update = update;
+    }
+
+    public String getPoster() {
+        return Utils.MP_POSTER_PATH + poster.toString();
+    }
+
+    public void setPoster(Long poster) {
+        this.poster = poster;
     }
 }
