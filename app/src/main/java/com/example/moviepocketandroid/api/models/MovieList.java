@@ -3,9 +3,9 @@ package com.example.moviepocketandroid.api.models;
 import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.util.Utils;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -18,17 +18,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieList implements Serializable {
+    @SerializedName("id")
     private int id;
+    @SerializedName("title")
     private String title;
+    @SerializedName("content")
     private String content;
+    @SerializedName("genres")
     private List<Genre> genres;
+    @SerializedName("movies")
     private List<Movie> movies;
-    private int[] likeOrDis;
-    private String username;
-    private LocalDate create;
-    private LocalDate update;
+    @SerializedName("poster")
     private Long poster;
+    @SerializedName("likeOrDis")
+    private int[] likeOrDis;
+    @SerializedName("username")
+    private String username;
 
+    //    @SerializedName("create")
+//    private LocalDate create;
+//    @SerializedName("update")
+//    private LocalDate update;
     public int getId() {
         return id;
     }
@@ -85,21 +95,21 @@ public class MovieList implements Serializable {
         this.username = username;
     }
 
-    public LocalDate getCreate() {
-        return create;
-    }
-
-    public void setCreate(LocalDate create) {
-        this.create = create;
-    }
-
-    public LocalDate getUpdate() {
-        return update;
-    }
-
-    public void setUpdate(LocalDate update) {
-        this.update = update;
-    }
+//    public LocalDate getCreate() {
+//        return create;
+//    }
+//
+//    public void setCreate(LocalDate create) {
+//        this.create = create;
+//    }
+//
+//    public LocalDate getUpdate() {
+//        return update;
+//    }
+//
+//    public void setUpdate(LocalDate update) {
+//        this.update = update;
+//    }
 
     public String getPoster() {
         return Utils.MP_POSTER_PATH + poster.toString();

@@ -51,7 +51,7 @@ public class MPListApi {
 
     public static List<MovieList> getAllListExistIdMovie(int idMovie) {
         List<MovieList> lists = new ArrayList<>();
-        String url = baseUrl + "/movies/list/getAllByIdMovie?idMovie=" + idMovie;
+        String url = baseUrl + "/movies/list/getAllListsContainingMovie?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -64,9 +64,6 @@ public class MPListApi {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 JSONArray reviewArray = new JSONArray(responseBody);
-
-                Gson gson = new Gson();
-
                 for (int i = 0; i < reviewArray.length(); i++) {
                     JSONObject reviewObject = reviewArray.getJSONObject(i);
                     MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);

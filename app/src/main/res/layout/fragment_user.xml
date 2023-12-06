@@ -12,7 +12,6 @@
         android:padding="5dp"
         android:orientation="vertical">
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

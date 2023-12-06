@@ -31,6 +31,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         this.onItemClickListener = listener;
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(int idList);
+    }
+
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,10 +51,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     @Override
     public int getItemCount() {
         return lists.size();
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
     }
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
@@ -78,12 +78,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             if (list.getGenres() != null && !list.getGenres().isEmpty()) {
                 textViewGenre.setText(list.getGenres().get(0).getName());
             }
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
-                        int itemId = list.getId();
-                        onItemClickListener.onItemClick(itemId);
+                        int idList = list.getId();
+                        onItemClickListener.onItemClick(idList);
                     }
                 }
             });

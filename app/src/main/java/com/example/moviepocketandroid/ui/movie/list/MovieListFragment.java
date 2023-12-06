@@ -1,6 +1,5 @@
 package com.example.moviepocketandroid.ui.movie.list;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -70,7 +69,6 @@ public class MovieListFragment extends Fragment {
         textViewDate = view.findViewById(R.id.textViewDate);
         imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
 
-
         Bundle args = getArguments();
         if (savedInstanceState != null) {
             int idList = args.getInt("idList", -1);
@@ -83,16 +81,21 @@ public class MovieListFragment extends Fragment {
             } else {
                 setMovie();
             }
-        } else if (args != null) {
-            int idList = args.getInt("idList", -1);
-            if (idList > 0) {
-                loadListInf(idList);
-            } else {
-                movies = (List<Movie>) args.getSerializable("watchedListKey");
-                setMovie();
+        } else {
+            if (args != null) {
+                int idList = args.getInt("idList", -1);
+                if (idList > 0) {
+                    loadListInf(idList);
+                } else {
+                    movies = (List<Movie>) args.getSerializable("watchedListKey");
+                    setMovie();
+                }
+
+                //loadListInf(1);
             }
         }
     }
+
 
     private void loadListInf(int idList) {
         new Thread(new Runnable() {
@@ -128,14 +131,14 @@ public class MovieListFragment extends Fragment {
         return movies;
     }
 
-    @SuppressLint("SetTextI18n")
     private void setMovie() {
-        if (movies != null) {
+        if (movies != null && !movies.isEmpty()) {
             MovieAdapter movieAdapter = new MovieAdapter(movies);
             recyclerViewList.setAdapter(movieAdapter);
 
             GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false);
             recyclerViewList.setLayoutManager(layoutManager);
+
             movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
                 @Override
                 public void onMovieClick(int movieId) {
@@ -152,7 +155,7 @@ public class MovieListFragment extends Fragment {
     private void setListInf() {
         linearLayoutAuthor.setVisibility(View.VISIBLE);
         textViewUsername.setText(movieList.getUsername());
-        textViewDate.setText(movieList.getCreate().toString());
+        //textViewDate.setText(movieList.getCreate().toString());
         textViewTitle.setText(movieList.getTitle());
         textViewContent.setText(movieList.getContent());
         imageViewAvatar.setOnClickListener(new View.OnClickListener() {
