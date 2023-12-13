@@ -48,7 +48,7 @@ public class MPReviewApi {
     }
 
     public static Boolean getAuthorship(int idReview) {
-        String url = baseUrl + "/review/getAuthorship?idReview=" + idReview;
+        String url = baseUrl + "/review/authorship?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)

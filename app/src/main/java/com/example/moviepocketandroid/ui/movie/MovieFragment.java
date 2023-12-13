@@ -185,12 +185,12 @@ public class MovieFragment extends Fragment {
                     similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
                     images = TMDBApi.getImagesByIdMovie(idMovie);
                     movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
-                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
                     rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
-                    lists = MPListApi.getAllListExistIdMovie(idMovie);
                 }
 
                 if (movie != null && isAdded()) {
+                    lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -470,9 +470,10 @@ public class MovieFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setLists() {
-        if (lists != null) {
-            listRecyclerView = layoutList.findViewById(R.id.moviesRecyclerView);
-            textViewList = layoutList.findViewById(R.id.textMoviesRecyclerView);
+        listRecyclerView = layoutList.findViewById(R.id.moviesRecyclerView);
+        textViewList = layoutList.findViewById(R.id.textMoviesRecyclerView);
+
+        if (lists != null && !lists.isEmpty()) {
             textViewList.setText("Lists with this movie");
             listAdapter = new ListAdapter(lists);
             listRecyclerView.setAdapter(listAdapter);
@@ -487,10 +488,15 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_to_movieListFragment, args);
                 }
             });
+            listRecyclerView.setVisibility(View.VISIBLE);
+            textViewList.setVisibility(View.VISIBLE);
         } else {
+            listRecyclerView.setVisibility(View.GONE);
+            textViewList.setVisibility(View.GONE);
             layoutList.setVisibility(View.GONE);
         }
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
