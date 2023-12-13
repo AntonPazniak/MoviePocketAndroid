@@ -25,7 +25,7 @@ public class MPReviewApi {
 
     public static Review getReviewById(int idReview) {
         Review review = null;
-        String url = baseUrl + "/movies/review/get?idReview=" + idReview;
+        String url = baseUrl + "/review/get?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -48,7 +48,7 @@ public class MPReviewApi {
     }
 
     public static Boolean getAuthorship(int idReview) {
-        String url = baseUrl + "/movies/review/getAuthorship?idReview=" + idReview;
+        String url = baseUrl + "/review/getAuthorship?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -71,7 +71,7 @@ public class MPReviewApi {
 
     public static List<Review> getReviewAllByIdMovie(int idMovie) {
         List<Review> reviews = new ArrayList<>();
-        String url = baseUrl + "/movies/review/getAllByMovie?idMovie=" + idMovie;
+        String url = baseUrl + "/review/movie/all?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -104,7 +104,7 @@ public class MPReviewApi {
 
     public static Boolean postReviewMovie(int idMovie, String title, String content) {
         List<Review> reviews = new ArrayList<>();
-        String url = baseUrl + "/movies/review/set";
+        String url = baseUrl + "/review/movie/set";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idMovie", String.valueOf(idMovie))
@@ -130,7 +130,7 @@ public class MPReviewApi {
     }
 
     public static Boolean delReviewMovie(int idReview) {
-        String url = baseUrl + "/movies/review/del";
+        String url = baseUrl + "/review/del";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idReview", String.valueOf(idReview))
@@ -154,7 +154,7 @@ public class MPReviewApi {
     }
 
     public static Boolean editReviewMovie(int idReview, String title, String content) {
-        String url = baseUrl + "/movies/review/up";
+        String url = baseUrl + "/review/up";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idReview", String.valueOf(idReview))
@@ -180,7 +180,7 @@ public class MPReviewApi {
     }
 
     public static Boolean getLike(int idReview) {
-        String url = baseUrl + "/movies/review/getLike?idReview=" + idReview;
+        String url = baseUrl + "/review/like?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -202,7 +202,7 @@ public class MPReviewApi {
     }
 
     public static Boolean setLike(int idReview, Boolean likeOrDis) {
-        String url = baseUrl + "/movies/review/setLike";
+        String url = baseUrl + "/review/setLike";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idReview", String.valueOf(idReview))
@@ -229,7 +229,7 @@ public class MPReviewApi {
     }
 
     public static int[] getCountLikes(int idReview) {
-        String url = baseUrl + "/movies/review/getAllLike?idReview=" + idReview;
+        String url = baseUrl + "/review/getAllLike?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)
