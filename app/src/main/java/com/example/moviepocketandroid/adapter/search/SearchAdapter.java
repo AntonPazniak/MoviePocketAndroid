@@ -84,7 +84,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
             if (movie.getReleaseDate() != null) {
-                int year = movie.getReleaseDate().getYear() + 1900;
+                int year = movie.getReleaseDate().getYear();
                 textYear.setText(String.valueOf(year));
             }
             StringBuilder genders = new StringBuilder();
