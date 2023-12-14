@@ -155,7 +155,7 @@ public class MovieListFragment extends Fragment {
     private void setListInf() {
         linearLayoutAuthor.setVisibility(View.VISIBLE);
         textViewUsername.setText(movieList.getUser().getUsername());
-        //textViewDate.setText(movieList.getCreate().toString());
+        textViewDate.setText(movieList.getCreate().toLocalDate().toString());
         textViewTitle.setText(movieList.getTitle());
         textViewContent.setText(movieList.getContent());
         imageViewAvatar.setOnClickListener(new View.OnClickListener() {

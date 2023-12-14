@@ -7,6 +7,7 @@ import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -35,11 +36,11 @@ public class MovieList implements Serializable {
     private int[] likeOrDis;
     @SerializedName("user")
     private User user;
+    @SerializedName("create")
+    private LocalDateTime create;
+    @SerializedName("update")
+    private LocalDateTime update;
 
-    //    @SerializedName("create")
-//    private LocalDate create;
-//    @SerializedName("update")
-//    private LocalDate update;
     public int getId() {
         return id;
     }
@@ -96,21 +97,21 @@ public class MovieList implements Serializable {
         this.user = user;
     }
 
-    //    public LocalDate getCreate() {
-//        return create;
-//    }
-//
-//    public void setCreate(LocalDate create) {
-//        this.create = create;
-//    }
-//
-//    public LocalDate getUpdate() {
-//        return update;
-//    }
-//
-//    public void setUpdate(LocalDate update) {
-//        this.update = update;
-//    }
+    public LocalDateTime getCreate() {
+        return create;
+    }
+
+    public void setCreate(LocalDateTime create) {
+        this.create = create;
+    }
+
+    public LocalDateTime getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(LocalDateTime update) {
+        this.update = update;
+    }
 
     public String getPoster() {
         return Utils.MP_POSTER_PATH + poster.toString();

@@ -1,14 +1,19 @@
 package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.review.Review;
+import com.example.moviepocketandroid.util.LocalDateAdapter;
+import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +28,11 @@ public class MPReviewApi {
 
     private static final String baseUrl = Utils.baseServerUrl;
     private static OkHttpClient client = new OkHttpClient();
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
 
     public static Review getReviewById(int idReview) {
         Review review = null;
@@ -39,7 +49,6 @@ public class MPReviewApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, Review.class);
             }
         } catch (IOException e) {
@@ -85,9 +94,6 @@ public class MPReviewApi {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 JSONArray reviewArray = new JSONArray(responseBody);
-
-                Gson gson = new Gson();
-
                 for (int i = 0; i < reviewArray.length(); i++) {
                     JSONObject reviewObject = reviewArray.getJSONObject(i);
                     Review review = gson.fromJson(reviewObject.toString(), Review.class);

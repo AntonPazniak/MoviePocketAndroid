@@ -34,7 +34,6 @@ public class DetailReviewFragment extends Fragment {
     private TextView textUsername;
     private TextView textDate;
     private ImageButton imageButton0, imageButton1;
-
     private int idReview;
     private Boolean isLikeOrDisButton;
     private Boolean authorship = false;

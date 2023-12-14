@@ -84,7 +84,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             textTitle.setText(review.getTitle());
             textContent.setText(review.getContent());
             textUsername.setText(review.getUser().getUsername());
-            textDate.setText(review.getDataCreated().toString());
+            textDate.setText(review.getDataCreated().toLocalDate().toString());
             idReview = Math.toIntExact(review.getId());
             if (review.getUser().getAvatar() != null) {
                 RequestOptions requestOptions = new RequestOptions()
