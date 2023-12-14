@@ -36,7 +36,6 @@ public class DetailReviewFragment extends Fragment {
     private ImageButton imageButton0, imageButton1;
 
     private int idReview;
-    private MPReviewApi mpReviewApi = new MPReviewApi();
     private Boolean isLikeOrDisButton;
     private Boolean authorship = false;
     private TextView textViewCountLikes, textViewCountDislikes;
@@ -101,13 +100,13 @@ public class DetailReviewFragment extends Fragment {
 
                     Boolean isAuthentication = MPAuthenticationApi.checkAuth();
                     idReview = args.getInt("idReview");
-                    Review review = mpReviewApi.getReviewById(idReview);
+                    Review review = MPReviewApi.getReviewById(idReview);
                     if (isAuthentication) {
-                        authorship = mpReviewApi.getAuthorship(review.getId());
-                        isLikeOrDisButton = mpReviewApi.getLike(idReview);
+                        authorship = MPReviewApi.getAuthorship(review.getId());
+                        isLikeOrDisButton = MPReviewApi.getLike(idReview);
                     }
 
-                    int[] count = mpReviewApi.getCountLikes(idReview);
+                    int[] count = MPReviewApi.getCountLikes(idReview);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -183,7 +182,7 @@ public class DetailReviewFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (mpReviewApi.delReviewMovie(idReview)) {
+                if (MPReviewApi.delReviewMovie(idReview)) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -200,9 +199,9 @@ public class DetailReviewFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mpReviewApi.setLike(idReview, likeOrDis);
-                isLikeOrDisButton = mpReviewApi.getLike(idReview);
-                int[] count = mpReviewApi.getCountLikes(idReview);
+                MPReviewApi.setLike(idReview, likeOrDis);
+                isLikeOrDisButton = MPReviewApi.getLike(idReview);
+                int[] count = MPReviewApi.getCountLikes(idReview);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
