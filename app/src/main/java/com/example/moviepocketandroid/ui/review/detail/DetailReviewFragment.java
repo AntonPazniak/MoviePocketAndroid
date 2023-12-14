@@ -17,6 +17,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
@@ -109,6 +112,14 @@ public class DetailReviewFragment extends Fragment {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
+                            if (review.getUser().getAvatar() != null) {
+                                RequestOptions requestOptions = new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                Glide.with(view.getContext())
+                                        .load(review.getUser().getAvatar())
+                                        .apply(requestOptions)
+                                        .into(imageViewAvatar);
+                            }
                             textUsername.setText(review.getUser().getUsername());
                             textDate.setText(review.getDataCreated().toString());
                             textTitle.setText(review.getTitle());
