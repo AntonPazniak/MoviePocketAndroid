@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api.models;
 
 import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.user.User;
 import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.annotations.SerializedName;
 
@@ -32,8 +33,8 @@ public class MovieList implements Serializable {
     private Long poster;
     @SerializedName("likeOrDis")
     private int[] likeOrDis;
-    @SerializedName("username")
-    private String username;
+    @SerializedName("user")
+    private User user;
 
     //    @SerializedName("create")
 //    private LocalDate create;
@@ -87,15 +88,15 @@ public class MovieList implements Serializable {
         this.likeOrDis = likeOrDis;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-//    public LocalDate getCreate() {
+    //    public LocalDate getCreate() {
 //        return create;
 //    }
 //

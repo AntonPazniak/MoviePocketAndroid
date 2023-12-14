@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.review.Review;
 
@@ -74,14 +77,23 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             textContent = itemView.findViewById(R.id.textViewContent);
             textUsername = itemView.findViewById(R.id.textViewUsername);
             textDate = itemView.findViewById(R.id.textViewDate);
+            imageViewAvatar = itemView.findViewById(R.id.imageViewAvatar);
         }
 
         public void bind(Review review) {
             textTitle.setText(review.getTitle());
             textContent.setText(review.getContent());
-            textUsername.setText(review.getUsername());
+            textUsername.setText(review.getUser().getUsername());
             textDate.setText(review.getDataCreated().toString());
             idReview = Math.toIntExact(review.getId());
+            if (review.getUser().getAvatar() != null) {
+                RequestOptions requestOptions = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                Glide.with(itemView.getContext())
+                        .load(review.getUser().getAvatar())
+                        .apply(requestOptions)
+                        .into(imageViewAvatar);
+            }
         }
     }
 }

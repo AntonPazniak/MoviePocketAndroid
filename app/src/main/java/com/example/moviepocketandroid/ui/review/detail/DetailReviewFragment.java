@@ -109,7 +109,7 @@ public class DetailReviewFragment extends Fragment {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            textUsername.setText(review.getUsername());
+                            textUsername.setText(review.getUser().getUsername());
                             textDate.setText(review.getDataCreated().toString());
                             textTitle.setText(review.getTitle());
                             textContent.setText(review.getContent());
@@ -136,7 +136,7 @@ public class DetailReviewFragment extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     Bundle args = new Bundle();
-                                    args.putString("username", review.getUsername());
+                                    args.putString("username", review.getUser().getUsername());
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                     navController.navigate(R.id.action_detailReviewFragment_to_userPageFragment, args);
                                 }

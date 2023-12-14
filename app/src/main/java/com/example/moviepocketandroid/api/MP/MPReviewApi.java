@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -103,19 +104,16 @@ public class MPReviewApi {
 
 
     public static Boolean postReviewMovie(int idMovie, String title, String content) {
-        List<Review> reviews = new ArrayList<>();
-        String url = baseUrl + "/review/movie/set";
+        String url = baseUrl + "/review/movie/set?idMovie=" + idMovie + "&title=" + title;
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("idMovie", String.valueOf(idMovie))
-                .add("title", title)
-                .add("content", content)
-                .build();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
                 .build();
 
         try {
@@ -128,6 +126,7 @@ public class MPReviewApi {
         }
         return false;
     }
+
 
     public static Boolean delReviewMovie(int idReview) {
         String url = baseUrl + "/review/del";
@@ -154,18 +153,18 @@ public class MPReviewApi {
     }
 
     public static Boolean editReviewMovie(int idReview, String title, String content) {
-        String url = baseUrl + "/review/up";
+        String url = baseUrl + "/review/up?idReview=" + idReview + "&title=" + title;
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("idReview", String.valueOf(idReview))
-                .add("title", title)
-                .add("content", content)
-                .build();
+        // Create JSON payload
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
 
+        // Build the request
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
                 .build();
 
         try {
@@ -178,6 +177,7 @@ public class MPReviewApi {
         }
         return false;
     }
+
 
     public static Boolean getLike(int idReview) {
         String url = baseUrl + "/review/like?idReview=" + idReview;

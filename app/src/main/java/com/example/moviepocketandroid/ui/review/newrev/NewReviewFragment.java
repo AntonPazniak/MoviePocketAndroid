@@ -79,7 +79,7 @@ public class NewReviewFragment extends Fragment {
                             @Override
                             public void run() {
                                 MPReviewApi mpReviewApi = new MPReviewApi();
-                                mpReviewApi.postReviewMovie(idMovie, title, content);
+                                MPReviewApi.postReviewMovie(idMovie, title, content);
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {

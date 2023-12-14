@@ -154,7 +154,7 @@ public class MovieListFragment extends Fragment {
 
     private void setListInf() {
         linearLayoutAuthor.setVisibility(View.VISIBLE);
-        textViewUsername.setText(movieList.getUsername());
+        textViewUsername.setText(movieList.getUser().getUsername());
         //textViewDate.setText(movieList.getCreate().toString());
         textViewTitle.setText(movieList.getTitle());
         textViewContent.setText(movieList.getContent());
@@ -162,7 +162,7 @@ public class MovieListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();
-                args.putString("username", movieList.getUsername());
+                args.putString("username", movieList.getUser().getUsername());
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                 navController.navigate(R.id.action_movieListFragment_to_userPageFragment, args);
             }

@@ -1,29 +1,20 @@
 package com.example.moviepocketandroid.api.models.review;
 
 
+import com.example.moviepocketandroid.api.models.user.User;
+
 import java.util.Date;
 
 public class Review {
 
     private String title;
     private String content;
-    private String username;
+    private User user;
     private Date dataCreated;
     private Date dataUpdated;
     private int idMovie;
     private int id;
     private int[] likes;
-
-    public Review(String title, String content, String username, Date dataCreated, Date dataUpdated, int idMovie, int id, int[] likes) {
-        this.title = title;
-        this.content = content;
-        this.username = username;
-        this.dataCreated = dataCreated;
-        this.dataUpdated = dataUpdated;
-        this.idMovie = idMovie;
-        this.id = id;
-        this.likes = likes;
-    }
 
     public String getTitle() {
         return title;
@@ -31,10 +22,6 @@ public class Review {
 
     public String getContent() {
         return content;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public Date getDataCreated() {
@@ -72,11 +59,6 @@ public class Review {
     public void setContent(String content) {
         this.content = content;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setIdMovie(int idMovie) {
         this.idMovie = idMovie;
     }
@@ -87,5 +69,13 @@ public class Review {
 
     public void setLikes(int[] likes) {
         this.likes = likes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

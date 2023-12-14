@@ -139,7 +139,6 @@ public class UserFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setInfo() {
-        assert user != null;
         textViewUsername.setText(user.getUsername());
         toWatchTextView.setText("Watchlist");
         setMovies(movieToWatchRecyclerView, toWatch);
