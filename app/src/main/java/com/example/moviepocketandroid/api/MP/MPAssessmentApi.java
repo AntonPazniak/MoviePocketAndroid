@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
+import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class MPAssessmentApi {
     private static final OkHttpClient client = new OkHttpClient();
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
 

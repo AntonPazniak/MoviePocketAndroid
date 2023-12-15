@@ -3,12 +3,14 @@ package com.example.moviepocketandroid.api.MP;
 import com.example.moviepocketandroid.api.models.user.User;
 import com.example.moviepocketandroid.api.models.user.UserPage;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
+import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -22,6 +24,7 @@ public class MPUserApi {
     private static OkHttpClient client = new OkHttpClient();
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
     public static User getUserInfo() {
@@ -136,7 +139,6 @@ public class MPUserApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, UserPage.class);
             }
         } catch (IOException e) {

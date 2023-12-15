@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
 import com.example.moviepocketandroid.api.models.user.UserPage;
@@ -21,6 +25,8 @@ public class UserPageFragment extends Fragment {
 
     private UserPageViewModel mViewModel;
     private TextView textViewUsername, textViewDate, textViewBio;
+    private ImageView imageViewAvatar;
+    private View view;
 
     public static UserPageFragment newInstance() {
         return new UserPageFragment();
@@ -42,9 +48,11 @@ public class UserPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
         textViewUsername = view.findViewById(R.id.textViewUsername);
         textViewDate = view.findViewById(R.id.textViewDate);
         textViewBio = view.findViewById(R.id.textViewBio);
+        imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
 
 
         Bundle args = getArguments();
@@ -64,8 +72,16 @@ public class UserPageFragment extends Fragment {
                     @Override
                     public void run() {
                         if (userPage != null) {
+                            if (userPage.getAvatar() != null) {
+                                RequestOptions requestOptions = new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                Glide.with(view.getContext())
+                                        .load(userPage.getAvatar())
+                                        .apply(requestOptions)
+                                        .into(imageViewAvatar);
+                            }
                             textViewUsername.setText(userPage.getUsername());
-                            textViewDate.setText(userPage.getCreated().toString());
+                            textViewDate.setText(userPage.getCreated().toLocalDate().toString());
                             textViewBio.setText(userPage.getBio());
                         }
                     }

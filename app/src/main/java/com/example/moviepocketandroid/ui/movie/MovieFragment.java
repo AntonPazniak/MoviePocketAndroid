@@ -501,11 +501,13 @@ public class MovieFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("movie", (Serializable) movie);
-        outState.putSerializable("images", (Serializable) images);
-        outState.putSerializable("similarMovies", (Serializable) similarMovies);
-        outState.putSerializable("actors", (Serializable) actors);
-        outState.putSerializable("reviews", (Serializable) reviews);
-        outState.putString("movieTrailerUrl", movieTrailerUrl);
+        if (movie != null) {
+            outState.putSerializable("movie", (Serializable) movie);
+            outState.putSerializable("images", (Serializable) images);
+            outState.putSerializable("similarMovies", (Serializable) similarMovies);
+            outState.putSerializable("actors", (Serializable) actors);
+            outState.putSerializable("reviews", (Serializable) reviews);
+            outState.putString("movieTrailerUrl", movieTrailerUrl);
+        }
     }
 }

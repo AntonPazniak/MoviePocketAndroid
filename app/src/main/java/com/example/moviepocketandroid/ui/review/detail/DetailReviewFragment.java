@@ -119,7 +119,7 @@ public class DetailReviewFragment extends Fragment {
                                         .into(imageViewAvatar);
                             }
                             textUsername.setText(review.getUser().getUsername());
-                            textDate.setText(review.getDataCreated().toString());
+                            textDate.setText(review.getDataCreated().toLocalDate().toString());
                             textTitle.setText(review.getTitle());
                             textContent.setText(review.getContent());
                             textViewCountLikes.setText(String.valueOf(count[0]));

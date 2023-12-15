@@ -19,6 +19,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
@@ -39,6 +42,7 @@ public class MovieListFragment extends Fragment {
     private ImageView imageViewAvatar;
     private MovieList movieList;
     private List<Movie> movies;
+    private View view;
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -60,6 +64,8 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        this.view = view;
 
         textViewTitle = view.findViewById(R.id.textViewTitle);
         textViewContent = view.findViewById(R.id.textViewContent);
@@ -168,6 +174,14 @@ public class MovieListFragment extends Fragment {
             }
 
         });
+        if (movieList.getUser().getAvatar() != null) {
+            RequestOptions requestOptions = new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(view.getContext())
+                    .load(movieList.getUser().getAvatar())
+                    .apply(requestOptions)
+                    .into(imageViewAvatar);
+        }
 
     }
 
