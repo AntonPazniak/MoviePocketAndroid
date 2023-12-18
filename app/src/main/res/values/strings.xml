@@ -38,4 +38,9 @@
     <string name="save">Save</string>
     <string name="logout">Logout</string>
     <string name="merry_christmas">Merry Christmas</string>
+    <string name="movie">movie</string>
+    <string name="person">Person</string>
+    <string name="description">Description</string>
+    <string name="reviews">Reviews</string>
+    <string name="moviess">Movies</string>
 </resources>

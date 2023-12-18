@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.movie.list;
+package com.example.moviepocketandroid.ui.list;
 
 import androidx.lifecycle.ViewModel;
 

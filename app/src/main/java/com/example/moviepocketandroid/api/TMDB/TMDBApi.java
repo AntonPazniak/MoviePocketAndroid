@@ -23,7 +23,6 @@ import okhttp3.Response;
 public class TMDBApi {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3";
-    private static final String API_KEY = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGEzNWQ1OGZkMTI0OTdiMTExZTRkZDFjNGE0YzAwNCIsInN1YiI6IjY0NDUyZGMwNjUxZmNmMDYxNzliZmY5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.expCnsMxBP9wfZab438BOkfl0VPQJftRFG7WPkSRyD0";
     private static final String language = "us-USd";
 
     private static final Gson gson = new GsonBuilder()

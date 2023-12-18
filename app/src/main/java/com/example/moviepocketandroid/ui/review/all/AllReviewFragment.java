@@ -1,6 +1,12 @@
 package com.example.moviepocketandroid.ui.review.all;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,13 +15,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
@@ -37,7 +36,6 @@ public class AllReviewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MPReviewApi mpReviewApi = new MPReviewApi();
         recyclerView = view.findViewById(R.id.recyclerView);
         View view1 = view.findViewById(R.id.item_text);
         titleTextView = view1.findViewById(R.id.textView);
@@ -48,7 +46,7 @@ public class AllReviewFragment extends Fragment {
                 Bundle args = getArguments();
                 if (args != null) {
                     int idMovie = args.getInt("idMovie");
-                    List<Review> reviews = mpReviewApi.getReviewAllByIdMovie(idMovie);
+                    List<Review> reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -59,9 +57,9 @@ public class AllReviewFragment extends Fragment {
                                 recyclerView.setLayoutManager(layoutManager2);
                                 reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
                                     @Override
-                                    public void onReviewClick(int reviewId) {
+                                    public void onReviewClick(int idReview) {
                                         Bundle args = new Bundle();
-                                        args.putInt("idReview", reviewId);
+                                        args.putInt("idReview", idReview);
 
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigate(R.id.action_allReviewFragment_to_detailReviewFragment, args);

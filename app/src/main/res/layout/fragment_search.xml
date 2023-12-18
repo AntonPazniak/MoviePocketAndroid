@@ -12,16 +12,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewSearch"
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:text="@string/search"
-            android:textSize="30dp"
-            android:textColor="@color/logoBlue"/>
 
         <include layout="@layout/item_search_bar" />
 
@@ -30,10 +22,6 @@
         <include layout="@layout/item_recycler_view_actors" />
 
         <include layout="@layout/item_recycler_view_tv" />
-
-
-
-
 
     </LinearLayout>
     </ScrollView>

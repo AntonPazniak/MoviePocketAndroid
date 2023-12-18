@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.movie.list;
+package com.example.moviepocketandroid.ui.list;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -75,31 +75,32 @@ public class MovieListFragment extends Fragment {
         textViewDate = view.findViewById(R.id.textViewDate);
         imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
 
-        Bundle args = getArguments();
-        if (savedInstanceState != null) {
-            int idList = args.getInt("idList", -1);
-            if (idList > 0) {
-                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
-                assert movieList != null;
-                movies = movieList.getMovies();
-                setMovie();
-                setListInf();
-            } else {
-                setMovie();
-            }
-        } else {
-            if (args != null) {
-                int idList = args.getInt("idList", -1);
-                if (idList > 0) {
-                    loadListInf(idList);
-                } else {
-                    movies = (List<Movie>) args.getSerializable("watchedListKey");
-                    setMovie();
-                }
 
-                //loadListInf(1);
-            }
-        }
+//        Bundle args = getArguments();
+//        if (savedInstanceState != null) {
+//            int idList = args.getInt("idList", -1);
+//            if (idList > 0) {
+//                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
+//                assert movieList != null;
+//                movies = movieList.getMovies();
+//                setMovie();
+//                setListInf();
+//            } else {
+//                setMovie();
+//            }
+//        } else {
+//            if (args != null) {
+//                int idList = args.getInt("idList", -1);
+//                if (idList > 0) {
+//                    loadListInf(idList);
+//                } else {
+//                    movies = (List<Movie>) args.getSerializable("watchedListKey");
+//                    setMovie();
+//                }
+//
+//                //loadListInf(1);
+//            }
+//        }
     }
 
 
