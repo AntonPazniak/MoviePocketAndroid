@@ -57,7 +57,7 @@ public class ListFragment extends Fragment {
             ListNavBarAdapter listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idList), "Movies");
-            listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(), "Reviews");
+            listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idList), "Reviews");
             listNavBarAdapter.addFragmentAddTitle(new ListDescriptionFragment(), "Description");
 
             viewPager.setAdapter(listNavBarAdapter);

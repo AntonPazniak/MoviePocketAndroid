@@ -29,6 +29,15 @@ public class AllReviewFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView titleTextView;
 
+    public AllReviewFragment(int idList) {
+        Bundle args = new Bundle();
+        args.putInt("idList", idList);
+        setArguments(args);
+    }
+
+    public AllReviewFragment() {
+    }
+
     public static AllReviewFragment newInstance() {
         return new AllReviewFragment();
     }
@@ -45,29 +54,14 @@ public class AllReviewFragment extends Fragment {
             public void run() {
                 Bundle args = getArguments();
                 if (args != null) {
-                    int idMovie = args.getInt("idMovie");
-                    List<Review> reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (reviews.size() > 0) {
-                                reviewAdapter = new ReviewAdapter(reviews);
-                                recyclerView.setAdapter(reviewAdapter);
-                                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-                                recyclerView.setLayoutManager(layoutManager2);
-                                reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
-                                    @Override
-                                    public void onReviewClick(int idReview) {
-                                        Bundle args = new Bundle();
-                                        args.putInt("idReview", idReview);
+                    int idMovie = args.getInt("idMovie", -1);
+                    int idList = args.getInt("idList", -1);
+                    if (idMovie > -1) {
+                        setReviewMovie(idMovie);
+                    } else if (idList > -1) {
+                        setReviewList(idList);
+                    }
 
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigate(R.id.action_allReviewFragment_to_detailReviewFragment, args);
-                                    }
-                                });
-                            }
-                        }
-                    });
                 }
             }
         }).start();
@@ -84,6 +78,57 @@ public class AllReviewFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // TODO: Use the ViewModel
+    }
+
+
+    private void setReviewMovie(int idMovie) {
+        List<Review> reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (reviews.size() > 0) {
+                    reviewAdapter = new ReviewAdapter(reviews);
+                    recyclerView.setAdapter(reviewAdapter);
+                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+                    recyclerView.setLayoutManager(layoutManager2);
+                    reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
+                        @Override
+                        public void onReviewClick(int idReview) {
+                            Bundle args = new Bundle();
+                            args.putInt("idReview", idReview);
+
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_allReviewFragment_to_detailReviewFragment, args);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void setReviewList(int idList) {
+        List<Review> reviews = MPReviewApi.getReviewAllByIdList(idList);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (reviews.size() > 0) {
+                    reviewAdapter = new ReviewAdapter(reviews);
+                    recyclerView.setAdapter(reviewAdapter);
+                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+                    recyclerView.setLayoutManager(layoutManager2);
+                    reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
+                        @Override
+                        public void onReviewClick(int idReview) {
+                            Bundle args = new Bundle();
+                            args.putInt("idReview", idReview);
+
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_listFragment_to_detailReviewFragment, args);
+                        }
+                    });
+                }
+            }
+        });
     }
 
 

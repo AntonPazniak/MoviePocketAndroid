@@ -262,6 +262,9 @@
                     <action
                         android:id="@+id/action_listFragment_to_movieFragment"
                         app:destination="@id/movieFragment" />
+                    <action
+                        android:id="@+id/action_listFragment_to_detailReviewFragment"
+                        app:destination="@id/detailReviewFragment" />
                 </fragment>
                 <fragment
                     android:id="@+id/listMovieFragment"
