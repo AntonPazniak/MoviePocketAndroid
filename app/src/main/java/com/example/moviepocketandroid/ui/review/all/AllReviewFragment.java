@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.models.review.Review;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class AllReviewFragment extends Fragment {
     private ReviewAdapter reviewAdapter;
     private RecyclerView recyclerView;
     private TextView titleTextView;
+    private FloatingActionButton fabAdd;
 
     public AllReviewFragment(int idList) {
         Bundle args = new Bundle();
@@ -46,8 +49,8 @@ public class AllReviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
-        View view1 = view.findViewById(R.id.item_text);
-        titleTextView = view1.findViewById(R.id.textView);
+        titleTextView = view.findViewById(R.id.textView);
+        fabAdd = view.findViewById(R.id.fabAdd);
 
         new Thread(new Runnable() {
             @Override
@@ -83,6 +86,7 @@ public class AllReviewFragment extends Fragment {
 
     private void setReviewMovie(int idMovie) {
         List<Review> reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+        Boolean isAuthentication = MPAuthenticationApi.checkAuth();
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -101,6 +105,27 @@ public class AllReviewFragment extends Fragment {
                             navController.navigate(R.id.action_allReviewFragment_to_detailReviewFragment, args);
                         }
                     });
+
+                    if (isAuthentication) {
+                        fabAdd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Bundle args = new Bundle();
+                                args.putInt("idMovie", idMovie);
+
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_allReviewFragment_to_newReviewFragment, args);
+                            }
+                        });
+                    } else {
+                        fabAdd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_allReviewFragment_to_loginFragment);
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -108,6 +133,7 @@ public class AllReviewFragment extends Fragment {
 
     private void setReviewList(int idList) {
         List<Review> reviews = MPReviewApi.getReviewAllByIdList(idList);
+        Boolean isAuthentication = MPAuthenticationApi.checkAuth();
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -126,6 +152,26 @@ public class AllReviewFragment extends Fragment {
                             navController.navigate(R.id.action_listFragment_to_detailReviewFragment, args);
                         }
                     });
+                    if (isAuthentication) {
+                        fabAdd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Bundle args = new Bundle();
+                                args.putInt("idList", idList);
+
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_listFragment_to_newReviewFragment, args);
+                            }
+                        });
+                    } else {
+                        fabAdd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_listFragment_to_loginFragment);
+                            }
+                        });
+                    }
                 }
             }
         });

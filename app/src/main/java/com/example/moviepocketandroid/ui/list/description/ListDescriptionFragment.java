@@ -11,10 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.api.models.MovieList;
 
 public class ListDescriptionFragment extends Fragment {
 
     private ListDescriptionViewModel mViewModel;
+    private int idList;
+    private MovieList movieList;
 
     public ListDescriptionFragment(int idList) {
         Bundle args = new Bundle();
@@ -42,4 +45,14 @@ public class ListDescriptionFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            idList = args.getInt("idList");
+
+        }
+    }
 }

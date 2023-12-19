@@ -197,6 +197,12 @@
         <action
             android:id="@+id/action_allReviewFragment_to_userPageFragment"
             app:destination="@id/userPageFragment" />
+        <action
+            android:id="@+id/action_allReviewFragment_to_newReviewFragment2"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_allReviewFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -256,6 +262,12 @@
         <action
             android:id="@+id/action_listFragment_to_detailReviewFragment"
             app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/listMovieFragment"

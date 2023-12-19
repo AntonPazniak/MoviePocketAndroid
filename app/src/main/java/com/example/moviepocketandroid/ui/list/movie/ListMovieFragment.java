@@ -1,11 +1,13 @@
 package com.example.moviepocketandroid.ui.list.movie;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +18,15 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.MovieList;
+
+import java.util.Random;
 
 public class ListMovieFragment extends Fragment {
 
@@ -28,6 +35,8 @@ public class ListMovieFragment extends Fragment {
     private TextView textViewTitle;
     private RecyclerView recyclerViewList;
     private MovieList movieList;
+    private ImageView imageBackMovie;
+    private Context context;
 
     public ListMovieFragment(int idList) {
         Bundle args = new Bundle();
@@ -55,7 +64,8 @@ public class ListMovieFragment extends Fragment {
 
             textViewTitle = view.findViewById(R.id.textViewTitle);
             recyclerViewList = view.findViewById(R.id.recyclerViewList);
-
+            imageBackMovie = view.findViewById(R.id.imageBackMovie);
+            context = view.getContext();
             loadListInf();
         }
 
@@ -87,6 +97,17 @@ public class ListMovieFragment extends Fragment {
         textViewTitle.setText(movieList.getTitle());
 
         if (movieList.getMovies() != null && !movieList.getMovies().isEmpty()) {
+
+            Random random = new Random();
+            int randMovie = random.nextInt(movieList.getMovies().size() - 1);
+
+            RequestOptions requestOptions = new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(context)
+                    .load(movieList.getMovies().get(randMovie).getBackdropPath())
+                    .apply(requestOptions)
+                    .into(imageBackMovie);
+
             MovieAdapter movieAdapter = new MovieAdapter(movieList.getMovies());
             recyclerViewList.setAdapter(movieAdapter);
 
