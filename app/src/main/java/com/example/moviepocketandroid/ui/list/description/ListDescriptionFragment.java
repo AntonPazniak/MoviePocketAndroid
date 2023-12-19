@@ -1,22 +1,29 @@
 package com.example.moviepocketandroid.ui.list.description;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviepocketandroid.R;
 
 public class ListDescriptionFragment extends Fragment {
 
     private ListDescriptionViewModel mViewModel;
+
+    public ListDescriptionFragment(int idList) {
+        Bundle args = new Bundle();
+        args.putInt("idList", idList);
+        setArguments(args);
+    }
+
+    public ListDescriptionFragment() {
+    }
 
     public static ListDescriptionFragment newInstance() {
         return new ListDescriptionFragment();

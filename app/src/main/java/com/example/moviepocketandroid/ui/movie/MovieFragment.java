@@ -485,7 +485,7 @@ public class MovieFragment extends Fragment {
                     Bundle args = new Bundle();
                     args.putInt("idList", idList);
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_movieListFragment, args);
+                    navController.navigate(R.id.action_movieFragment_to_listFragment, args);
                 }
             });
             listRecyclerView.setVisibility(View.VISIBLE);
