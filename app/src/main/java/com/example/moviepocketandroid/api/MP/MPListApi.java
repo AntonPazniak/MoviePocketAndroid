@@ -80,5 +80,26 @@ public class MPListApi {
         return lists;
     }
 
+    public static Boolean getAuthorship(int idList) {
+        String url = baseUrl + "/movies/list/authorship?idList=" + idList;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return !response.body().string().equals("false");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

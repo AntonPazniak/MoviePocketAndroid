@@ -1,6 +1,8 @@
 package com.example.moviepocketandroid.ui.list.main;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
+import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.ui.list.edit.ListEditFragment;
 import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -55,11 +59,27 @@ public class ListFragment extends Fragment {
 
             ListNavBarAdapter listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-            listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idList), "Movies");
-            listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idList), "Reviews");
-            //listNavBarAdapter.addFragmentAddTitle(new ListDescriptionFragment(idList), "Description");
 
-            viewPager.setAdapter(listNavBarAdapter);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Boolean authorship = MPListApi.getAuthorship(idList);
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idList), "Movies");
+                            listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idList), "Reviews");
+                            if (authorship)
+                                listNavBarAdapter.addFragmentAddTitle(new ListEditFragment(), "Edit");
+                            viewPager.setAdapter(listNavBarAdapter);
+                        }
+                    });
+
+                }
+            }).start();
+
+
         }
     }
 }

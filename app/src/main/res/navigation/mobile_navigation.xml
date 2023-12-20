@@ -274,4 +274,9 @@
         android:name="com.example.moviepocketandroid.ui.list.movie.ListMovieFragment"
         android:label="fragment_list_movie"
         tools:layout="@layout/fragment_list_movie" />
+    <fragment
+        android:id="@+id/listEditFragment"
+        android:name="com.example.moviepocketandroid.ui.list.edit.ListEditFragment"
+        android:label="fragment_list_edit"
+        tools:layout="@layout/fragment_list_edit" />
 </navigation>
