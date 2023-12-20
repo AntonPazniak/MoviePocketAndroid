@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,7 +29,10 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.ui.user.UserInfoUntil;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Random;
 
@@ -40,6 +46,7 @@ public class ListMovieFragment extends Fragment {
     private ImageView imageBackMovie, imageViewAvatar;
     private Context context;
     private boolean isExpanded = false;
+    private ChipGroup chipGroup;
 
     public ListMovieFragment(int idList) {
         Bundle args = new Bundle();
@@ -71,6 +78,7 @@ public class ListMovieFragment extends Fragment {
             imageBackMovie = view.findViewById(R.id.imageBackMovie);
             imageViewAvatar= view.findViewById(R.id.imageViewAvatar);
             textOverview = view.findViewById(R.id.textOverview);
+            chipGroup = view.findViewById(R.id.chipGroup);
             context = view.getContext();
             loadListInf();
         }
@@ -103,8 +111,23 @@ public class ListMovieFragment extends Fragment {
         textViewTitle.setText(movieList.getTitle());
         textOverview.setText(movieList.getContent());
         textViewNickname.setText(movieList.getUser().getUsername());
-        UserInfoUntil.setUserInfo(movieList.getUser(),context,imageViewAvatar);
+        UserInfoUntil.setUserInfo(movieList.getUser(), context, imageViewAvatar);
 
+        chipGroup.removeAllViews();
+
+        for (Genre genre : movieList.getGenres()) {
+            CardView cardView = new CardView(context);
+            cardView.setRadius(getResources().getDimension(R.dimen.corner_radius)); // Замените на свой ресурс
+            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.logoPink));
+
+            MaterialTextView chip = new MaterialTextView(context);
+            chip.setText(genre.getName());
+            chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            chip.setPadding(8, 8, 8, 8);
+
+            cardView.addView(chip);
+            chipGroup.addView(cardView);
+        }
 
         textOverview.setOnClickListener(new View.OnClickListener() {
             @Override
