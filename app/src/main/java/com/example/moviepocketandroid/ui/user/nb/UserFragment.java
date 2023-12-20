@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
@@ -34,12 +38,13 @@ public class UserFragment extends Fragment {
     private List<Movie> favorites;
     private List<Movie> watched;
 
-    private View itemRecyclerViewMovie0, itemRecyclerViewMovie1, itemRecyclerViewMovie2;
+    private View itemRecyclerViewMovie0, itemRecyclerViewMovie1, itemRecyclerViewMovie2, view;
     private View textView0, textView1, textView2;
     private TextView favoriteTextView, toWatchTextView, watchedTextView, textViewUsername;
     private RecyclerView movieFavoriteRecyclerView, movieToWatchRecyclerView, movieWatchedRecyclerView;
     private ImageButton imageButtonSettings;
     private User user;
+    private ImageView imageViewAvatar;
 
 
     public static UserFragment newInstance() {
@@ -91,6 +96,8 @@ public class UserFragment extends Fragment {
         textViewUsername = view.findViewById(R.id.textViewUsername);
         imageButtonSettings = view.findViewById(R.id.imageButtonSettings);
 
+        this.view = view;
+
         if (savedInstanceState != null) {
             toWatch = Collections.checkedList(
                     (List<Movie>) savedInstanceState.getSerializable("toWatchKey"), Movie.class);
@@ -139,7 +146,6 @@ public class UserFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setInfo() {
-        assert user != null;
         textViewUsername.setText(user.getUsername());
         toWatchTextView.setText("Watchlist");
         setMovies(movieToWatchRecyclerView, toWatch);
@@ -203,6 +209,16 @@ public class UserFragment extends Fragment {
 
         });
 
+        if (user.getAvatar() != null) {
+            imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
+            RequestOptions requestOptions = new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(view.getContext())
+                    .load(user.getAvatar())
+                    .apply(requestOptions)
+                    .into(imageViewAvatar);
+        }
+
     }
 
     private void setMovies(RecyclerView recyclerView, List<Movie> movies) {
@@ -225,10 +241,12 @@ public class UserFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("toWatchKey", (Serializable) toWatch);
-        outState.putSerializable("favoritesKey", (Serializable) favorites);
-        outState.putSerializable("watchedKey", (Serializable) watched);
-        outState.putSerializable("user", user);
+        if (user != null) {
+            outState.putSerializable("toWatchKey", (Serializable) toWatch);
+            outState.putSerializable("favoritesKey", (Serializable) favorites);
+            outState.putSerializable("watchedKey", (Serializable) watched);
+            outState.putSerializable("user", user);
+        }
     }
 
 }

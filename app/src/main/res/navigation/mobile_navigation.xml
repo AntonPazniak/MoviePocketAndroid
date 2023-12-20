@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 
     <fragment
@@ -98,6 +101,9 @@
         <action
             android:id="@+id/action_movieFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -191,6 +197,12 @@
         <action
             android:id="@+id/action_allReviewFragment_to_userPageFragment"
             app:destination="@id/userPageFragment" />
+        <action
+            android:id="@+id/action_allReviewFragment_to_newReviewFragment2"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_allReviewFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -221,7 +233,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieListFragment"
-        android:name="com.example.moviepocketandroid.ui.movie.list.MovieListFragment"
+        android:name="com.example.moviepocketandroid.ui.list.MovieListFragment"
         android:label="fragment_movie_list"
         tools:layout="@layout/fragment_movie_list">
         <action
@@ -230,5 +242,41 @@
         <action
             android:id="@+id/action_movieListFragment_to_userPageFragment"
             app:destination="@id/userPageFragment" />
+        <action
+            android:id="@+id/action_movieListFragment_self"
+            app:destination="@id/movieListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listDescriptionFragment"
+        android:name="com.example.moviepocketandroid.ui.list.description.ListDescriptionFragment"
+        android:label="fragment_list_description"
+        tools:layout="@layout/fragment_list_description" />
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.moviepocketandroid.ui.list.main.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listMovieFragment"
+        android:name="com.example.moviepocketandroid.ui.list.movie.ListMovieFragment"
+        android:label="fragment_list_movie"
+        tools:layout="@layout/fragment_list_movie" />
+    <fragment
+        android:id="@+id/listEditFragment"
+        android:name="com.example.moviepocketandroid.ui.list.edit.ListEditFragment"
+        android:label="fragment_list_edit"
+        tools:layout="@layout/fragment_list_edit" />
 </navigation>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.review.Review;
+import com.example.moviepocketandroid.ui.user.UserInfoUntil;
 
 import java.util.List;
 
@@ -74,14 +75,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             textContent = itemView.findViewById(R.id.textViewContent);
             textUsername = itemView.findViewById(R.id.textViewUsername);
             textDate = itemView.findViewById(R.id.textViewDate);
+            imageViewAvatar = itemView.findViewById(R.id.imageViewAvatar);
         }
 
         public void bind(Review review) {
             textTitle.setText(review.getTitle());
             textContent.setText(review.getContent());
-            textUsername.setText(review.getUsername());
-            textDate.setText(review.getDataCreated().toString());
+            textUsername.setText(review.getUser().getUsername());
+            textDate.setText(review.getDataCreated().toLocalDate().toString());
             idReview = Math.toIntExact(review.getId());
+            UserInfoUntil.setUserInfo(review.getUser(),itemView.getContext(),imageViewAvatar);
+
         }
     }
 }

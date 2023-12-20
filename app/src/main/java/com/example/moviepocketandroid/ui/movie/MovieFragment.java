@@ -29,13 +29,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
+import com.example.moviepocketandroid.adapter.ListAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
+import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.ImageMovie;
+import com.example.moviepocketandroid.api.models.MovieList;
 import com.example.moviepocketandroid.api.models.Person;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.review.Review;
@@ -66,6 +69,7 @@ public class MovieFragment extends Fragment {
     private WebView webView;
     private Button button2, button;
     private View view;
+    private View layoutList;
     private Context context;
     private Movie movie;
     private List<Person> actors;
@@ -75,6 +79,10 @@ public class MovieFragment extends Fragment {
     private Boolean isAuthentication;
     private List<Review> reviews;
     private int idMovie, rating;
+    private List<MovieList> lists;
+    private ListAdapter listAdapter;
+    private RecyclerView listRecyclerView;
+    private TextView textViewList;
 
 
     public static MovieFragment newInstance() {
@@ -129,6 +137,8 @@ public class MovieFragment extends Fragment {
         webView = view.findViewById(R.id.webView);
         webView.setBackgroundColor(0);
 
+        layoutList = view.findViewById(R.id.layoutList);
+
         context = view.getContext();
         this.view = view;
 
@@ -175,11 +185,12 @@ public class MovieFragment extends Fragment {
                     similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
                     images = TMDBApi.getImagesByIdMovie(idMovie);
                     movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
-                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
                     rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
                 }
 
                 if (movie != null && isAdded()) {
+                    lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -201,6 +212,7 @@ public class MovieFragment extends Fragment {
         setMovieActors(actors);
         setMovieSimilar(similarMovies);
         setMovieReview(reviews);
+        setLists();
     }
 
     private void setButtonsReview() {
@@ -456,14 +468,46 @@ public class MovieFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private void setLists() {
+        listRecyclerView = layoutList.findViewById(R.id.moviesRecyclerView);
+        textViewList = layoutList.findViewById(R.id.textMoviesRecyclerView);
+
+        if (lists != null && !lists.isEmpty()) {
+            textViewList.setText("Lists with this movie");
+            listAdapter = new ListAdapter(lists);
+            listRecyclerView.setAdapter(listAdapter);
+            LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            listRecyclerView.setLayoutManager(layoutManager1);
+            listAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int idList) {
+                    Bundle args = new Bundle();
+                    args.putInt("idList", idList);
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_listFragment, args);
+                }
+            });
+            listRecyclerView.setVisibility(View.VISIBLE);
+            textViewList.setVisibility(View.VISIBLE);
+        } else {
+            listRecyclerView.setVisibility(View.GONE);
+            textViewList.setVisibility(View.GONE);
+            layoutList.setVisibility(View.GONE);
+        }
+    }
+
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("movie", (Serializable) movie);
-        outState.putSerializable("images", (Serializable) images);
-        outState.putSerializable("similarMovies", (Serializable) similarMovies);
-        outState.putSerializable("actors", (Serializable) actors);
-        outState.putSerializable("reviews", (Serializable) reviews);
-        outState.putString("movieTrailerUrl", movieTrailerUrl);
+        if (movie != null) {
+            outState.putSerializable("movie", (Serializable) movie);
+            outState.putSerializable("images", (Serializable) images);
+            outState.putSerializable("similarMovies", (Serializable) similarMovies);
+            outState.putSerializable("actors", (Serializable) actors);
+            outState.putSerializable("reviews", (Serializable) reviews);
+            outState.putString("movieTrailerUrl", movieTrailerUrl);
+        }
     }
 }

@@ -91,15 +91,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             if (rating >= 8) {
                 textRatingPoster.setBackgroundColor(ContextCompat
                         .getColor(context, R.color.logoYellow));
+                textRatingPoster.setText(decimalFormat.format(rating));
             } else if (rating > 4) {
                 textRatingPoster.setBackgroundColor(ContextCompat
                         .getColor(context, R.color.logoBlue));
-            } else {
+                textRatingPoster.setText(decimalFormat.format(rating));
+            } else if (rating > 0) {
                 textRatingPoster.setBackgroundColor(ContextCompat
                         .getColor(context, R.color.logoPink));
+                textRatingPoster.setText(decimalFormat.format(rating));
+            } else {
+                textRatingPoster.setBackgroundColor(ContextCompat
+                        .getColor(context, R.color.grey));
+                textRatingPoster.setText("NR");
             }
-
-            textRatingPoster.setText(decimalFormat.format(rating));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

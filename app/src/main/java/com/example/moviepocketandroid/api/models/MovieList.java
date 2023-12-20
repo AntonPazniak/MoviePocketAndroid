@@ -2,9 +2,12 @@ package com.example.moviepocketandroid.api.models;
 
 import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.user.User;
+import com.example.moviepocketandroid.util.Utils;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -17,15 +20,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieList implements Serializable {
+    @SerializedName("id")
     private int id;
+    @SerializedName("title")
     private String title;
+    @SerializedName("content")
     private String content;
+    @SerializedName("genres")
     private List<Genre> genres;
+    @SerializedName("movies")
     private List<Movie> movies;
+    @SerializedName("poster")
+    private Long poster;
+    @SerializedName("likeOrDis")
     private int[] likeOrDis;
-    private String username;
-    private LocalDate create;
-    private LocalDate update;
+    @SerializedName("user")
+    private User user;
+    @SerializedName("create")
+    private LocalDateTime create;
+    @SerializedName("update")
+    private LocalDateTime update;
 
     public int getId() {
         return id;
@@ -75,27 +89,35 @@ public class MovieList implements Serializable {
         this.likeOrDis = likeOrDis;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public LocalDate getCreate() {
+    public LocalDateTime getCreate() {
         return create;
     }
 
-    public void setCreate(LocalDate create) {
+    public void setCreate(LocalDateTime create) {
         this.create = create;
     }
 
-    public LocalDate getUpdate() {
+    public LocalDateTime getUpdate() {
         return update;
     }
 
-    public void setUpdate(LocalDate update) {
+    public void setUpdate(LocalDateTime update) {
         this.update = update;
+    }
+
+    public String getPoster() {
+        return Utils.MP_POSTER_PATH + poster.toString();
+    }
+
+    public void setPoster(Long poster) {
+        this.poster = poster;
     }
 }

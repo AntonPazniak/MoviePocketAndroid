@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewList"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageViewPoster"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="115dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:textColor="@color/logoPink"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPoster"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPoster" />
+
+    <TextView
+        android:id="@+id/textViewGenre"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPoster"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
@@ -17,6 +18,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
@@ -33,6 +37,7 @@ public class UserEditFragment extends Fragment {
     private TextInputEditText editTextUsername, editTextEmailAddress;
     private MultiAutoCompleteTextView editTextBio;
     private MaterialButton buttonSave, buttonLogout;
+    private ImageView imageViewAvatar;
     private User user;
 
     public static UserEditFragment newInstance() {
@@ -61,6 +66,7 @@ public class UserEditFragment extends Fragment {
         editTextBio = view.findViewById(R.id.editTextBio);
         buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonSave = view.findViewById(R.id.buttonSave);
+        imageViewAvatar = view.findViewById((R.id.imageViewAvatar));
 
 
         new Thread(new Runnable() {
@@ -75,6 +81,14 @@ public class UserEditFragment extends Fragment {
                             editTextUsername.setText(user.getUsername());
                             editTextEmailAddress.setText(user.getEmail());
                             editTextBio.setText(user.getBio());
+                            if (user.getAvatar() != null) {
+                                RequestOptions requestOptions = new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                Glide.with(view.getContext())
+                                        .load(user.getAvatar())
+                                        .apply(requestOptions)
+                                        .into(imageViewAvatar);
+                            }
                         }
                     }
                 });
@@ -157,7 +171,7 @@ public class UserEditFragment extends Fragment {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Boolean exist = mpAuthenticationApi.existsUserByEmail(email);
+                                    Boolean exist = MPAuthenticationApi.existsUserByEmail(email);
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -183,11 +197,11 @@ public class UserEditFragment extends Fragment {
                 if (!hasFocus) {
                     if (username.equals("")) {
                         editTextUsername.setError("Enter a correct username");
-                    } else {
+                    } else if (!username.equals(user.getUsername())) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Boolean exist = mpAuthenticationApi.existsUserByUsername(username);
+                                Boolean exist = MPAuthenticationApi.existsUserByUsername(username);
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {

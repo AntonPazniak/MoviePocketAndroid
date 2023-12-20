@@ -2,7 +2,8 @@ package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.MovieList;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
-import com.example.moviepocketandroid.util.StringUnit;
+import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
+import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,21 +13,24 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MPListApi {
 
-    private static final String baseUrl = StringUnit.baseServerUrl;
+    private static final String baseUrl = Utils.baseServerUrl;
     private static final OkHttpClient client = new OkHttpClient();
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
-
 
     public static MovieList getListById(int idList) {
         String url = baseUrl + "/movies/list/get?idMovieList=" + idList;
@@ -51,7 +55,7 @@ public class MPListApi {
 
     public static List<MovieList> getAllListExistIdMovie(int idMovie) {
         List<MovieList> lists = new ArrayList<>();
-        String url = baseUrl + "/movies/list/getAllByIdMovie?idMovie=" + idMovie;
+        String url = baseUrl + "/movies/list/getAllListsContainingMovie?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -64,9 +68,6 @@ public class MPListApi {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 JSONArray reviewArray = new JSONArray(responseBody);
-
-                Gson gson = new Gson();
-
                 for (int i = 0; i < reviewArray.length(); i++) {
                     JSONObject reviewObject = reviewArray.getJSONObject(i);
                     MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);
@@ -81,5 +82,52 @@ public class MPListApi {
         return lists;
     }
 
+    public static Boolean getAuthorship(int idList) {
+        String url = baseUrl + "/movies/list/authorship?idList=" + idList;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return !response.body().string().equals("false");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public static Boolean editList(int idList, String title, String content) {
+        String url = baseUrl + "/movies/list/up?idMovieList=" + idList + "&title=" + title;
+
+        // Create JSON payload
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
+
+        // Build the request
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

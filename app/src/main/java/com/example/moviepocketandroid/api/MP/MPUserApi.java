@@ -2,10 +2,15 @@ package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.user.User;
 import com.example.moviepocketandroid.api.models.user.UserPage;
-import com.example.moviepocketandroid.util.StringUnit;
+import com.example.moviepocketandroid.util.LocalDateAdapter;
+import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
+import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -15,8 +20,12 @@ import okhttp3.Response;
 
 public class MPUserApi {
 
-    private static final String baseUrl = StringUnit.baseServerUrl;
+    private static final String baseUrl = Utils.baseServerUrl;
     private static OkHttpClient client = new OkHttpClient();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
 
     public static User getUserInfo() {
         String url = baseUrl + "/user/edit/getUserDto";
@@ -33,7 +42,6 @@ public class MPUserApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, User.class);
             }
         } catch (IOException e) {
@@ -131,7 +139,6 @@ public class MPUserApi {
             if (response.isSuccessful()) {
                 assert response.body() != null;
                 String responseString = response.body().string();
-                Gson gson = new Gson();
                 return gson.fromJson(responseString, UserPage.class);
             }
         } catch (IOException e) {

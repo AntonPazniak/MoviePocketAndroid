@@ -17,6 +17,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
@@ -31,9 +34,7 @@ public class DetailReviewFragment extends Fragment {
     private TextView textUsername;
     private TextView textDate;
     private ImageButton imageButton0, imageButton1;
-
     private int idReview;
-    private MPReviewApi mpReviewApi = new MPReviewApi();
     private Boolean isLikeOrDisButton;
     private Boolean authorship = false;
     private TextView textViewCountLikes, textViewCountDislikes;
@@ -98,19 +99,27 @@ public class DetailReviewFragment extends Fragment {
 
                     Boolean isAuthentication = MPAuthenticationApi.checkAuth();
                     idReview = args.getInt("idReview");
-                    Review review = mpReviewApi.getReviewById(idReview);
+                    Review review = MPReviewApi.getReviewById(idReview);
                     if (isAuthentication) {
-                        authorship = mpReviewApi.getAuthorship(review.getId());
-                        isLikeOrDisButton = mpReviewApi.getLike(idReview);
+                        authorship = MPReviewApi.getAuthorship(review.getId());
+                        isLikeOrDisButton = MPReviewApi.getLike(idReview);
                     }
 
-                    int[] count = mpReviewApi.getCountLikes(idReview);
+                    int[] count = MPReviewApi.getCountLikes(idReview);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            textUsername.setText(review.getUsername());
-                            textDate.setText(review.getDataCreated().toString());
+                            if (review.getUser().getAvatar() != null) {
+                                RequestOptions requestOptions = new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                Glide.with(view.getContext())
+                                        .load(review.getUser().getAvatar())
+                                        .apply(requestOptions)
+                                        .into(imageViewAvatar);
+                            }
+                            textUsername.setText(review.getUser().getUsername());
+                            textDate.setText(review.getDataCreated().toLocalDate().toString());
                             textTitle.setText(review.getTitle());
                             textContent.setText(review.getContent());
                             textViewCountLikes.setText(String.valueOf(count[0]));
@@ -136,7 +145,7 @@ public class DetailReviewFragment extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     Bundle args = new Bundle();
-                                    args.putString("username", review.getUsername());
+                                    args.putString("username", review.getUser().getUsername());
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                     navController.navigate(R.id.action_detailReviewFragment_to_userPageFragment, args);
                                 }
@@ -172,7 +181,7 @@ public class DetailReviewFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (mpReviewApi.delReviewMovie(idReview)) {
+                if (MPReviewApi.delReviewMovie(idReview)) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -189,9 +198,9 @@ public class DetailReviewFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mpReviewApi.setLike(idReview, likeOrDis);
-                isLikeOrDisButton = mpReviewApi.getLike(idReview);
-                int[] count = mpReviewApi.getCountLikes(idReview);
+                MPReviewApi.setLike(idReview, likeOrDis);
+                isLikeOrDisButton = MPReviewApi.getLike(idReview);
+                int[] count = MPReviewApi.getCountLikes(idReview);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {

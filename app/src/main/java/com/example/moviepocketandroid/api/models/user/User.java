@@ -1,27 +1,31 @@
 package com.example.moviepocketandroid.api.models.user;
 
+import com.example.moviepocketandroid.util.Utils;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private int id;
+    @SerializedName("avatar")
+    private Long avatar;
+    @SerializedName("username")
     private String username;
+    @SerializedName("email")
     private String email;
+    @SerializedName("bio")
     private String bio;
 
-    public User(int id, String username, String email, String bio) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.bio = bio;
+
+    public String getAvatar() {
+        if (avatar != null)
+            return Utils.MP_POSTER_PATH + avatar.toString();
+        else
+            return null;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setAvatar(Long avatar) {
+        this.avatar = avatar;
     }
 
     public String getUsername() {

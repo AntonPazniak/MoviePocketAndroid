@@ -1,6 +1,5 @@
-package com.example.moviepocketandroid.ui.movie.list;
+package com.example.moviepocketandroid.ui.list;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +19,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
@@ -40,6 +42,7 @@ public class MovieListFragment extends Fragment {
     private ImageView imageViewAvatar;
     private MovieList movieList;
     private List<Movie> movies;
+    private View view;
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -62,6 +65,8 @@ public class MovieListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.view = view;
+
         textViewTitle = view.findViewById(R.id.textViewTitle);
         textViewContent = view.findViewById(R.id.textViewContent);
         recyclerViewList = view.findViewById(R.id.recyclerViewList);
@@ -71,28 +76,33 @@ public class MovieListFragment extends Fragment {
         imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
 
 
-        Bundle args = getArguments();
-        if (savedInstanceState != null) {
-            int idList = args.getInt("idList", -1);
-            if (idList > 0) {
-                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
-                assert movieList != null;
-                movies = movieList.getMovies();
-                setMovie();
-                setListInf();
-            } else {
-                setMovie();
-            }
-        } else if (args != null) {
-            int idList = args.getInt("idList", -1);
-            if (idList > 0) {
-                loadListInf(idList);
-            } else {
-                movies = (List<Movie>) args.getSerializable("watchedListKey");
-                setMovie();
-            }
-        }
+//        Bundle args = getArguments();
+//        if (savedInstanceState != null) {
+//            int idList = args.getInt("idList", -1);
+//            if (idList > 0) {
+//                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
+//                assert movieList != null;
+//                movies = movieList.getMovies();
+//                setMovie();
+//                setListInf();
+//            } else {
+//                setMovie();
+//            }
+//        } else {
+//            if (args != null) {
+//                int idList = args.getInt("idList", -1);
+//                if (idList > 0) {
+//                    loadListInf(idList);
+//                } else {
+//                    movies = (List<Movie>) args.getSerializable("watchedListKey");
+//                    setMovie();
+//                }
+//
+//                //loadListInf(1);
+//            }
+//        }
     }
+
 
     private void loadListInf(int idList) {
         new Thread(new Runnable() {
@@ -128,14 +138,14 @@ public class MovieListFragment extends Fragment {
         return movies;
     }
 
-    @SuppressLint("SetTextI18n")
     private void setMovie() {
-        if (movies != null) {
+        if (movies != null && !movies.isEmpty()) {
             MovieAdapter movieAdapter = new MovieAdapter(movies);
             recyclerViewList.setAdapter(movieAdapter);
 
             GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false);
             recyclerViewList.setLayoutManager(layoutManager);
+
             movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
                 @Override
                 public void onMovieClick(int movieId) {
@@ -151,20 +161,28 @@ public class MovieListFragment extends Fragment {
 
     private void setListInf() {
         linearLayoutAuthor.setVisibility(View.VISIBLE);
-        textViewUsername.setText(movieList.getUsername());
-        textViewDate.setText(movieList.getCreate().toString());
+        textViewUsername.setText(movieList.getUser().getUsername());
+        textViewDate.setText(movieList.getCreate().toLocalDate().toString());
         textViewTitle.setText(movieList.getTitle());
         textViewContent.setText(movieList.getContent());
         imageViewAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();
-                args.putString("username", movieList.getUsername());
+                args.putString("username", movieList.getUser().getUsername());
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                 navController.navigate(R.id.action_movieListFragment_to_userPageFragment, args);
             }
 
         });
+        if (movieList.getUser().getAvatar() != null) {
+            RequestOptions requestOptions = new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(view.getContext())
+                    .load(movieList.getUser().getAvatar())
+                    .apply(requestOptions)
+                    .into(imageViewAvatar);
+        }
 
     }
 

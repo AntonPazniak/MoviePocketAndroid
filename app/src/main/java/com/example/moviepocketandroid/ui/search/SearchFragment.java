@@ -62,7 +62,6 @@ public class SearchFragment extends Fragment {
 
         loadMovieDetails();
 
-
         if (savedInstanceState != null) {
             movies = (List<Movie>) savedInstanceState.getSerializable("movies");
             actors = (List<Person>) savedInstanceState.getSerializable("actors");
