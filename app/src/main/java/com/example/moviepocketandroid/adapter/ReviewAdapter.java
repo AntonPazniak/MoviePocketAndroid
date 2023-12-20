@@ -9,11 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.review.Review;
+import com.example.moviepocketandroid.ui.user.UserInfoUntil;
 
 import java.util.List;
 
@@ -86,14 +84,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             textUsername.setText(review.getUser().getUsername());
             textDate.setText(review.getDataCreated().toLocalDate().toString());
             idReview = Math.toIntExact(review.getId());
-            if (review.getUser().getAvatar() != null) {
-                RequestOptions requestOptions = new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL);
-                Glide.with(itemView.getContext())
-                        .load(review.getUser().getAvatar())
-                        .apply(requestOptions)
-                        .into(imageViewAvatar);
-            }
+            UserInfoUntil.setUserInfo(review.getUser(),itemView.getContext(),imageViewAvatar);
+
         }
     }
 }

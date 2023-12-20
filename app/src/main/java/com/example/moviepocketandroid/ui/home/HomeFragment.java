@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.ui.home;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,7 @@ public class HomeFragment extends Fragment {
         } else {
 
             new Thread(new Runnable() {
+                @SuppressLint("NewApi")
                 @Override
                 public void run() {
                     if (moviePopular == null) {

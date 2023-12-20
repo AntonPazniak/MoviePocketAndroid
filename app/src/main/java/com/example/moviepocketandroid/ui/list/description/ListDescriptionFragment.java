@@ -52,7 +52,6 @@ public class ListDescriptionFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             idList = args.getInt("idList");
-
         }
     }
 }

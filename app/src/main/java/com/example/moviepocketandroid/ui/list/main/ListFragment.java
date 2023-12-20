@@ -15,7 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
 import com.example.moviepocketandroid.api.models.MovieList;
-import com.example.moviepocketandroid.ui.list.description.ListDescriptionFragment;
 import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -58,7 +57,7 @@ public class ListFragment extends Fragment {
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idList), "Movies");
             listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idList), "Reviews");
-            listNavBarAdapter.addFragmentAddTitle(new ListDescriptionFragment(idList), "Description");
+            //listNavBarAdapter.addFragmentAddTitle(new ListDescriptionFragment(idList), "Description");
 
             viewPager.setAdapter(listNavBarAdapter);
         }

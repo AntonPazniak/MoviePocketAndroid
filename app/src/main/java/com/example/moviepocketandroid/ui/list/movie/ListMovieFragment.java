@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.ui.user.UserInfoUntil;
 
 import java.util.Random;
 
@@ -32,11 +34,12 @@ public class ListMovieFragment extends Fragment {
 
     int idList;
     private ListMovieViewModel mViewModel;
-    private TextView textViewTitle;
+    private TextView textViewTitle, textOverview,textViewNickname;
     private RecyclerView recyclerViewList;
     private MovieList movieList;
-    private ImageView imageBackMovie;
+    private ImageView imageBackMovie, imageViewAvatar;
     private Context context;
+    private boolean isExpanded = false;
 
     public ListMovieFragment(int idList) {
         Bundle args = new Bundle();
@@ -63,8 +66,11 @@ public class ListMovieFragment extends Fragment {
             idList = args.getInt("idList");
 
             textViewTitle = view.findViewById(R.id.textViewTitle);
+            textViewNickname = view.findViewById(R.id.textViewNickname);
             recyclerViewList = view.findViewById(R.id.recyclerViewList);
             imageBackMovie = view.findViewById(R.id.imageBackMovie);
+            imageViewAvatar= view.findViewById(R.id.imageViewAvatar);
+            textOverview = view.findViewById(R.id.textOverview);
             context = view.getContext();
             loadListInf();
         }
@@ -95,6 +101,24 @@ public class ListMovieFragment extends Fragment {
 
     private void setListInf() {
         textViewTitle.setText(movieList.getTitle());
+        textOverview.setText(movieList.getContent());
+        textViewNickname.setText(movieList.getUser().getUsername());
+        UserInfoUntil.setUserInfo(movieList.getUser(),context,imageViewAvatar);
+
+
+        textOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExpanded) {
+                    textOverview.setMaxLines(3);
+                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
+                } else {
+                    textOverview.setMaxLines(Integer.MAX_VALUE);
+                    textOverview.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
+            }
+        });
 
         if (movieList.getMovies() != null && !movieList.getMovies().isEmpty()) {
 
