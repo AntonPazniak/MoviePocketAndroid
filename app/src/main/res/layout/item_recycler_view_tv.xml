@@ -8,11 +8,7 @@
 
     <TextView
         android:id="@+id/textTVRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/logoBlue"
-        android:textSize="20dp"
+        style="@style/TextGenerally"
         app:layout_constraintBottom_toTopOf="@+id/tvRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.123"

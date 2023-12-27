@@ -1,6 +1,5 @@
 package com.example.moviepocketandroid.api.MP;
 
-import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
@@ -52,8 +51,8 @@ public class MPPostApi {
         return null;
     }
 
-    public static List<MovieList> getAllPostExistIdMovie(int idPost) {
-        List<MovieList> lists = new ArrayList<>();
+    public static List<Post> getAllPostExistIdMovie(int idPost) {
+        List<Post> posts = new ArrayList<>();
         String url = baseUrl + "/post/movie?idMovie=" + idPost;
 
         Request request = new Request.Builder()
@@ -69,16 +68,16 @@ public class MPPostApi {
                 JSONArray reviewArray = new JSONArray(responseBody);
                 for (int i = 0; i < reviewArray.length(); i++) {
                     JSONObject reviewObject = reviewArray.getJSONObject(i);
-                    MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);
-                    if (movieList != null) {
-                        lists.add(movieList);
+                    Post post = gson.fromJson(reviewObject.toString(), Post.class);
+                    if (post != null) {
+                        posts.add(post);
                     }
                 }
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-        return lists;
+        return posts;
     }
 
     public static Boolean getAuthorship(int idPost) {

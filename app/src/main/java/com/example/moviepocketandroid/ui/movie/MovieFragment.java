@@ -34,6 +34,7 @@ import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPListApi;
+import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
@@ -41,6 +42,7 @@ import com.example.moviepocketandroid.api.models.movie.ImageMovie;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.person.Person;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.ui.dialog.RatingDialog;
 import com.example.moviepocketandroid.util.ButtonUntil;
@@ -83,6 +85,7 @@ public class MovieFragment extends Fragment {
     private ListAdapter listAdapter;
     private RecyclerView listRecyclerView;
     private TextView textViewList;
+    private List<Post> posts;
 
 
     public static MovieFragment newInstance() {
@@ -191,6 +194,7 @@ public class MovieFragment extends Fragment {
                 if (movie != null && isAdded()) {
                     lists = MPListApi.getAllListExistIdMovie(idMovie);
                     reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                    posts = MPPostApi.getAllPostExistIdMovie(idMovie);
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
