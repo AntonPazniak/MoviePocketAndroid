@@ -105,27 +105,26 @@ public class AllReviewFragment extends Fragment {
                             navController.navigate(R.id.action_allReviewFragment_to_detailReviewFragment, args);
                         }
                     });
+                }
+                if (isAuthentication) {
+                    fabAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle args = new Bundle();
+                            args.putInt("idMovie", idMovie);
 
-                    if (isAuthentication) {
-                        fabAdd.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Bundle args = new Bundle();
-                                args.putInt("idMovie", idMovie);
-
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigate(R.id.action_allReviewFragment_to_newReviewFragment, args);
-                            }
-                        });
-                    } else {
-                        fabAdd.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigate(R.id.action_allReviewFragment_to_loginFragment);
-                            }
-                        });
-                    }
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_allReviewFragment_to_newReviewFragment, args);
+                        }
+                    });
+                } else {
+                    fabAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_allReviewFragment_to_loginFragment);
+                        }
+                    });
                 }
             }
         });
@@ -152,26 +151,26 @@ public class AllReviewFragment extends Fragment {
                             navController.navigate(R.id.action_listFragment_to_detailReviewFragment, args);
                         }
                     });
-                    if (isAuthentication) {
-                        fabAdd.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Bundle args = new Bundle();
-                                args.putInt("idList", idList);
+                }
+                if (isAuthentication) {
+                    fabAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle args = new Bundle();
+                            args.putInt("idList", idList);
 
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigate(R.id.action_listFragment_to_newReviewFragment, args);
-                            }
-                        });
-                    } else {
-                        fabAdd.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigate(R.id.action_listFragment_to_loginFragment);
-                            }
-                        });
-                    }
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_listFragment_to_newReviewFragment, args);
+                        }
+                    });
+                } else {
+                    fabAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_listFragment_to_loginFragment);
+                        }
+                    });
                 }
             }
         });

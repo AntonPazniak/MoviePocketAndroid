@@ -103,6 +103,14 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void run() {
                                 setInfo();
+                            }
+                        });
+                    }
+
+                    if (movieList != null) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                                 setMainLIst();
                             }
                         });
