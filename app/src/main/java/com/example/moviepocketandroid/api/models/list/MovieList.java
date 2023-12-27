@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.api.models;
+package com.example.moviepocketandroid.api.models.list;
 
 import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.api.models.movie.Movie;

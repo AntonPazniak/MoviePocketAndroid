@@ -28,7 +28,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.ui.user.UserInfoUntil;
 import com.google.android.material.chip.ChipGroup;

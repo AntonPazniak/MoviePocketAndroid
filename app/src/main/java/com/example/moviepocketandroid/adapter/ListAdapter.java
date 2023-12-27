@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 
 import java.util.List;
 

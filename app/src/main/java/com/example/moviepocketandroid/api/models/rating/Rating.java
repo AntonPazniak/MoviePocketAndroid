@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.api.models;
+package com.example.moviepocketandroid.api.models.rating;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -17,7 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.ui.list.edit.ListEditFragment;
 import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;

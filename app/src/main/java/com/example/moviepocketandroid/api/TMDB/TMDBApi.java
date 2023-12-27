@@ -1,7 +1,7 @@
 package com.example.moviepocketandroid.api.TMDB;
 
-import com.example.moviepocketandroid.api.models.ImageMovie;
-import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.ImageMovie;
+import com.example.moviepocketandroid.api.models.person.Person;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.google.gson.Gson;

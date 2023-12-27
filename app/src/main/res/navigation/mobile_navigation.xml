@@ -104,6 +104,9 @@
         <action
             android:id="@+id/action_movieFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -116,6 +119,12 @@
         <action
             android:id="@+id/action_personFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_postFragment2"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchResultsFragment"
@@ -279,4 +288,16 @@
         android:name="com.example.moviepocketandroid.ui.list.edit.ListEditFragment"
         android:label="fragment_list_edit"
         tools:layout="@layout/fragment_list_edit" />
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.moviepocketandroid.ui.post.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post">
+        <action
+            android:id="@+id/action_postFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
 </navigation>

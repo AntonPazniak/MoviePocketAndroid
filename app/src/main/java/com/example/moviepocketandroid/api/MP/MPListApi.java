@@ -1,6 +1,6 @@
 package com.example.moviepocketandroid.api.MP;
 
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
