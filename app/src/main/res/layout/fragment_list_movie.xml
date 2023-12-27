@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
@@ -35,11 +35,7 @@
 
                 <TextView
                     android:id="@+id/textViewTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/logoYellow"
-                    android:textSize="22sp"
+                    style="@style/TextTitle"
                     app:layout_constraintBottom_toBottomOf="@+id/imageBackMovie" />
 
                 <LinearLayout
