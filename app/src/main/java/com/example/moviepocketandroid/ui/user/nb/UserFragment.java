@@ -61,15 +61,18 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Проверка аутентификации в отдельном потоке
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean isAuthentication = MPAuthenticationApi.checkAuth();
 
+                // Если не прошла аутентификация и фрагмент прикреплен к активности
                 if (!isAuthentication && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // Переход к LoginFragment с использованием NavController
                             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                             navController.navigate(R.id.action_userFragment_to_loginFragment);
                         }
@@ -78,6 +81,7 @@ public class UserFragment extends Fragment {
             }
         }).start();
 
+        // Инициализация элементов интерфейса
         itemRecyclerViewMovie0 = view.findViewById(R.id.itemRecyclerViewMovie0);
         itemRecyclerViewMovie1 = view.findViewById(R.id.itemRecyclerViewMovie1);
         itemRecyclerViewMovie2 = view.findViewById(R.id.itemRecyclerViewMovie2);
@@ -98,25 +102,38 @@ public class UserFragment extends Fragment {
 
         this.view = view;
 
+        // Восстановление данных после изменения конфигурации
         if (savedInstanceState != null) {
-            toWatch = Collections.checkedList(
-                    (List<Movie>) savedInstanceState.getSerializable("toWatchKey"), Movie.class);
+            Serializable toWatchSerializable = savedInstanceState.getSerializable("toWatchKey");
+            Serializable favoritesSerializable = savedInstanceState.getSerializable("favoritesKey");
+            Serializable watchedSerializable = savedInstanceState.getSerializable("watchedKey");
+            Serializable userSerializable = savedInstanceState.getSerializable("user");
 
-            favorites = Collections.checkedList(
-                    (List<Movie>) savedInstanceState.getSerializable("favoritesKey"), Movie.class);
+            // Проверка на null перед использованием
+            if (toWatchSerializable != null) {
+                toWatch = Collections.checkedList((List<Movie>) toWatchSerializable, Movie.class);
+            }
 
-            watched = Collections.checkedList(
-                    (List<Movie>) savedInstanceState.getSerializable("watchedKey"), Movie.class);
+            if (favoritesSerializable != null) {
+                favorites = Collections.checkedList((List<Movie>) favoritesSerializable, Movie.class);
+            }
 
-            user = (User) savedInstanceState.getSerializable("user");
+            if (watchedSerializable != null) {
+                watched = Collections.checkedList((List<Movie>) watchedSerializable, Movie.class);
+            }
 
-            if (user != null)
+            // Установка информации, если пользователь уже аутентифицирован
+            if (userSerializable != null) {
+                user = (User) userSerializable;
                 setInfo();
-            else
+            } else {
                 loadMovieDet();
-        } else
+            }
+        } else {
             loadMovieDet();
+        }
     }
+
 
     private void loadMovieDet() {
         new Thread(new Runnable() {
