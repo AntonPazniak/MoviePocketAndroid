@@ -47,4 +47,6 @@
     <string name="post_mov">Post with this movie</string>
     <string name="create_your_review">Create your review</string>
     <string name="edit_your_review">Edit your review</string>
+    <string name="votes">Votes: </string>
+    <string name="nr">NR</string>
 </resources>

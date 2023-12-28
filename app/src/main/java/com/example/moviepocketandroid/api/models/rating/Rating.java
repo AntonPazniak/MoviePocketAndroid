@@ -1,14 +1,36 @@
 package com.example.moviepocketandroid.api.models.rating;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Rating {
-    private int id;
-    private int rating;
+
+    private double rating;
+    private int count;
+
+    public Rating() {
+    }
+    public Rating(double rating, int count) {
+        this.rating = rating;
+        this.count = count;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
 }

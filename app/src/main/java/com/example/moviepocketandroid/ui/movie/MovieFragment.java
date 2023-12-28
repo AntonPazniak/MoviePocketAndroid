@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -40,17 +39,17 @@ import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.movie.ImageMovie;
 import com.example.moviepocketandroid.api.models.list.MovieList;
-import com.example.moviepocketandroid.api.models.person.Person;
+import com.example.moviepocketandroid.api.models.movie.ImageMovie;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.person.Person;
 import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.ui.dialog.RatingDialog;
 import com.example.moviepocketandroid.ui.until.ButtonUntil;
+import com.example.moviepocketandroid.ui.until.RatingUntil;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class MovieFragment extends Fragment {
     private ImageView imageBackPopularMovie, imagePosterPopularMovie;
     private TextView textTitlePopularMovie;
     private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
-    private TextView textRating, textVoteCount, textOverview, textImages, textViewOverview;
+    private TextView textOverview, textImages, textViewOverview;
     private TextView textActorsRecyclerView, textMoviesRecyclerView;
     private TextView textCountry, textCategories, textMinutes;
     private ActorsAdapter actorsAdapter;
@@ -114,14 +113,12 @@ public class MovieFragment extends Fragment {
         imageBinoculars = view.findViewById(R.id.imageBinoculars);
 
         textOverview = view.findViewById(R.id.textOverview);
-        textRating = view.findViewById(R.id.textRating);
 
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
         reviewRecyclerView = view.findViewById(R.id.recyclerViewReview);
 
-        textVoteCount = view.findViewById(R.id.textVoteCount);
         textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
         textCountry = view.findViewById(R.id.textCountry);
@@ -151,6 +148,10 @@ public class MovieFragment extends Fragment {
         if (args != null) {
             idMovie = args.getInt("idMovie");
         }
+
+        RatingUntil ratingUntil = new RatingUntil(view, idMovie);
+        ratingUntil.setRating();
+
         if (savedInstanceState != null) {
             movie = (Movie) savedInstanceState.getSerializable("movie");
             images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
@@ -213,7 +214,6 @@ public class MovieFragment extends Fragment {
         setButtonsReview();
         setPosterAndTitle(movie);
         setMovieInfo(movie);
-        setMovieRating(movie);
         setMovieTrailer(movieTrailerUrl);
         setMovieImages(images);
         setMovieActors(actors);
@@ -356,34 +356,6 @@ public class MovieFragment extends Fragment {
                 isExpanded = !isExpanded;
             }
         });
-    }
-
-    @SuppressLint({"SetTextI18n", "ResourceAsColor"})
-    private void setMovieRating(Movie movie) {
-        if (movie.getVoteAverage() != 0) {
-            double rating = movie.getVoteAverage();
-            if (!movie.getOverview().equals("null")) {
-                textViewOverview.setText("Description");
-                textOverview.setText(movie.getOverview());
-            } else {
-                viewOverview.setVisibility(View.GONE);
-            }
-
-            DecimalFormat decimalFormat = new DecimalFormat("#.#");
-
-            int color;
-            if (rating >= 8) {
-                color = ContextCompat.getColor(context, R.color.logoYellow);
-            } else if (rating >= 5) {
-                color = ContextCompat.getColor(context, R.color.logoBlue);
-            } else {
-                color = ContextCompat.getColor(context, R.color.logoPink);
-            }
-
-            textRating.setTextColor(color);
-            textRating.setText(decimalFormat.format(rating));
-            textVoteCount.setText("Votes: " + movie.getVoteCount());
-        }
     }
 
 
