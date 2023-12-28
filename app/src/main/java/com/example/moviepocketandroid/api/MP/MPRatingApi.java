@@ -40,6 +40,29 @@ public class MPRatingApi {
         return 0;
     }
 
+    public static Double getRatingMovie(int idMovie) {
+        String url = baseUrl + "/movies/rating/getByIdMovie?idMovie=" + idMovie;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, Double.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+
     public static Boolean postRatingUserByIdMovie(int idMovie, int rating) {
         String url = baseUrl + "/movies/rating/set";
 
