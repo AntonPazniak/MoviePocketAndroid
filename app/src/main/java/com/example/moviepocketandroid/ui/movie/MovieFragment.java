@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.ListAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
+import com.example.moviepocketandroid.adapter.PostAdapter;
 import com.example.moviepocketandroid.adapter.ReviewAdapter;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPListApi;
@@ -217,6 +219,7 @@ public class MovieFragment extends Fragment {
         setMovieSimilar(similarMovies);
         setMovieReview(reviews);
         setLists();
+        setPostAdapter();
     }
 
     private void setButtonsReview() {
@@ -455,6 +458,9 @@ public class MovieFragment extends Fragment {
 
     private void setMovieReview(List<Review> reviews) {
         if (reviews != null) {
+            TextView textReview = view.findViewById(R.id.textReview);
+            textReview.setText(R.string.reviews);
+
             reviewAdapter = new ReviewAdapter(reviews);
             reviewRecyclerView.setAdapter(reviewAdapter);
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -498,6 +504,30 @@ public class MovieFragment extends Fragment {
             listRecyclerView.setVisibility(View.GONE);
             textViewList.setVisibility(View.GONE);
             layoutList.setVisibility(View.GONE);
+        }
+    }
+
+    private void setPostAdapter() {
+        if (posts != null && !posts.isEmpty()) {
+            TextView textView = view.findViewById(R.id.textPost);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerViewPost);
+
+            textView.setText(R.string.post_mov);
+            PostAdapter postAdapter = new PostAdapter(posts);
+            recyclerView.setAdapter(postAdapter);
+            GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+
+            postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int idPost) {
+                    Bundle args = new Bundle();
+                    args.putInt("idPost", idPost);
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_postFragment, args);
+                }
+            });
+
         }
     }
 

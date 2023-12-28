@@ -117,7 +117,7 @@ public class ListMovieFragment extends Fragment {
 
         for (Genre genre : movieList.getGenres()) {
             CardView cardView = new CardView(context);
-            cardView.setRadius(getResources().getDimension(R.dimen.corner_radius)); // Замените на свой ресурс
+            cardView.setRadius(getResources().getDimension(R.dimen.corner_radius));
             cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.grey)
             );
 

@@ -302,7 +302,7 @@
     </fragment>
     <fragment
         android:id="@+id/postMainFragment"
-        android:name="com.example.moviepocketandroid.PostMainFragment"
+        android:name="com.example.moviepocketandroid.ui.post.main.PostMainFragment"
         android:label="fragment_post_main"
         tools:layout="@layout/fragment_post_main" />
 </navigation>

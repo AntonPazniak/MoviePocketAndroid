@@ -15,9 +15,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
-import com.example.moviepocketandroid.api.MP.MPListApi;
+import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.ui.list.edit.ListEditFragment;
-import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
+import com.example.moviepocketandroid.ui.post.main.PostMainFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -58,12 +58,12 @@ public class PostFragment extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Boolean authorship = MPListApi.getAuthorship(idPost);
+                    Boolean authorship = MPPostApi.getAuthorship(idPost);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idPost), "Post");
+                            listNavBarAdapter.addFragmentAddTitle(new PostMainFragment(idPost), "Post");
                             listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idPost), "Reviews");
                             if (authorship)
                                 listNavBarAdapter.addFragmentAddTitle(new ListEditFragment(), "Edit");

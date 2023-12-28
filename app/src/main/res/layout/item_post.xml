@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             app:srcCompat="@drawable/logo2" />
 
         <LinearLayout
@@ -27,7 +27,8 @@
             <TextView
                 android:id="@+id/textTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/logoYellow" />
 
             <TextView
                 android:id="@+id/textDate"

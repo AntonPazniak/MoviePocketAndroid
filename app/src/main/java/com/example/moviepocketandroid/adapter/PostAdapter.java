@@ -1,10 +1,8 @@
 package com.example.moviepocketandroid.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,45 +16,48 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private List<Post> posts;
-    private Context context;
     private OnItemClickListener onItemClickListener;
 
-    public PostAdapter(List<Post> postList, Context context, OnItemClickListener onItemClickListener) {
+    public PostAdapter(List<Post> postList) {
         this.posts = postList;
-        this.context = context;
-        this.onItemClickListener = onItemClickListener;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
-        Post post = posts.get(position);
-
-        // Установка данных в элементы интерфейса
-        holder.textTitle.setText(post.getTitle());
-        holder.textDate.setText(post.getCreate().toLocalDate().toString());
-
-        // Добавление слушателя на элемент списка
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int adapterPosition = holder.getAdapterPosition();
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    onItemClickListener.onItemClick(adapterPosition);
-                }
-            }
-        });
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
         return new PostViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+        Post post = posts.get(position);
+
+        // Set data to UI elements
+        holder.textTitle.setText(post.getTitle());
+        holder.textDate.setText(post.getCreate().toLocalDate().toString());
+
+        // Set click listener on the item view
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int adapterPosition = holder.getAdapterPosition();
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(post.getId());
+                }
+            }
+        });
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -64,7 +65,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
         TextView textTitle;
         TextView textDate;
 

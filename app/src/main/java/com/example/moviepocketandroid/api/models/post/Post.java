@@ -14,22 +14,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
-    private Long id;
+    private int id;
     private String title;
     private String content;
     private int[] likeOrDis;
     private User user;
     private LocalDateTime create;
     private LocalDateTime update;
-    private Long idMovie;
-    private Long idPerson;
-    private Long idList;
+    private int idMovie;
+    private int idPerson;
+    private int idList;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -81,27 +81,27 @@ public class Post {
         this.update = update;
     }
 
-    public Long getIdMovie() {
+    public int getIdMovie() {
         return idMovie;
     }
 
-    public void setIdMovie(Long idMovie) {
+    public void setIdMovie(int idMovie) {
         this.idMovie = idMovie;
     }
 
-    public Long getIdPerson() {
+    public int getIdPerson() {
         return idPerson;
     }
 
-    public void setIdPerson(Long idPerson) {
+    public void setIdPerson(int idPerson) {
         this.idPerson = idPerson;
     }
 
-    public Long getIdList() {
+    public int getIdList() {
         return idList;
     }
 
-    public void setIdList(Long idList) {
+    public void setIdList(int idList) {
         this.idList = idList;
     }
 }

@@ -3,27 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostMainFragment">
+    tools:context=".ui.post.main.PostMainFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/textTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/logoYellow"
-            android:textSize="22sp" />
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/textContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textTitle"
+                style="@style/TextTitle" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>
