@@ -28,7 +28,6 @@ public class PostFragment extends Fragment {
     private ViewPager viewPager;
     private int idPost;
 
-
     public static PostFragment newInstance() {
         return new PostFragment();
     }

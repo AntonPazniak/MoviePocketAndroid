@@ -1,11 +1,15 @@
 package com.example.moviepocketandroid.ui.until;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.animation.Animation;
@@ -20,6 +24,7 @@ public class AuthorAndRating {
     private ImageView imageViewLike, imageViewDislike;
     private TextView textViewCountLikes, textViewCountDislikes;
     private AnimationSet animation;
+    private View view;
     private int id;
     private Boolean isLike = false;
     private Boolean isDislike = false;
@@ -35,6 +40,7 @@ public class AuthorAndRating {
         this.id = id;
         this.likes = likes;
         this.animation = Animation.createAnimation();
+        this.view = view;
 
         UserInfoUntil.setUserInfo(user, view.getContext(), imageViewAvatar);
         textViewNickname.setText(user.getUsername());
@@ -42,58 +48,66 @@ public class AuthorAndRating {
         textViewCountDislikes.setText(String.valueOf(likes[1]));
     }
 
-    public void setListRatingButtons() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Boolean rating = MPListApi.getLike(id);
+    public void setListRatingButtons(Boolean isAuthentication) {
+        if (isAuthentication) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Boolean rating = MPListApi.getLike(id);
 
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (rating == null) {
-                            setListLis();
-                        } else if (!rating) {
-                            isDislike = true;
-                            imageViewDislike.setImageResource(R.drawable.finger_dislike_pink);
-                            setListLis();
-                        } else if (rating) {
-                            isLike = true;
-                            imageViewLike.setImageResource(R.drawable.finger_like_pink);
-                            setListLis();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (rating == null) {
+                                setListLis();
+                            } else if (!rating) {
+                                isDislike = true;
+                                imageViewDislike.setImageResource(R.drawable.finger_dislike_pink);
+                                setListLis();
+                            } else if (rating) {
+                                isLike = true;
+                                imageViewLike.setImageResource(R.drawable.finger_like_pink);
+                                setListLis();
+                            }
                         }
-                    }
-                });
+                    });
 
-            }
-        }).start();
+                }
+            }).start();
+        } else {
+            setListLisNoAut();
+        }
     }
 
-    public void setPostRatingButtons() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Boolean rating = MPPostApi.getLike(id);
+    public void setPostRatingButtons(Boolean isAuthentication) {
+        if (isAuthentication) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Boolean rating = MPPostApi.getLike(id);
 
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (rating == null) {
-                            setPostLis();
-                        } else if (!rating) {
-                            isDislike = true;
-                            imageViewDislike.setImageResource(R.drawable.finger_dislike_pink);
-                            setPostLis();
-                        } else if (rating) {
-                            isLike = true;
-                            imageViewLike.setImageResource(R.drawable.finger_like_pink);
-                            setPostLis();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (rating == null) {
+                                setPostLis();
+                            } else if (!rating) {
+                                isDislike = true;
+                                imageViewDislike.setImageResource(R.drawable.finger_dislike_pink);
+                                setPostLis();
+                            } else if (rating) {
+                                isLike = true;
+                                imageViewLike.setImageResource(R.drawable.finger_like_pink);
+                                setPostLis();
+                            }
                         }
-                    }
-                });
+                    });
 
-            }
-        }).start();
+                }
+            }).start();
+        } else {
+            setPostLisNoAut();
+        }
     }
 
     private void setListLis() {
@@ -190,4 +204,42 @@ public class AuthorAndRating {
         textViewCountLikes.setText(String.valueOf(likeCount));
         textViewCountDislikes.setText(String.valueOf(dislikeCount));
     }
+
+
+    private void setPostLisNoAut() {
+        imageViewLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController((Activity) view.getContext(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_postFragment_to_loginFragment);
+
+            }
+        });
+        imageViewDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController((Activity) view.getContext(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_postFragment_to_loginFragment);
+            }
+        });
+    }
+
+    private void setListLisNoAut() {
+        imageViewLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController((Activity) view.getContext(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_listFragment_to_loginFragment);
+            }
+        });
+        imageViewDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController((Activity) view.getContext(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_listFragment_to_loginFragment);
+            }
+        });
+    }
+
+
 }

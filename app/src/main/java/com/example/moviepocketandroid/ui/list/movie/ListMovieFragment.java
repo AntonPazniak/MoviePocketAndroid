@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Genre;
@@ -48,6 +49,7 @@ public class ListMovieFragment extends Fragment {
     private boolean isExpanded = false;
     private ChipGroup chipGroup;
     private View view;
+    private Boolean isAuthentication;
 
     public ListMovieFragment(int idList) {
         Bundle args = new Bundle();
@@ -92,6 +94,7 @@ public class ListMovieFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                isAuthentication = MPAuthenticationApi.checkAuth();
                 movieList = MPListApi.getListById(idList);
                 if (movieList != null) {
                     if (isAdded()) {
@@ -113,7 +116,7 @@ public class ListMovieFragment extends Fragment {
         textViewTitle.setText(movieList.getTitle());
         textOverview.setText(movieList.getContent());
         AuthorAndRating authorAndRating = new AuthorAndRating(view, idList, movieList.getUser(), movieList.getLikeOrDis());
-        authorAndRating.setListRatingButtons();
+        authorAndRating.setListRatingButtons(isAuthentication);
 
         chipGroup.removeAllViews();
 
