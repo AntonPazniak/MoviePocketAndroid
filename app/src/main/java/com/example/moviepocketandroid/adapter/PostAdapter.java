@@ -19,10 +19,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     private List<Post> posts;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
-    public PostAdapter(List<Post> postList, Context context) {
+    public PostAdapter(List<Post> postList, Context context, OnItemClickListener onItemClickListener) {
         this.posts = postList;
         this.context = context;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
+        Post post = posts.get(position);
+
+        // Установка данных в элементы интерфейса
+        holder.textTitle.setText(post.getTitle());
+        holder.textDate.setText(post.getCreate().toLocalDate().toString());
+
+        // Добавление слушателя на элемент списка
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int adapterPosition = holder.getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    onItemClickListener.onItemClick(adapterPosition);
+                }
+            }
+        });
     }
 
     @NonNull
@@ -32,13 +54,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return new PostViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-        Post post = posts.get(position);
-
-        // Установка данных в элементы интерфейса
-        holder.textTitle.setText(post.getTitle());
-        holder.textDate.setText(post.getCreate().toLocalDate().toString());
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     @Override
