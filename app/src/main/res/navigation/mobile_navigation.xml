@@ -299,6 +299,15 @@
         <action
             android:id="@+id/action_postFragment_to_movieFragment"
             app:destination="@id/movieFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/postMainFragment"

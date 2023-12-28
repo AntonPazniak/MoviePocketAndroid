@@ -64,7 +64,7 @@ public class PostFragment extends Fragment {
                         @Override
                         public void run() {
                             listNavBarAdapter.addFragmentAddTitle(new PostMainFragment(idPost), "Post");
-                            listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idPost), "Reviews");
+                            listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idPost, 0), "Reviews");
                             if (authorship)
                                 listNavBarAdapter.addFragmentAddTitle(new ListEditFragment(), "Edit");
                             viewPager.setAdapter(listNavBarAdapter);
