@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.animation.Animation;
 import com.example.moviepocketandroid.api.MP.MPListApi;
+import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.models.user.User;
 
 public class AuthorAndRating {
@@ -51,15 +52,15 @@ public class AuthorAndRating {
                     @Override
                     public void run() {
                         if (rating == null) {
-                            setLis();
+                            setListLis();
                         } else if (!rating) {
                             isDislike = true;
                             imageViewDislike.setImageResource(R.drawable.finger_dislike_pink);
-                            setLis();
+                            setListLis();
                         } else if (rating) {
                             isLike = true;
                             imageViewLike.setImageResource(R.drawable.finger_like_pink);
-                            setLis();
+                            setListLis();
                         }
                     }
                 });
@@ -68,7 +69,34 @@ public class AuthorAndRating {
         }).start();
     }
 
-    private void setLis() {
+    public void setPostRatingButtons() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean rating = MPPostApi.getLike(id);
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (rating == null) {
+                            setPostLis();
+                        } else if (!rating) {
+                            isDislike = true;
+                            imageViewDislike.setImageResource(R.drawable.finger_dislike_pink);
+                            setPostLis();
+                        } else if (rating) {
+                            isLike = true;
+                            imageViewLike.setImageResource(R.drawable.finger_like_pink);
+                            setPostLis();
+                        }
+                    }
+                });
+
+            }
+        }).start();
+    }
+
+    private void setListLis() {
         imageViewLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +116,33 @@ public class AuthorAndRating {
                     @Override
                     public void run() {
                         MPListApi.setLike(id, false);
+                    }
+                }).start();
+                dislikeButtonPressed();
+            }
+        });
+    }
+
+    private void setPostLis() {
+        imageViewLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MPPostApi.setLike(id, true);
+                    }
+                }).start();
+                likeButtonPressed();
+            }
+        });
+        imageViewDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MPPostApi.setLike(id, false);
                     }
                 }).start();
                 dislikeButtonPressed();

@@ -17,8 +17,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MPPostApi {
@@ -101,4 +103,52 @@ public class MPPostApi {
         return false;
     }
 
+    public static Boolean getLike(int idPost) {
+        String url = baseUrl + "/post/like?idPost=" + idPost;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return !response.body().string().equals("false");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Boolean setLike(int idPost, Boolean likeOrDis) {
+        String url = baseUrl + "/post/setLike";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idPost", String.valueOf(idPost))
+                .add("like", String.valueOf(likeOrDis))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

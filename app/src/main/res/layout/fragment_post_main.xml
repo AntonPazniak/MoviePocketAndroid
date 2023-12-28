@@ -16,6 +16,8 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+            <include layout="@layout/item_author_ratings" />
+
             <TextView
                 android:id="@+id/textTitle"
                 style="@style/TextTitle" />

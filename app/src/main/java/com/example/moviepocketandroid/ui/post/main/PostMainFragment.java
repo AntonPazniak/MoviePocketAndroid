@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.models.post.Post;
+import com.example.moviepocketandroid.ui.until.AuthorAndRating;
 
 public class PostMainFragment extends Fragment {
 
@@ -23,6 +24,7 @@ public class PostMainFragment extends Fragment {
     private Post post;
     private TextView textTitle;
     private TextView textContent;
+    private View view;
 
     public PostMainFragment(int idPost) {
         Bundle args = new Bundle();
@@ -53,7 +55,7 @@ public class PostMainFragment extends Fragment {
 
             textTitle = view.findViewById(R.id.textTitle);
             textContent = view.findViewById(R.id.textContent);
-
+            this.view = view;
 
             loadPostInf();
         }
@@ -83,5 +85,7 @@ public class PostMainFragment extends Fragment {
     private void setPostInf() {
         textTitle.setText(post.getTitle());
         textContent.setText(post.getContent());
+        AuthorAndRating authorAndRating = new AuthorAndRating(view, post.getId(), post.getUser(), post.getLikeOrDis());
+        authorAndRating.setPostRatingButtons();
     }
 }
