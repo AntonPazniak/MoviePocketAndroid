@@ -157,6 +157,7 @@ public class MovieFragment extends Fragment {
             similarMovies = (List<Movie>) savedInstanceState.getSerializable("similarMovies");
             actors = (List<Person>) savedInstanceState.getSerializable("actors");
             reviews = (List<Review>) savedInstanceState.getSerializable("reviews");
+            posts = (List<Post>) savedInstanceState.getSerializable("posts");
             movieTrailerUrl = savedInstanceState.getString("movieTrailerUrl");
             new Thread(new Runnable() {
                 @Override
@@ -541,6 +542,7 @@ public class MovieFragment extends Fragment {
             outState.putSerializable("similarMovies", (Serializable) similarMovies);
             outState.putSerializable("actors", (Serializable) actors);
             outState.putSerializable("reviews", (Serializable) reviews);
+            outState.putSerializable("posts", (Serializable) posts);
             outState.putString("movieTrailerUrl", movieTrailerUrl);
         }
     }
