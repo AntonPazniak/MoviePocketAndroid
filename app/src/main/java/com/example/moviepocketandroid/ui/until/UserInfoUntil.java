@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.user;
+package com.example.moviepocketandroid.ui.until;
 
 import android.content.Context;
 import android.widget.ImageView;

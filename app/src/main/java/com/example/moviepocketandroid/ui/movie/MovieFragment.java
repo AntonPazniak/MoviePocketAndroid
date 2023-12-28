@@ -47,7 +47,7 @@ import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.ui.dialog.RatingDialog;
-import com.example.moviepocketandroid.util.ButtonUntil;
+import com.example.moviepocketandroid.ui.until.ButtonUntil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

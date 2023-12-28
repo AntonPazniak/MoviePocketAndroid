@@ -30,7 +30,7 @@ import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Genre;
-import com.example.moviepocketandroid.ui.user.UserInfoUntil;
+import com.example.moviepocketandroid.ui.until.AuthorAndRating;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -47,6 +47,7 @@ public class ListMovieFragment extends Fragment {
     private Context context;
     private boolean isExpanded = false;
     private ChipGroup chipGroup;
+    private View view;
 
     public ListMovieFragment(int idList) {
         Bundle args = new Bundle();
@@ -79,6 +80,7 @@ public class ListMovieFragment extends Fragment {
             imageViewAvatar= view.findViewById(R.id.imageViewAvatar);
             textOverview = view.findViewById(R.id.textOverview);
             chipGroup = view.findViewById(R.id.chipGroup);
+            this.view = view;
             context = view.getContext();
             loadListInf();
         }
@@ -110,8 +112,8 @@ public class ListMovieFragment extends Fragment {
     private void setListInf() {
         textViewTitle.setText(movieList.getTitle());
         textOverview.setText(movieList.getContent());
-        textViewNickname.setText(movieList.getUser().getUsername());
-        UserInfoUntil.setUserInfo(movieList.getUser(), context, imageViewAvatar);
+        AuthorAndRating authorAndRating = new AuthorAndRating(view, idList, movieList.getUser(), movieList.getLikeOrDis());
+        authorAndRating.setListRatingButtons();
 
         chipGroup.removeAllViews();
 

@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.util;
+package com.example.moviepocketandroid.ui.until;
 
 import static com.example.moviepocketandroid.animation.Animation.createAnimation;
 
