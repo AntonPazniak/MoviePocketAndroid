@@ -2,9 +2,13 @@ package com.example.moviepocketandroid.ui.until;
 
 import static com.example.moviepocketandroid.animation.Animation.createAnimation;
 
+import android.app.Activity;
 import android.view.View;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
@@ -17,106 +21,139 @@ public class ButtonUntil {
     private boolean isBinocularsButtonPressed = false;
     private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
     private int idMovie;
+    private View view;
 
-    public ButtonUntil(ImageView imageEye, ImageView imageLike, ImageView imageBackPack, int idMovie) {
-        this.imageEye = imageEye;
-        this.imageLike = imageLike;
-        this.imageBackPack = imageBackPack;
-        this.animation = createAnimation();
+    public ButtonUntil(View view, int idMovie, boolean release, boolean aunt) {
+        this.imageEye = view.findViewById(R.id.imageEye);
+        this.imageLike = view.findViewById(R.id.imageLike);
+        this.imageBackPack = view.findViewById(R.id.imageBackPack);
+        this.imageBinoculars = view.findViewById(R.id.imageBinoculars);
         this.idMovie = idMovie;
+        this.animation = createAnimation();
+        this.view = view;
+        if (release) {
+            imageEye.setVisibility(View.VISIBLE);
+            imageLike.setVisibility(View.VISIBLE);
+            imageBackPack.setVisibility(View.VISIBLE);
+            imageBinoculars.setVisibility(View.GONE);
+            setButtonsMovieReleased(aunt);
+        } else {
+            imageBinoculars.setVisibility(View.VISIBLE);
+            imageBackPack.setVisibility(View.VISIBLE);
+            imageEye.setVisibility(View.GONE);
+            imageLike.setVisibility(View.GONE);
+            setButtonsMovieNotReleased(aunt);
+        }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                isLikeButtonPressed = !MPAssessmentApi.getFavoriteMovie(idMovie);
-                isBackPackButtonPressed = !MPAssessmentApi.getToWatchMovie(idMovie);
-                isEyeButtonPressed = !MPAssessmentApi.getWatchedMovie(idMovie);
-                eyeButtonPressed();
-                backPackButtonPressed();
-                likeButtonPressed();
-            }
-        }).start();
-
-        imageEye.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPAssessmentApi.postWatchedMovie(idMovie);
-                    }
-                }).start();
-                eyeButtonPressed();
-            }
-        });
-        imageBackPack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPAssessmentApi.postToWatchMovie(idMovie);
-                    }
-                }).start();
-                backPackButtonPressed();
-            }
-        });
-        imageLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPAssessmentApi.postFavoriteMovie(idMovie);
-                    }
-                }).start();
-                likeButtonPressed();
-            }
-        });
     }
 
-    public ButtonUntil(ImageView imageBackPack, ImageView imageBinoculars, int idMovie) {
-        this.imageBackPack = imageBackPack;
-        this.imageBinoculars = imageBinoculars;
-        this.animation = createAnimation();
-        this.idMovie = idMovie;
+    private void setButtonsMovieNotReleased(boolean aunt) {
+        if (aunt) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    isBinocularsButtonPressed = !MPAssessmentApi.getMovieTracing(idMovie);
+                    isBackPackButtonPressed = !MPAssessmentApi.getToWatchMovie(idMovie);
+                    backPackButtonPressed();
+                    binocularsButtonPressed();
+                }
+            }).start();
+            imageBackPack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPAssessmentApi.postToWatchMovie(idMovie);
+                        }
+                    }).start();
+                    backPackButtonPressed();
+                }
+            });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                isBinocularsButtonPressed = !MPAssessmentApi.getMovieTracing(idMovie);
-                isBackPackButtonPressed = !MPAssessmentApi.getToWatchMovie(idMovie);
-                backPackButtonPressed();
-                binocularsButtonPressed();
-            }
-        }).start();
+            imageBinoculars.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPAssessmentApi.postMovieTracing(idMovie);
+                        }
+                    }).start();
+                    binocularsButtonPressed();
+                }
+            });
+        } else {
+            setButtonsNotAunt(imageBackPack);
+            setButtonsNotAunt(imageBinoculars);
+        }
+    }
 
-        imageBackPack.setOnClickListener(new View.OnClickListener() {
+    private void setButtonsMovieReleased(boolean aunt) {
+        if (aunt) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    isLikeButtonPressed = !MPAssessmentApi.getFavoriteMovie(idMovie);
+                    isBackPackButtonPressed = !MPAssessmentApi.getToWatchMovie(idMovie);
+                    isEyeButtonPressed = !MPAssessmentApi.getWatchedMovie(idMovie);
+                    eyeButtonPressed();
+                    backPackButtonPressed();
+                    likeButtonPressed();
+                }
+            }).start();
+
+            imageEye.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPAssessmentApi.postWatchedMovie(idMovie);
+                        }
+                    }).start();
+                    eyeButtonPressed();
+                }
+            });
+            imageBackPack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPAssessmentApi.postToWatchMovie(idMovie);
+                        }
+                    }).start();
+                    backPackButtonPressed();
+                }
+            });
+            imageLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPAssessmentApi.postFavoriteMovie(idMovie);
+                        }
+                    }).start();
+                    likeButtonPressed();
+                }
+            });
+        } else {
+            setButtonsNotAunt(imageBackPack);
+            setButtonsNotAunt(imageEye);
+            setButtonsNotAunt(imageLike);
+        }
+    }
+
+    private void setButtonsNotAunt(ImageView imageView) {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPAssessmentApi.postToWatchMovie(idMovie);
-                    }
-                }).start();
-                backPackButtonPressed();
+                NavController navController = Navigation.findNavController((Activity) view.getContext(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_movieFragment_to_loginFragment);
             }
         });
-
-        imageBinoculars.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPAssessmentApi.postMovieTracing(idMovie);
-                    }
-                }).start();
-                binocularsButtonPressed();
-            }
-        });
-
     }
 
     private void binocularsButtonPressed() {

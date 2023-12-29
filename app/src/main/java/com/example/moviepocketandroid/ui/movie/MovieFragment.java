@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,12 +52,8 @@ import java.util.List;
 public class MovieFragment extends Fragment {
 
     private MovieViewModel mViewModel;
-    private ImageView imageBackPopularMovie, imagePosterPopularMovie;
-    private TextView textTitlePopularMovie;
-    private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
     private TextView textImages, textViewOverview;
     private TextView textActorsRecyclerView, textMoviesRecyclerView;
-    private TextView textCountry, textCategories, textMinutes;
     private ActorsAdapter actorsAdapter;
     private MovieAdapter movieAdapter;
     private ImagesAdapter movieImagesAdapter;
@@ -99,11 +94,6 @@ public class MovieFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        imageEye = view.findViewById(R.id.imageEye);
-        imageLike = view.findViewById(R.id.imageLike);
-        imageBackPack = view.findViewById(R.id.imageBackPack);
-        imageBinoculars = view.findViewById(R.id.imageBinoculars);
-
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
@@ -111,9 +101,6 @@ public class MovieFragment extends Fragment {
 
         textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
-        textCountry = view.findViewById(R.id.textCountry);
-        textCategories = view.findViewById(R.id.textCategories);
-        textMinutes = view.findViewById(R.id.textMinutes);
         textImages = view.findViewById(R.id.textImages);
         textViewOverview = view.findViewById(R.id.textViewOverview);
 
@@ -138,8 +125,6 @@ public class MovieFragment extends Fragment {
         if (args != null) {
             idMovie = args.getInt("idMovie");
         }
-        MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, idMovie);
-        movieInfoUntil.setMovieInfo();
 
         RatingUntil ratingUntil = new RatingUntil(view, idMovie);
         ratingUntil.setRating();
@@ -152,6 +137,7 @@ public class MovieFragment extends Fragment {
             reviews = (List<Review>) savedInstanceState.getSerializable("reviews");
             posts = (List<Post>) savedInstanceState.getSerializable("posts");
             movieTrailerUrl = savedInstanceState.getString("movieTrailerUrl");
+            rating = savedInstanceState.getInt("rating");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -174,19 +160,80 @@ public class MovieFragment extends Fragment {
 
     }
     private void loadMovieDetails(int idMovie) {
+
+        if (movie == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    isAuthentication = MPAuthenticationApi.checkAuth();
+                    movie = TMDBApi.getInfoMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
+                            movieInfoUntil.setMovieInfo();
+                        }
+                    });
+                    rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
+                            ratingDialog1.setRatingDialog(isAuthentication, getRelease());
+                            ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
+                        }
+                    });
+                    actors = TMDBApi.getActorsByIdMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setMovieActors(actors);
+                        }
+                    });
+                    similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setMovieSimilar(similarMovies);
+                        }
+                    });
+                    images = TMDBApi.getImagesByIdMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setMovieImages(images);
+                        }
+                    });
+                    movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setMovieTrailer(movieTrailerUrl);
+                        }
+                    });
+                    lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                    posts = MPPostApi.getAllPostExistIdMovie(idMovie);
+                }
+            }).start();
+        } else
+            setInfo();
+    }
+
+    private void setInfo() {
+        MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
+        movieInfoUntil.setMovieInfo();
+        RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
+        ratingDialog1.setRatingDialog(isAuthentication, getRelease());
+        ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
+        setButtonsReview();
+        setMovieTrailer(movieTrailerUrl);
+        setMovieImages(images);
+        setMovieActors(actors);
+        setMovieSimilar(similarMovies);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                isAuthentication = MPAuthenticationApi.checkAuth();
-                if (movie == null) {
-                    movie = TMDBApi.getInfoMovie(idMovie);
-                    actors = TMDBApi.getActorsByIdMovie(idMovie);
-                    similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
-                    images = TMDBApi.getImagesByIdMovie(idMovie);
-                    movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
-                    rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
-                }
-
                 if (movie != null && isAdded()) {
                     lists = MPListApi.getAllListExistIdMovie(idMovie);
                     reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
@@ -194,7 +241,9 @@ public class MovieFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            setInfo();
+                            setMovieReview(reviews);
+                            setLists();
+                            setPostAdapter();
                         }
                     });
                 }
@@ -202,22 +251,8 @@ public class MovieFragment extends Fragment {
         }).start();
     }
 
-    private void setInfo() {
-        setButtonsReview();
-        setMovieTrailer(movieTrailerUrl);
-        setMovieImages(images);
-        setMovieActors(actors);
-        setMovieSimilar(similarMovies);
-        setMovieReview(reviews);
-        setLists();
-        setPostAdapter();
-    }
-
     private void setButtonsReview() {
         if (isAuthentication) {
-
-            setButtons(movie);
-            RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
             button2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -239,6 +274,7 @@ public class MovieFragment extends Fragment {
                 }
             });
         } else {
+
             button2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -262,33 +298,6 @@ public class MovieFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         // TODO: Use the ViewModel
     }
-
-    private void setButtons(Movie movie) {
-        if (movie.getReleaseDate() != null && movie.getReleaseDate().isAfter(LocalDate.now())) {
-            movieNotReleased();
-        } else {
-            movieReleased();
-        }
-    }
-
-    private void movieNotReleased() {
-        ButtonUntil buttonUntil;
-        imageBinoculars.setVisibility(View.VISIBLE);
-        imageBackPack.setVisibility(View.VISIBLE);
-        imageEye.setVisibility(View.GONE);
-        imageLike.setVisibility(View.GONE);
-        buttonUntil = new ButtonUntil(imageBackPack, imageBinoculars, movie.getId());
-    }
-
-    private void movieReleased() {
-        ButtonUntil buttonUntil;
-        imageEye.setVisibility(View.VISIBLE);
-        imageLike.setVisibility(View.VISIBLE);
-        imageBackPack.setVisibility(View.VISIBLE);
-        imageBinoculars.setVisibility(View.GONE);
-        buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack, movie.getId());
-    }
-
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setMovieTrailer(String movieTrailerUrl) {
@@ -447,6 +456,15 @@ public class MovieFragment extends Fragment {
             outState.putSerializable("reviews", (Serializable) reviews);
             outState.putSerializable("posts", (Serializable) posts);
             outState.putString("movieTrailerUrl", movieTrailerUrl);
+            outState.putInt("rating", rating);
         }
     }
+
+    boolean getRelease() {
+        if (idMovie > 0)
+            return movie.getReleaseDate() != null && !movie.getReleaseDate().isAfter(LocalDate.now());
+        else
+            return movie.getReleaseDate() != null && !movie.getFirstAirDate().isAfter(LocalDate.now());
+    }
+
 }

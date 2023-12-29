@@ -1,8 +1,6 @@
 package com.example.moviepocketandroid.ui.until;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,13 +10,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
 public class MovieInfoUntil {
 
     private View view;
-    private int idMovie;
     private Movie movie;
     private TextView textCountry, textCategories, textMinutes, textOverview, textViewOverview;
     private TextView textTitlePopularMovie;
@@ -26,9 +22,9 @@ public class MovieInfoUntil {
     private boolean isExpanded = false;
 
 
-    public MovieInfoUntil(View view, int idMovie) {
+    public MovieInfoUntil(View view, Movie movie) {
         this.view = view;
-        this.idMovie = idMovie;
+        this.movie = movie;
 
         textOverview = view.findViewById(R.id.textOverview);
         textMinutes = view.findViewById(R.id.textMinutes);
@@ -44,20 +40,8 @@ public class MovieInfoUntil {
 
 
     public void setMovieInfo() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                movie = TMDBApi.getInfoMovie(idMovie);
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setPosterAndTitle();
-                        setInfo();
-                    }
-                });
-
-            }
-        }).start();
+        setPosterAndTitle();
+        setInfo();
     }
 
     private void setPosterAndTitle() {
@@ -124,4 +108,7 @@ public class MovieInfoUntil {
         }
     }
 
+    public Movie getMovie() {
+        return movie;
+    }
 }
