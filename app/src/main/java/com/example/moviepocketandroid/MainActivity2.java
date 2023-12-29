@@ -16,6 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity2 extends AppCompatActivity {
 
     private ActivityMain2Binding binding;
+    private NavController navController;
+    private int selectedItemId; // Variable to store the selected item ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,7 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main2);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main2);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
@@ -34,8 +36,28 @@ public class MainActivity2 extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         navView.setOnNavigationItemSelectedListener(item -> {
-            // Handle the item selection manually
-            NavigationUI.onNavDestinationSelected(item, navController);
+            // Check if the selected item is already the active one
+            if (item.getItemId() == selectedItemId) {
+                // If it's the active item, navigate to the start destination of the current graph
+                navController.navigate(navController.getGraph().getStartDestination());
+
+                // Additional logic to launch one of the specific fragments
+                if (item.getItemId() == R.id.navigation_home) {
+                    // Launch the Home fragment
+                    navController.navigate(R.id.navigation_home);
+                } else if (item.getItemId() == R.id.navigation_search) {
+                    // Launch the Search fragment
+                    navController.navigate(R.id.navigation_search);
+                } else if (item.getItemId() == R.id.userFragment) {
+                    // Launch the User fragment
+                    navController.navigate(R.id.userFragment);
+                }
+            } else {
+                // Handle the item selection manually
+                NavigationUI.onNavDestinationSelected(item, navController);
+                selectedItemId = item.getItemId(); // Update the selected item ID
+            }
+
             // Reset item colors
             navView.setItemIconTintList(null);
             navView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_item_color)));
