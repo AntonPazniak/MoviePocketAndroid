@@ -3,6 +3,7 @@ package com.example.moviepocketandroid.api.models.person;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Person implements Serializable {
@@ -16,9 +17,9 @@ public class Person implements Serializable {
     @SerializedName("biography")
     private String biography;
     @SerializedName("birthday")
-    private String birthday;
+    private LocalDate birthday;
     @SerializedName("deathday")
-    private String deathday;
+    private LocalDate deathday;
     @SerializedName("gender")
     private int gender;
     @SerializedName("homepage")
@@ -70,19 +71,27 @@ public class Person implements Serializable {
         this.biography = biography;
     }
 
-    public String getBirthday() {
+    public String getBASE_URL() {
+        return BASE_URL;
+    }
+
+    public String getSTANDARD_POSTER_URL() {
+        return STANDARD_POSTER_URL;
+    }
+
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
-    public String getDeathday() {
+    public LocalDate getDeathday() {
         return deathday;
     }
 
-    public void setDeathday(String deathday) {
+    public void setDeathday(LocalDate deathday) {
         this.deathday = deathday;
     }
 

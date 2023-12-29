@@ -483,7 +483,7 @@ public class MovieFragment extends Fragment {
         if (idMovie > 0)
             return movie.getReleaseDate() != null && !movie.getReleaseDate().isAfter(LocalDate.now());
         else
-            return movie.getReleaseDate() != null && !movie.getFirstAirDate().isAfter(LocalDate.now());
+            return movie.getFirstAirDate() != null && !movie.getFirstAirDate().isAfter(LocalDate.now());
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid;
+package com.example.moviepocketandroid.ui.search.frag;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.search.ActorSearchAdapter;
 import com.example.moviepocketandroid.adapter.search.SearchAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;

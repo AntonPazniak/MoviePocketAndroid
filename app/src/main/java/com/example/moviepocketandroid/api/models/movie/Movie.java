@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -137,6 +138,8 @@ public class Movie implements Serializable {
 
     @SerializedName("type")
     private String type;
+    @SerializedName("genre_ids")
+    private int[] genreIds;
 
     public String getPosterPath() {
         if (posterPath != null)
@@ -318,5 +321,80 @@ public class Movie implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    private static String getGenreText(int genreId) {
+        String genreText;
+        switch (genreId) {
+            case 28:
+                genreText = "Action";
+                break;
+            case 12:
+                genreText = "Adventure";
+                break;
+            case 16:
+                genreText = "Animation";
+                break;
+            case 35:
+                genreText = "Comedy";
+                break;
+            case 80:
+                genreText = "Crime";
+                break;
+            case 99:
+                genreText = "Documentary";
+                break;
+            case 18:
+                genreText = "Drama";
+                break;
+            case 10751:
+                genreText = "Family";
+                break;
+            case 14:
+                genreText = "Fantasy";
+                break;
+            case 36:
+                genreText = "History";
+                break;
+            case 27:
+                genreText = "Horror";
+                break;
+            case 10402:
+                genreText = "Music";
+                break;
+            case 9648:
+                genreText = "Mystery";
+                break;
+            case 10749:
+                genreText = "Romance";
+                break;
+            case 878:
+                genreText = "Science Fiction";
+                break;
+            case 10770:
+                genreText = "TV Movie";
+                break;
+            case 53:
+                genreText = "Thriller";
+                break;
+            case 10752:
+                genreText = "War";
+                break;
+            case 37:
+                genreText = "Western";
+                break;
+            default:
+                genreText = "Unknown Genre";
+                break;
+        }
+        return genreText;
+    }
+
+    public List<String> getGenreIds() {
+        List<String> genres = new ArrayList<>();
+        for (int id : genreIds) {
+            genres.add(getGenreText(id));
+        }
+        return genres;
     }
 }

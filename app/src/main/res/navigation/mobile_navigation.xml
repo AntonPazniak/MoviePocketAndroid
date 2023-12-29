@@ -316,7 +316,7 @@
         tools:layout="@layout/fragment_post_main" />
     <fragment
         android:id="@+id/searchRecyclerFragment"
-        android:name="com.example.moviepocketandroid.SearchRecyclerFragment"
+        android:name="com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment"
         android:label="fragment_search_recycler"
         tools:layout="@layout/fragment_search_recycler" />
 </navigation>

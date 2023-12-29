@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.SearchRecyclerFragment;
+import com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
 import com.google.android.material.tabs.TabLayout;
 
