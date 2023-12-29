@@ -315,7 +315,7 @@ public class MPReviewApi {
     }
 
     public static Boolean setLike(int idReview, Boolean likeOrDis) {
-        String url = baseUrl + "/review/setLike";
+        String url = baseUrl + "/review/like";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idReview", String.valueOf(idReview))
@@ -342,7 +342,7 @@ public class MPReviewApi {
     }
 
     public static int[] getCountLikes(int idReview) {
-        String url = baseUrl + "/review/getAllLike?idReview=" + idReview;
+        String url = baseUrl + "/review/likes?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)
