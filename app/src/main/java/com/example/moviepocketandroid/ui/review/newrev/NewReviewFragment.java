@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,20 +87,23 @@ public class NewReviewFragment extends Fragment {
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.postReviewMovie(idMovie, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
-
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.postReviewMovie(idMovie, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -112,20 +116,23 @@ public class NewReviewFragment extends Fragment {
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.postReviewList(idList, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
-
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.postReviewList(idList, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -137,20 +144,23 @@ public class NewReviewFragment extends Fragment {
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.postReviewPost(idList, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
-
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.postReviewPost(idList, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -176,20 +186,23 @@ public class NewReviewFragment extends Fragment {
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.editReviewMovie(idReview, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
-
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.editReviewMovie(idReview, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

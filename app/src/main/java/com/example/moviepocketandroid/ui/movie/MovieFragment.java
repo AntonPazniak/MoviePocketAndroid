@@ -211,9 +211,28 @@ public class MovieFragment extends Fragment {
                             setMovieTrailer(movieTrailerUrl);
                         }
                     });
-                    lists = MPListApi.getAllListExistIdMovie(idMovie);
                     reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setMovieReview(reviews);
+                            setButtonsReview();
+                        }
+                    });
+                    lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setLists();
+                        }
+                    });
                     posts = MPPostApi.getAllPostExistIdMovie(idMovie);
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setPostAdapter();
+                        }
+                    });
                 }
             }).start();
         } else
