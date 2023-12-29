@@ -3,7 +3,6 @@ package com.example.moviepocketandroid.ui.movie;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ActorsAdapter;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
@@ -47,6 +43,7 @@ import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.api.models.review.Review;
 import com.example.moviepocketandroid.ui.dialog.RatingDialog;
 import com.example.moviepocketandroid.ui.until.ButtonUntil;
+import com.example.moviepocketandroid.ui.until.MovieInfoUntil;
 import com.example.moviepocketandroid.ui.until.RatingUntil;
 
 import java.io.Serializable;
@@ -59,7 +56,7 @@ public class MovieFragment extends Fragment {
     private ImageView imageBackPopularMovie, imagePosterPopularMovie;
     private TextView textTitlePopularMovie;
     private ImageView imageEye, imageLike, imageBackPack, imageBinoculars;
-    private TextView textOverview, textImages, textViewOverview;
+    private TextView textImages, textViewOverview;
     private TextView textActorsRecyclerView, textMoviesRecyclerView;
     private TextView textCountry, textCategories, textMinutes;
     private ActorsAdapter actorsAdapter;
@@ -67,7 +64,6 @@ public class MovieFragment extends Fragment {
     private ImagesAdapter movieImagesAdapter;
     private ReviewAdapter reviewAdapter;
     private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
-    private boolean isExpanded = false;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
     private WebView webView;
     private Button button2, button;
@@ -103,16 +99,10 @@ public class MovieFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        imageBackPopularMovie = view.findViewById(R.id.imageBackMovie);
-        imagePosterPopularMovie = view.findViewById(R.id.imagePosterMovie);
-        textTitlePopularMovie = view.findViewById(R.id.textTitlePopularMovie);
-
         imageEye = view.findViewById(R.id.imageEye);
         imageLike = view.findViewById(R.id.imageLike);
         imageBackPack = view.findViewById(R.id.imageBackPack);
         imageBinoculars = view.findViewById(R.id.imageBinoculars);
-
-        textOverview = view.findViewById(R.id.textOverview);
 
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
@@ -148,6 +138,8 @@ public class MovieFragment extends Fragment {
         if (args != null) {
             idMovie = args.getInt("idMovie");
         }
+        MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, idMovie);
+        movieInfoUntil.setMovieInfo();
 
         RatingUntil ratingUntil = new RatingUntil(view, idMovie);
         ratingUntil.setRating();
@@ -212,8 +204,6 @@ public class MovieFragment extends Fragment {
 
     private void setInfo() {
         setButtonsReview();
-        setPosterAndTitle(movie);
-        setMovieInfo(movie);
         setMovieTrailer(movieTrailerUrl);
         setMovieImages(images);
         setMovieActors(actors);
@@ -297,65 +287,6 @@ public class MovieFragment extends Fragment {
         imageBackPack.setVisibility(View.VISIBLE);
         imageBinoculars.setVisibility(View.GONE);
         buttonUntil = new ButtonUntil(imageEye, imageLike, imageBackPack, movie.getId());
-    }
-
-
-    private void setPosterAndTitle(Movie movie) {
-        RequestOptions requestOptions = new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
-        Glide.with(requireContext())
-                .load(movie.getBackdropPath())
-                .apply(requestOptions)
-                .into(imageBackPopularMovie);
-        Glide.with(requireContext())
-                .load(movie.getPosterPath())
-                .apply(requestOptions)
-                .into(imagePosterPopularMovie);
-        textTitlePopularMovie.setText(movie.getTitle());
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setMovieInfo(Movie movie) {
-        StringBuilder s = new StringBuilder();
-        if (movie.getProductionCountries() != null && !movie.getProductionCountries().isEmpty()) {
-            s.append(movie.getProductionCountries().get(0).getName());
-            for (int i = 1; i < movie.getProductionCountries().size(); i++) {
-                s.append(", ");
-                s.append(movie.getProductionCountries().get(i).getName());
-            }
-            textCountry.setText(s);
-        }
-        StringBuilder genders = new StringBuilder();
-        if (movie.getReleaseDate() != null) {
-            int year = movie.getReleaseDate().getYear();
-            if (movie.getId() > 0) {
-                textMinutes.setText(year + ", " + movie.getRuntime() + " mins");
-            } else {
-                textMinutes.setText(year + ", Seasons: " + movie.getSeasons().size());
-            }
-        }
-
-        if (movie.getGenres() != null) {
-            genders.append(movie.getGenres().get(0).getName());
-            for (int i = 1; i < movie.getGenres().size(); i++) {
-                genders.append(", ");
-                genders.append(movie.getGenres().get(i).getName());
-            }
-            textCategories.setText(genders);
-        }
-        textOverview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isExpanded) {
-                    textOverview.setMaxLines(5);
-                    textOverview.setEllipsize(TextUtils.TruncateAt.END);
-                } else {
-                    textOverview.setMaxLines(Integer.MAX_VALUE);
-                    textOverview.setEllipsize(null);
-                }
-                isExpanded = !isExpanded;
-            }
-        });
     }
 
 
