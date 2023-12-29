@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.search.searchResults.SearchResultsFragment">
 
     <LinearLayout
@@ -10,31 +11,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textQuery"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="51dp"
-            android:textSize="26dp"
-            android:textColor="@color/logoBlue" />
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:tabIndicatorColor="@color/logoPink"
+            app:tabSelectedTextColor="@color/logoPink"
+            app:tabTextColor="@color/logoBlue"></com.google.android.material.tabs.TabLayout>
 
-        <include layout="@layout/item_search_category" />
-
-        <ScrollView
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:clipToPadding="false"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:scrollbars="vertical" />
-        </ScrollView>
     </LinearLayout>
 
 </FrameLayout>
