@@ -126,9 +126,6 @@ public class MovieFragment extends Fragment {
             idMovie = args.getInt("idMovie");
         }
 
-        RatingUntil ratingUntil = new RatingUntil(view, idMovie);
-        ratingUntil.setRating();
-
         if (savedInstanceState != null) {
             movie = (Movie) savedInstanceState.getSerializable("movie");
             images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
@@ -181,6 +178,8 @@ public class MovieFragment extends Fragment {
                             RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
                             ratingDialog1.setRatingDialog(isAuthentication, getRelease());
                             ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
+                            RatingUntil ratingUntil = new RatingUntil(view, idMovie);
+                            ratingUntil.setRating();
                         }
                     });
                     actors = TMDBApi.getActorsByIdMovie(idMovie);
@@ -242,6 +241,8 @@ public class MovieFragment extends Fragment {
     private void setInfo() {
         MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
         movieInfoUntil.setMovieInfo();
+        RatingUntil ratingUntil = new RatingUntil(view, idMovie);
+        ratingUntil.setRating();
         RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
         ratingDialog1.setRatingDialog(isAuthentication, getRelease());
         ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);

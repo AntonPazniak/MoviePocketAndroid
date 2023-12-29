@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
             movieList = (MovieList) savedInstanceState.getSerializable("movieList");
 
             setInfo();
+
         } else {
 
             new Thread(new Runnable() {

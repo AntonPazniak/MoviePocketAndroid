@@ -62,14 +62,14 @@ public class SearchFragment extends Fragment {
 
         loadMovieDetails();
 
-        if (savedInstanceState != null) {
-            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
-            actors = (List<Person>) savedInstanceState.getSerializable("actors");
-            tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
-            setInfo();
-        } else {
-            loadMovieDetails();
-        }
+//        if (savedInstanceState != null) {
+//            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+//            actors = (List<Person>) savedInstanceState.getSerializable("actors");
+//            tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
+//            setInfo();
+//        } else {
+//            loadMovieDetails();
+//        }
 
     }
 
