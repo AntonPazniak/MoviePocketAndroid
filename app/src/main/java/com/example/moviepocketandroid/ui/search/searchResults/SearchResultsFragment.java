@@ -21,6 +21,7 @@ public class SearchResultsFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ListNavBarAdapter listNavBarAdapter;
 
     private boolean isMovies = true;
     private boolean isTVs = false;
@@ -29,9 +30,9 @@ public class SearchResultsFragment extends Fragment {
     public SearchResultsFragment() {
     }
 
-    public SearchResultsFragment(String movie) {
+    public SearchResultsFragment(String query) {
         Bundle args = new Bundle();
-        args.putString("query", movie);
+        args.putString("query", query);
         setArguments(args);
     }
 
@@ -60,7 +61,7 @@ public class SearchResultsFragment extends Fragment {
 
             tabLayout.setupWithViewPager(viewPager);
 
-            ListNavBarAdapter listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
+            listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query), "Movies");
@@ -68,9 +69,29 @@ public class SearchResultsFragment extends Fragment {
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query, 0, 0), "Actors");
             viewPager.setAdapter(listNavBarAdapter);
 
-
         }
 
+    }
+
+    public void updateQuery(String query) {
+        Bundle args = new Bundle();
+        args.putString("query", query);
+        setArguments(args);
+        Fragment fragment = listNavBarAdapter.getItem(0);
+        if (fragment instanceof SearchRecyclerFragment) {
+            SearchRecyclerFragment yourFragment = (SearchRecyclerFragment) fragment;
+            yourFragment.updateMovie(query);
+        }
+        fragment = listNavBarAdapter.getItem(1);
+        if (fragment instanceof SearchRecyclerFragment) {
+            SearchRecyclerFragment yourFragment = (SearchRecyclerFragment) fragment;
+            yourFragment.updateTVs(query);
+        }
+        fragment = listNavBarAdapter.getItem(2);
+        if (fragment instanceof SearchRecyclerFragment) {
+            SearchRecyclerFragment yourFragment = (SearchRecyclerFragment) fragment;
+            yourFragment.updatePersons(query);
+        }
     }
 
 }

@@ -11,8 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.ui.search.info.SearchInfoFragment;
@@ -20,7 +18,8 @@ import com.example.moviepocketandroid.ui.search.searchResults.SearchResultsFragm
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class SearchFragment extends Fragment {
-    SearchResultsFragment childFragment;
+    private SearchResultsFragment searchResultsFragment;
+    private SearchInfoFragment childFragment;
     private MaterialToolbar toolbar;
     private SearchView searchView;
 
@@ -33,7 +32,7 @@ public class SearchFragment extends Fragment {
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
             // Создаем экземпляр ChildFragment
-            SearchInfoFragment childFragment = new SearchInfoFragment();
+            childFragment = new SearchInfoFragment();
 
             // Заменяем фрагмент внутри ParentFragment на ChildFragment
             transaction.replace(R.id.fragmentContainer, childFragment);
@@ -78,27 +77,26 @@ public class SearchFragment extends Fragment {
                     return true;
                 }
             });
+//            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//                    transaction.replace(R.id.fragmentContainer, childFragment);
+//                    transaction.commit();
+//                }
+//            });
         }
     }
 
     private void performSearch(String query) {
-        Bundle args = new Bundle();
-        args.putString("query", query);
-
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-        navController.navigate(R.id.action_navigation_search_to_searchResultsFragment, args);
-
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//
-//        childFragment = new SearchResultsFragment(query);
-//
-//        // Заменяем фрагмент внутри ParentFragment на ChildFragment
-//        transaction.replace(R.id.fragmentContainer, childFragment);
-//
-//        // Подтверждаем транзакцию
-//        transaction.commit();
-
-
+        if (searchResultsFragment == null) {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            searchResultsFragment = new SearchResultsFragment(query);
+            transaction.replace(R.id.fragmentContainer, searchResultsFragment);
+            transaction.commit();
+        } else {
+            searchResultsFragment.updateQuery(query);
+        }
     }
 
     private void setSearchBar() {
