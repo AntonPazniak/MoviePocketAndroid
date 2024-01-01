@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.moviepocketandroid.ui.search.SearchFragment"
+        android:name="com.example.moviepocketandroid.ui.search.main.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
@@ -319,4 +319,9 @@
         android:name="com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment"
         android:label="fragment_search_recycler"
         tools:layout="@layout/fragment_search_recycler" />
+    <fragment
+        android:id="@+id/searchInfpFragment"
+        android:name="com.example.moviepocketandroid.ui.search.info.SearchInfoFragment"
+        android:label="fragment_search_infp"
+        tools:layout="@layout/fragment_search_info" />
 </navigation>

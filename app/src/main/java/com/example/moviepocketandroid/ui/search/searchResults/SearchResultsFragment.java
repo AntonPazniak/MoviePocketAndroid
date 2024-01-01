@@ -26,6 +26,15 @@ public class SearchResultsFragment extends Fragment {
     private boolean isTVs = false;
     private boolean isPersons = false;
 
+    public SearchResultsFragment() {
+    }
+
+    public SearchResultsFragment(String movie) {
+        Bundle args = new Bundle();
+        args.putString("query", movie);
+        setArguments(args);
+    }
+
     public static SearchResultsFragment newInstance() {
         return new SearchResultsFragment();
     }

@@ -89,10 +89,11 @@ public class SearchRecyclerFragment extends Fragment {
 
 
     private void setSearchResultsMovie(List<Movie> movies) {
-        requireActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (movies != null) {
+
+        if (movies != null && isAdded()) {
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     searchAdapter = new SearchAdapter(movies);
                     searchRecyclerView.setAdapter(searchAdapter);
                     LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
@@ -108,8 +109,8 @@ public class SearchRecyclerFragment extends Fragment {
                         }
                     });
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setSearchResultsPerson(List<Person> persons) {
@@ -133,6 +134,7 @@ public class SearchRecyclerFragment extends Fragment {
                 });
             }
         });
+
     }
 
 }
