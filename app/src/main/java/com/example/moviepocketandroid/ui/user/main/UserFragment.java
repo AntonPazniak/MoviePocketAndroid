@@ -206,11 +206,45 @@ public class UserFragment extends Fragment {
                             .into(imageViewAvatar);
                 }
 
+                textView0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putString("ToWatch", "ToWatch");
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                    }
+                });
+
+                textView1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putString("Favorite", "Favorite");
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                    }
+                });
+
+                textView2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putString("Watched", "Watched");
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                    }
+                });
+
             }
         }
     }
 
     private void setMovies(RecyclerView recyclerView, List<Movie> movies) {
+        Collections.reverse(movies);
+        if (movies.size() > 5) {
+            movies = movies.subList(0, 5);
+        }
         MovieAdapter movieAdapter = new MovieAdapter(movies);
         recyclerView.setAdapter(movieAdapter);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
