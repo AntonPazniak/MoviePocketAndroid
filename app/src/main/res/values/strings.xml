@@ -49,4 +49,6 @@
     <string name="edit_your_review">Edit your review</string>
     <string name="votes">Votes: </string>
     <string name="nr">NR</string>
+    <string name="skip">Skip</string>
+    <string name="all">All</string>
 </resources>

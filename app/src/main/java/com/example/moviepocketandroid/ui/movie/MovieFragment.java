@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,7 +61,8 @@ public class MovieFragment extends Fragment {
     private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
     private WebView webView;
-    private Button button2, button;
+    private ImageButton button;
+    private ImageButton button2;
     private View view;
     private View layoutList;
     private Context context;
@@ -302,6 +303,16 @@ public class MovieFragment extends Fragment {
     }
 
     private void setButtonsReview() {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putInt("idMovie", movie.getId());
+
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
+            }
+        });
         if (isAuthentication) {
             button2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -313,26 +324,9 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
                 }
             });
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovie", movie.getId());
-
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
-                }
-            });
         } else {
 
             button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
-                }
-            });
-            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
