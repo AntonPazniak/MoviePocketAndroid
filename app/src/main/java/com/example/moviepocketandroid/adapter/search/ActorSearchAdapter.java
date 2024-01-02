@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.person.Person;
 
 import java.util.List;
 
@@ -41,13 +41,6 @@ public class ActorSearchAdapter extends RecyclerView.Adapter<ActorSearchAdapter.
     public void onBindViewHolder(@NonNull ActorViewHolder holder, int position) {
         Person actor = actors.get(position);
         holder.bind(actor);
-
-        int desiredHeightDp = 110;
-        float density = holder.itemView.getResources().getDisplayMetrics().density;
-        int desiredHeightPx = (int) (desiredHeightDp * density);
-        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-        layoutParams.height = desiredHeightPx;
-        holder.itemView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -81,8 +74,6 @@ public class ActorSearchAdapter extends RecyclerView.Adapter<ActorSearchAdapter.
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(actor.getName());
-            textYear.setText(actor.getBirthday());
-            StringBuilder genders = new StringBuilder();
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

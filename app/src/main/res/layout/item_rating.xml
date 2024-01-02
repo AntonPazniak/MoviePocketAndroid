@@ -16,9 +16,8 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textStyle="bold"
-            android:text=""
             android:textColor="@color/logoYellow"
-            android:textSize="50dp"
+            android:textSize="50sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

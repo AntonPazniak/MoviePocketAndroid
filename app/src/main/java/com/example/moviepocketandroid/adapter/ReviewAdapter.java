@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.models.review.Review;
-import com.example.moviepocketandroid.ui.user.UserInfoUntil;
+import com.example.moviepocketandroid.ui.until.UserInfoUntil;
 
 import java.util.List;
 

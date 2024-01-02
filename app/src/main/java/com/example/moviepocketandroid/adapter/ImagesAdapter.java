@@ -18,7 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.ImageMovie;
+import com.example.moviepocketandroid.api.models.movie.ImageMovie;
 
 import java.util.ArrayList;
 import java.util.List;

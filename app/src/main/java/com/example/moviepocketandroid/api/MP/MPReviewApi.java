@@ -162,9 +162,62 @@ public class MPReviewApi {
         return reviews;
     }
 
-
     public static Boolean postReviewList(int idList, String title, String content) {
         String url = baseUrl + "/review/list/set?idList=" + idList + "&title=" + title;
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public static List<Review> getReviewAllByIdPost(int idPost) {
+        List<Review> reviews = new ArrayList<>();
+        String url = baseUrl + "/review/post/all?idPost=" + idPost;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    Review review = gson.fromJson(reviewObject.toString(), Review.class);
+                    if (review != null) {
+                        reviews.add(review);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+
+    public static Boolean postReviewPost(int idPost, String title, String content) {
+        String url = baseUrl + "/review/post/set?idPost=" + idPost + "&title=" + title;
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.create(content, JSON);
@@ -262,7 +315,7 @@ public class MPReviewApi {
     }
 
     public static Boolean setLike(int idReview, Boolean likeOrDis) {
-        String url = baseUrl + "/review/setLike";
+        String url = baseUrl + "/review/like";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("idReview", String.valueOf(idReview))
@@ -289,7 +342,7 @@ public class MPReviewApi {
     }
 
     public static int[] getCountLikes(int idReview) {
-        String url = baseUrl + "/review/getAllLike?idReview=" + idReview;
+        String url = baseUrl + "/review/likes?idReview=" + idReview;
 
         Request request = new Request.Builder()
                 .url(url)

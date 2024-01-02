@@ -23,7 +23,7 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.NowPlayingMovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
             movieList = (MovieList) savedInstanceState.getSerializable("movieList");
 
             setInfo();
+
         } else {
 
             new Thread(new Runnable() {
@@ -98,14 +99,27 @@ public class HomeFragment extends Fragment {
                         }
                     }
 
-                    if (!moviePopular.isEmpty()) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setInfo();
-                                setMainLIst();
-                            }
-                        });
+
+                    if (movieList != null) {
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMainLIst();
+                                }
+                            });
+                        }
+                    }
+
+                    if (moviePopular != null && !moviePopular.isEmpty()) {
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setInfo();
+                                }
+                            });
+                        }
                     }
                 }
             }).start();

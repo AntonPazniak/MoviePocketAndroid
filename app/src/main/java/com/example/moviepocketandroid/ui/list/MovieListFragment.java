@@ -1,13 +1,10 @@
 package com.example.moviepocketandroid.ui.list;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,30 +16,24 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
-import com.example.moviepocketandroid.api.MP.MPListApi;
-import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MovieListFragment extends Fragment {
 
     private MovieListViewModel mViewModel;
-    private TextView textViewTitle, textViewContent, textViewUsername, textViewDate;
     private RecyclerView recyclerViewList;
-    private LinearLayout linearLayoutAuthor;
-    private ImageView imageViewAvatar;
-    private MovieList movieList;
     private List<Movie> movies;
-    private View view;
+    String favorite;
+    String toWatch;
+    String watched;
+    private TextView textViewTitle;
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -64,133 +55,91 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        this.view = view;
-
-        textViewTitle = view.findViewById(R.id.textViewTitle);
-        textViewContent = view.findViewById(R.id.textViewContent);
         recyclerViewList = view.findViewById(R.id.recyclerViewList);
-        linearLayoutAuthor = view.findViewById(R.id.linearLayoutAuthor);
-        textViewUsername = view.findViewById(R.id.textViewUsername);
-        textViewDate = view.findViewById(R.id.textViewDate);
-        imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
-
-
-//        Bundle args = getArguments();
-//        if (savedInstanceState != null) {
-//            int idList = args.getInt("idList", -1);
-//            if (idList > 0) {
-//                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
-//                assert movieList != null;
-//                movies = movieList.getMovies();
-//                setMovie();
-//                setListInf();
-//            } else {
-//                setMovie();
-//            }
-//        } else {
-//            if (args != null) {
-//                int idList = args.getInt("idList", -1);
-//                if (idList > 0) {
-//                    loadListInf(idList);
-//                } else {
-//                    movies = (List<Movie>) args.getSerializable("watchedListKey");
-//                    setMovie();
-//                }
-//
-//                //loadListInf(1);
-//            }
-//        }
-    }
-
-
-    private void loadListInf(int idList) {
+        textViewTitle = view.findViewById(R.id.textViewTitle);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                movieList = MPListApi.getListById(idList);
-                assert movieList != null;
-                movies = movieList.getMovies();
-                if (movieList != null) {
-                    if (isAdded()) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                if (MPAuthenticationApi.checkAuth()) {
+
+                    Bundle args = getArguments();
+                    if (args != null) {
+                        favorite = args.getString("Favorite", null);
+                        toWatch = args.getString("ToWatch", null);
+                        watched = args.getString("Watched", null);
+                        if (favorite != null && favorite.equals("Favorite")) {
+                            setMoviesFavorite();
+                        } else if (toWatch != null && toWatch.equals("ToWatch")) {
+                            setMoviesToWatch();
+                        } else if (watched != null && watched.equals("Watched")) {
+                            setMoviesWatched();
+                        }
+                    }
+                } else {
+                    if (isAdded() && getContext() != null) {
+                        requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                setMovie();
-                                setListInf();
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_listFragment_to_loginFragment);
                             }
                         });
                     }
                 }
             }
         }).start();
-
     }
 
-    private List<Movie> loadMovie(int[] moviesArr) {
-        List<Movie> movies = new ArrayList<>();
-        for (int j : moviesArr) {
-            Movie movie = TMDBApi.getInfoMovie(j);
-            if (movie != null) {
-                movies.add(movie);
-            }
-        }
-        return movies;
+    private void setMoviesFavorite() {
+        movies = MPAssessmentApi.getAllFavoriteMovie();
+        setMovie();
+    }
+
+    private void setMoviesWatched() {
+        movies = MPAssessmentApi.getAllWatchedMovie();
+        setMovie();
+    }
+
+    private void setMoviesToWatch() {
+        movies = MPAssessmentApi.getAllToWatchMovie();
+        setMovie();
     }
 
     private void setMovie() {
-        if (movies != null && !movies.isEmpty()) {
-            MovieAdapter movieAdapter = new MovieAdapter(movies);
-            recyclerViewList.setAdapter(movieAdapter);
+        if (isAdded() && getContext() != null) {
+            if (movies != null && !movies.isEmpty()) {
+                requireActivity().runOnUiThread(new Runnable() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void run() {
+                        if (favorite != null && favorite.equals("Favorite")) {
+                            textViewTitle.setText("Favorite");
+                        } else if (toWatch != null && toWatch.equals("ToWatch")) {
+                            textViewTitle.setText("ToWatch");
+                        } else if (watched != null && watched.equals("Watched")) {
+                            textViewTitle.setText("Watched");
+                        }
+                        Collections.reverse(movies);
+                        MovieAdapter movieAdapter = new MovieAdapter(movies);
+                        recyclerViewList.setAdapter(movieAdapter);
 
-            GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false);
-            recyclerViewList.setLayoutManager(layoutManager);
+                        GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false);
+                        recyclerViewList.setLayoutManager(layoutManager);
 
-            movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-                @Override
-                public void onMovieClick(int movieId) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovie", movieId);
+                        movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+                            @Override
+                            public void onMovieClick(int movieId) {
+                                Bundle args = new Bundle();
+                                args.putInt("idMovie", movieId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieListFragment_to_movieFragment, args);
-                }
-            });
-        }
-    }
-
-    private void setListInf() {
-        linearLayoutAuthor.setVisibility(View.VISIBLE);
-        textViewUsername.setText(movieList.getUser().getUsername());
-        textViewDate.setText(movieList.getCreate().toLocalDate().toString());
-        textViewTitle.setText(movieList.getTitle());
-        textViewContent.setText(movieList.getContent());
-        imageViewAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putString("username", movieList.getUser().getUsername());
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_movieListFragment_to_userPageFragment, args);
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_movieListFragment_to_movieFragment, args);
+                            }
+                        });
+                    }
+                });
             }
-
-        });
-        if (movieList.getUser().getAvatar() != null) {
-            RequestOptions requestOptions = new RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
-            Glide.with(view.getContext())
-                    .load(movieList.getUser().getAvatar())
-                    .apply(requestOptions)
-                    .into(imageViewAvatar);
         }
-
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("movieList", (Serializable) movieList);
-    }
-
 
 }

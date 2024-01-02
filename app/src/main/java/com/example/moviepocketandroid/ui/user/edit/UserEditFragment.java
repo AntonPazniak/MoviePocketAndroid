@@ -140,7 +140,7 @@ public class UserEditFragment extends Fragment {
 
                             if (!user.getUsername().equals(username))
                                 MPUserApi.setUsername(username);
-                            if (!user.getBio().equals(bio))
+                            if (user.getBio() == null || !user.getBio().equals(bio))
                                 MPUserApi.setBio(bio);
                             if (!user.getEmail().equals(email))
                                 MPUserApi.setEmail(email);

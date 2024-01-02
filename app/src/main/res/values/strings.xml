@@ -9,6 +9,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="user">User</string>
     <string name="title">Title</string>
+    <string name="content">Content</string>
     <string name="biography">Biography</string>
     <string name="actors">Actors:</string>
     <string name="similar_films">Similar films:</string>
@@ -43,4 +44,11 @@
     <string name="description">Description</string>
     <string name="reviews">Reviews</string>
     <string name="moviess">Movies</string>
+    <string name="post_mov">Post with this movie</string>
+    <string name="create_your_review">Create your review</string>
+    <string name="edit_your_review">Edit your review</string>
+    <string name="votes">Votes: </string>
+    <string name="nr">NR</string>
+    <string name="skip">Skip</string>
+    <string name="all">All</string>
 </resources>

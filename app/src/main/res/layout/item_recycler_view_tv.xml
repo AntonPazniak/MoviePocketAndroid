@@ -4,15 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewTVs"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textTVRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/logoBlue"
-        android:textSize="20dp"
+        style="@style/TextGenerally"
         app:layout_constraintBottom_toTopOf="@+id/tvRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.123"
@@ -22,7 +18,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tvRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="180dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

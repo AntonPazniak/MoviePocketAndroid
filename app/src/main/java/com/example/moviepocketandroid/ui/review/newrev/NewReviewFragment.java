@@ -1,6 +1,5 @@
 package com.example.moviepocketandroid.ui.review.newrev;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +46,6 @@ public class NewReviewFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,73 +58,109 @@ public class NewReviewFragment extends Fragment {
         textViewTitle = view.findViewById(R.id.textView0);
         textViewContent = view.findViewById(R.id.textView1);
 
-        textViewTitle.setText("Title");
-        textViewContent.setText("Content");
+        textViewTitle.setText(R.string.title);
+        textViewContent.setText(R.string.content);
 
         Bundle args = getArguments();
         if (args != null) {
             int idMovie = args.getInt("idMovie", -1);
             int idReview = args.getInt("idReview", -1);
             int idList = args.getInt("idList", -1);
+            int idPost = args.getInt("idPost", -1);
             if (idMovie != -1) {
                 newReviewMovie(idMovie);
             } else if (idReview != -1) {
                 editReview(idReview);
             } else if (idList != -1) {
                 newReviewList(idList);
+            } else if (idPost != -1) {
+                newReviewPost(idPost);
             }
 
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void newReviewMovie(int idMovie) {
-        textViewHead.setText("Create your review");
+        textViewHead.setText(R.string.create_your_review);
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.postReviewMovie(idMovie, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
-
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.postReviewMovie(idMovie, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    @SuppressLint("SetTextI18n")
+
     private void newReviewList(int idList) {
-        textViewHead.setText("Create your review");
+        textViewHead.setText(R.string.create_your_review);
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.postReviewList(idList, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.postReviewList(idList, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
+    private void newReviewPost(int idList) {
+        textViewHead.setText(R.string.create_your_review);
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = String.valueOf(titleEditText.getText());
+                String content = String.valueOf(contentEditText.getText());
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.postReviewPost(idList, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -136,10 +171,9 @@ public class NewReviewFragment extends Fragment {
             public void run() {
                 Review review = MPReviewApi.getReviewById(idReview);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
-                        textViewHead.setText("Edit your review");
+                        textViewHead.setText(R.string.edit_your_review);
                         titleEditText.setText(review.getTitle());
                         contentEditText.setText(review.getContent());
                     }
@@ -152,20 +186,23 @@ public class NewReviewFragment extends Fragment {
             public void onClick(View view) {
                 String title = String.valueOf(titleEditText.getText());
                 String content = String.valueOf(contentEditText.getText());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MPReviewApi.editReviewMovie(idReview, title, content);
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                navController.navigateUp();
-                            }
-                        });
-                    }
-                }).start();
-
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPReviewApi.editReviewMovie(idReview, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

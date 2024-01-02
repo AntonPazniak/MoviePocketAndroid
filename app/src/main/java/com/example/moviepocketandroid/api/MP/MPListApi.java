@@ -1,6 +1,6 @@
 package com.example.moviepocketandroid.api.MP;
 
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -55,7 +56,7 @@ public class MPListApi {
 
     public static List<MovieList> getAllListExistIdMovie(int idMovie) {
         List<MovieList> lists = new ArrayList<>();
-        String url = baseUrl + "/movies/list/getAllListsContainingMovie?idMovie=" + idMovie;
+        String url = baseUrl + "/movies/list/movie/containing?idMovie=" + idMovie;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -103,7 +104,6 @@ public class MPListApi {
         return false;
     }
 
-
     public static Boolean editList(int idList, String title, String content) {
         String url = baseUrl + "/movies/list/up?idMovieList=" + idList + "&title=" + title;
 
@@ -123,6 +123,55 @@ public class MPListApi {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
                 return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Boolean getLike(int idList) {
+        String url = baseUrl + "/movies/list/like/get?idList=" + idList;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return !response.body().string().equals("false");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Boolean setLike(int idList, Boolean likeOrDis) {
+        String url = baseUrl + "/movies/list/like/set";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idList", String.valueOf(idList))
+                .add("like", String.valueOf(likeOrDis))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+
             }
         } catch (IOException e) {
             e.printStackTrace();

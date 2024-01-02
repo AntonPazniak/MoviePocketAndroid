@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.ui.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +29,19 @@ public class loginFragment extends Fragment {
     private EditText editTextPassword, editTextUsername;
     private MaterialButton buttonLogin, buttonRegistration;
     private TextView textViewForgot;
+    private Context mContext;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+    }
 
     public static loginFragment newInstance() {
         return new loginFragment();
@@ -57,8 +71,64 @@ public class loginFragment extends Fragment {
 
         textViewForgot = view.findViewById(R.id.textViewForgot);
 
-        MPAuthenticationApi mpAuthenticationAPI = new MPAuthenticationApi();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean authentication = MPAuthenticationApi.checkAuth();
+                if (mContext != null) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (authentication) {
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigateUp();
+                            } else {
+                                setButtons();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+
+    }
+
+    public void setButtons() {
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editTextUsername.getError() == null) {
+                    String username = String.valueOf(editTextUsername.getText());
+                    String password = String.valueOf(editTextPassword.getText());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Boolean authentication = MPAuthenticationApi.postLogin(username, password);
+                            if (mContext != null) {
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (authentication) {
+                                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                            navController.navigateUp();
+                                            Toast.makeText(mContext, "Successfully!", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, "Wrong password or username!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
+                } else {
+                    if (mContext != null) {
+                        Toast.makeText(mContext, "Enter correct information", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
         textViewForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,36 +156,6 @@ public class loginFragment extends Fragment {
                         editTextUsername.setError("Enter a correct email");
                     }
 
-                }
-            }
-        });
-
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editTextUsername.getError() == null) {
-                    String username = String.valueOf(editTextUsername.getText());
-                    String password = String.valueOf(editTextPassword.getText());
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Boolean authentication = mpAuthenticationAPI.postLogin(username, password);
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (authentication) {
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigateUp();
-                                        Toast.makeText(requireContext(), "Successfully!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(requireContext(), "Wrong password or username!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-                    }).start();
-                } else {
-                    Toast.makeText(requireContext(), "Enter correct information", Toast.LENGTH_SHORT).show();
                 }
             }
         });

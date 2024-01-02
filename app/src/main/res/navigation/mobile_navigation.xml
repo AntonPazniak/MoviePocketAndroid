@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.moviepocketandroid.ui.search.SearchFragment"
+        android:name="com.example.moviepocketandroid.ui.search.main.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.example.moviepocketandroid.ui.user.nb.UserFragment"
+        android:name="com.example.moviepocketandroid.ui.user.main.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user">
         <action
@@ -104,6 +104,9 @@
         <action
             android:id="@+id/action_movieFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -116,6 +119,12 @@
         <action
             android:id="@+id/action_personFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_postFragment2"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchResultsFragment"
@@ -279,4 +288,40 @@
         android:name="com.example.moviepocketandroid.ui.list.edit.ListEditFragment"
         android:label="fragment_list_edit"
         tools:layout="@layout/fragment_list_edit" />
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.moviepocketandroid.ui.post.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post">
+        <action
+            android:id="@+id/action_postFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_detailReviewFragment"
+            app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postMainFragment"
+        android:name="com.example.moviepocketandroid.ui.post.main.PostMainFragment"
+        android:label="fragment_post_main"
+        tools:layout="@layout/fragment_post_main" />
+    <fragment
+        android:id="@+id/searchRecyclerFragment"
+        android:name="com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment"
+        android:label="fragment_search_recycler"
+        tools:layout="@layout/fragment_search_recycler" />
+    <fragment
+        android:id="@+id/searchInfpFragment"
+        android:name="com.example.moviepocketandroid.ui.search.info.SearchInfoFragment"
+        android:label="fragment_search_infp"
+        tools:layout="@layout/fragment_search_info" />
 </navigation>

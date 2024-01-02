@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.api.models;
+package com.example.moviepocketandroid.api.models.movie;
 
 import com.google.gson.annotations.SerializedName;
 

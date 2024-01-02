@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.MovieList;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 
 public class ListDescriptionFragment extends Fragment {
 

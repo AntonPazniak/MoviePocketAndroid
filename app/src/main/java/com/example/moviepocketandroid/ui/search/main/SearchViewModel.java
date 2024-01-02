@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.search;
+package com.example.moviepocketandroid.ui.search.main;
 
 import androidx.lifecycle.ViewModel;
 

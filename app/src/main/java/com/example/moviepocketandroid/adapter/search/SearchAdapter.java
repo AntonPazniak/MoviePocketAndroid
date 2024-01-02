@@ -1,5 +1,7 @@
 package com.example.moviepocketandroid.adapter.search;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,14 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewHolder> {
@@ -46,14 +51,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
     public void onBindViewHolder(@NonNull SearchAdapter.MovieViewHolder holder, int position) {
         Movie movie = movies.get(position);
         holder.bind(movie);
-
-// Set desired width and height for the movie item (if needed)
-        int desiredHeightDp = 110;
-        float density = holder.itemView.getResources().getDisplayMetrics().density;
-        int desiredHeightPx = (int) (desiredHeightDp * density);
-        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-        layoutParams.height = desiredHeightPx;
-        holder.itemView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -66,6 +63,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
         private TextView textTitleMovie;
         private TextView textGenres;
         private TextView textYear;
+        private TextView textRatingPoster;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +71,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
             textTitleMovie = itemView.findViewById(R.id.textTitleMovieSearch);
             textYear = itemView.findViewById(R.id.textYear);
             textGenres = itemView.findViewById(R.id.textGenres);
+            textRatingPoster = itemView.findViewById(R.id.textRatingPoster);
         }
 
         public void bind(Movie movie) {
@@ -83,16 +82,49 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
                     .apply(requestOptions)
                     .into(imageMovie);
             textTitleMovie.setText(movie.getTitle());
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    double rating = MPRatingApi.getRatingMovie(movie.getId());
+                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (rating >= 8) {
+                                textRatingPoster.setBackgroundColor(ContextCompat
+                                        .getColor(itemView.getContext(), R.color.logoYellow));
+                                textRatingPoster.setText(decimalFormat.format(rating));
+                            } else if (rating > 4) {
+                                textRatingPoster.setBackgroundColor(ContextCompat
+                                        .getColor(itemView.getContext(), R.color.logoBlue));
+                                textRatingPoster.setText(decimalFormat.format(rating));
+                            } else if (rating > 0) {
+                                textRatingPoster.setBackgroundColor(ContextCompat
+                                        .getColor(itemView.getContext(), R.color.logoPink));
+                                textRatingPoster.setText(decimalFormat.format(rating));
+                            } else {
+                                textRatingPoster.setBackgroundColor(ContextCompat
+                                        .getColor(itemView.getContext(), R.color.grey));
+                                textRatingPoster.setText(R.string.nr);
+                            }
+                        }
+                    });
+                }
+            }).start();
+
             if (movie.getReleaseDate() != null) {
-                int year = movie.getReleaseDate().getYear();
-                textYear.setText(String.valueOf(year));
+                textYear.setText(String.valueOf(movie.getReleaseDate().getYear()));
+            } else if (movie.getFirstAirDate() != null) {
+                textYear.setText(String.valueOf(movie.getFirstAirDate().getYear()));
             }
             StringBuilder genders = new StringBuilder();
-            if (movie.getGenres() != null) {
-                genders.append(movie.getGenres().get(0));
-                for (int i = 1; i < movie.getGenres().size(); i++) {
+            List<String> genres = movie.getGenreIds();
+            if (!genres.isEmpty()) {
+                genders.append(genres.get(0));
+                for (int i = 1; i < genres.size(); i++) {
                     genders.append(",");
-                    genders.append(movie.getGenres().get(i));
+                    genders.append(genres.get(i));
                 }
                 textGenres.setText(genders);
             }

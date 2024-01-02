@@ -25,8 +25,8 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
-import com.example.moviepocketandroid.api.models.ImageMovie;
-import com.example.moviepocketandroid.api.models.Person;
+import com.example.moviepocketandroid.api.models.movie.ImageMovie;
+import com.example.moviepocketandroid.api.models.person.Person;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.io.Serializable;

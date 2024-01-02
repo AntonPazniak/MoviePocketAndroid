@@ -162,7 +162,8 @@ public class RegistrationFragment extends Fragment {
                                     if (isRegis) {
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
-                                        Toast.makeText(requireContext(), "Successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(requireContext(), "Registration successful! \n" +
+                                                " Please verify your email to activate your account. To do so go by the link that was sent to your email.", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                                     }
