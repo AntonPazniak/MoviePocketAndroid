@@ -265,6 +265,8 @@ public class MovieFragment extends Fragment {
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
+                        movieInfoUntil.setMovieInfo();
                         ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
                         RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
                         ratingDialog1.setRatingDialog(isAuthentication, getRelease());
@@ -272,8 +274,6 @@ public class MovieFragment extends Fragment {
                 });
             }
         }).start();
-        MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
-        movieInfoUntil.setMovieInfo();
         RatingUntil ratingUntil = new RatingUntil(view, idMovie);
         ratingUntil.setRating();
         setButtonsReview();
