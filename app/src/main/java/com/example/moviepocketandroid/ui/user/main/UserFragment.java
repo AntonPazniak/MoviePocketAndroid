@@ -187,40 +187,6 @@ public class UserFragment extends Fragment {
 
                 });
 
-                toWatchTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle args = new Bundle();
-                        args.putSerializable("watchedListKey", (Serializable) watched);
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
-                    }
-
-                });
-
-                favoriteTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle args = new Bundle();
-                        args.putSerializable("watchedListKey", (Serializable) favorites);
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
-                    }
-
-                });
-
-                watchedTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle args = new Bundle();
-                        args.putSerializable("watchedListKey", (Serializable) toWatch);
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
-                    }
-
-                });
-
-
                 imageButtonSettings.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
