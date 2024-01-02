@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.user.nb;
+package com.example.moviepocketandroid.ui.user.main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

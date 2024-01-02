@@ -242,13 +242,24 @@ public class MovieFragment extends Fragment {
     }
 
     private void setInfo() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                isAuthentication = MPAuthenticationApi.checkAuth();
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
+                        RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
+                        ratingDialog1.setRatingDialog(isAuthentication, getRelease());
+                    }
+                });
+            }
+        }).start();
         MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
         movieInfoUntil.setMovieInfo();
         RatingUntil ratingUntil = new RatingUntil(view, idMovie);
         ratingUntil.setRating();
-        RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
-        ratingDialog1.setRatingDialog(isAuthentication, getRelease());
-        ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
         setButtonsReview();
         setMovieTrailer(movieTrailerUrl);
         setMovieImages(images);

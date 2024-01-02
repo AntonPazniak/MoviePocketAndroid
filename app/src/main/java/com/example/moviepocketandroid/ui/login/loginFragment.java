@@ -1,5 +1,6 @@
 package com.example.moviepocketandroid.ui.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +29,19 @@ public class loginFragment extends Fragment {
     private EditText editTextPassword, editTextUsername;
     private MaterialButton buttonLogin, buttonRegistration;
     private TextView textViewForgot;
+    private Context mContext;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+    }
 
     public static loginFragment newInstance() {
         return new loginFragment();
@@ -100,22 +114,26 @@ public class loginFragment extends Fragment {
                         @Override
                         public void run() {
                             Boolean authentication = mpAuthenticationAPI.postLogin(username, password);
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (authentication) {
-                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                        navController.navigateUp();
-                                        Toast.makeText(requireContext(), "Successfully!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(requireContext(), "Wrong password or username!", Toast.LENGTH_SHORT).show();
+                            if (mContext != null) {
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (authentication) {
+                                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                            navController.navigateUp();
+                                            Toast.makeText(mContext, "Successfully!", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, "Wrong password or username!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                     }).start();
                 } else {
-                    Toast.makeText(requireContext(), "Enter correct information", Toast.LENGTH_SHORT).show();
+                    if (mContext != null) {
+                        Toast.makeText(mContext, "Enter correct information", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
