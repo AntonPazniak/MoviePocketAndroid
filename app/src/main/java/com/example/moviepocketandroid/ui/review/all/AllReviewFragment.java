@@ -189,47 +189,49 @@ public class AllReviewFragment extends Fragment {
     private void setReviewPost(int idPost) {
         List<Review> reviews = MPReviewApi.getReviewAllByIdPost(idPost);
         Boolean isAuthentication = MPAuthenticationApi.checkAuth();
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                if (reviews.size() > 0) {
-                    reviewAdapter = new ReviewAdapter(reviews);
-                    recyclerView.setAdapter(reviewAdapter);
-                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-                    recyclerView.setLayoutManager(layoutManager2);
-                    reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
-                        @Override
-                        public void onReviewClick(int idReview) {
-                            Bundle args = new Bundle();
-                            args.putInt("idReview", idReview);
+        if (isAdded() && getContext() != null) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (reviews.size() > 0) {
+                        reviewAdapter = new ReviewAdapter(reviews);
+                        recyclerView.setAdapter(reviewAdapter);
+                        LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+                        recyclerView.setLayoutManager(layoutManager2);
+                        reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
+                            @Override
+                            public void onReviewClick(int idReview) {
+                                Bundle args = new Bundle();
+                                args.putInt("idReview", idReview);
 
-                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                            navController.navigate(R.id.action_postFragment_to_detailReviewFragment, args);
-                        }
-                    });
-                }
-                if (isAuthentication) {
-                    fabAdd.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Bundle args = new Bundle();
-                            args.putInt("idPost", idPost);
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_postFragment_to_detailReviewFragment, args);
+                            }
+                        });
+                    }
+                    if (isAuthentication) {
+                        fabAdd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Bundle args = new Bundle();
+                                args.putInt("idPost", idPost);
 
-                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                            navController.navigate(R.id.action_postFragment_to_newReviewFragment, args);
-                        }
-                    });
-                } else {
-                    fabAdd.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                            navController.navigate(R.id.action_postFragment_to_loginFragment);
-                        }
-                    });
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_postFragment_to_newReviewFragment, args);
+                            }
+                        });
+                    } else {
+                        fabAdd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                navController.navigate(R.id.action_postFragment_to_loginFragment);
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 }
