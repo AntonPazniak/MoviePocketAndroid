@@ -158,13 +158,13 @@ public class MovieFragment extends Fragment {
     }
     private void loadMovieDetails(int idMovie) {
 
-        if (movie == null) {
+        if (movie == null && isAdded()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     isAuthentication = MPAuthenticationApi.checkAuth();
                     movie = TMDBApi.getInfoMovie(idMovie);
-                    if (getActivity() != null && isAdded()) {
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -172,7 +172,9 @@ public class MovieFragment extends Fragment {
                                 movieInfoUntil.setMovieInfo();
                             }
                         });
-                        rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
+                    }
+                    rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -183,7 +185,9 @@ public class MovieFragment extends Fragment {
                                 ratingUntil.setRating();
                             }
                         });
-                        actors = TMDBApi.getActorsByIdMovie(idMovie);
+                    }
+                    actors = TMDBApi.getActorsByIdMovie(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -191,27 +195,35 @@ public class MovieFragment extends Fragment {
                             }
                         });
                         similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
+                    }
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 setMovieSimilar(similarMovies);
                             }
                         });
-                        images = TMDBApi.getImagesByIdMovie(idMovie);
+                    }
+                    images = TMDBApi.getImagesByIdMovie(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 setMovieImages(images);
                             }
                         });
-                        movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
+                    }
+                    movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 setMovieTrailer(movieTrailerUrl);
                             }
                         });
-                        reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                    }
+                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -219,14 +231,18 @@ public class MovieFragment extends Fragment {
                                 setButtonsReview();
                             }
                         });
-                        lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    }
+                    lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 setLists();
                             }
                         });
-                        posts = MPPostApi.getAllPostExistIdMovie(idMovie);
+                    }
+                    posts = MPPostApi.getAllPostExistIdMovie(idMovie);
+                    if (isAdded() && getContext() != null) {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
