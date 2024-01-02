@@ -99,22 +99,27 @@ public class HomeFragment extends Fragment {
                         }
                     }
 
-                    if (!moviePopular.isEmpty()) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setInfo();
-                            }
-                        });
-                    }
 
                     if (movieList != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setMainLIst();
-                            }
-                        });
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMainLIst();
+                                }
+                            });
+                        }
+                    }
+
+                    if (moviePopular != null && !moviePopular.isEmpty()) {
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setInfo();
+                                }
+                            });
+                        }
                     }
                 }
             }).start();
