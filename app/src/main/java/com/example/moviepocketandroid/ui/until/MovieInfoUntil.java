@@ -79,7 +79,7 @@ public class MovieInfoUntil {
             }
         }
 
-        if (movie.getGenres() != null) {
+        if (movie.getGenres() != null && !movie.getGenres().isEmpty()) {
             genders.append(movie.getGenres().get(0).getName());
             for (int i = 1; i < movie.getGenres().size(); i++) {
                 genders.append(", ");
