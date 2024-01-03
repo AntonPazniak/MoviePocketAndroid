@@ -22,7 +22,7 @@
 
         </activity>
         <activity
-            android:name=".FirstRunActivity"
+            android:name=".ui.firstRun.FirstRunActivity"
             android:exported="true"
             android:label="@string/title_activity_first_run"></activity>
 

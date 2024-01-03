@@ -327,4 +327,9 @@
         android:name="com.example.moviepocketandroid.ui.search.info.SearchInfoFragment"
         android:label="fragment_search_infp"
         tools:layout="@layout/fragment_search_info" />
+    <fragment
+        android:id="@+id/postAllFragment"
+        android:name="com.example.moviepocketandroid.ui.post.all.PostAllFragment"
+        android:label="fragment_post_all"
+        tools:layout="@layout/fragment_post_all" />
 </navigation>

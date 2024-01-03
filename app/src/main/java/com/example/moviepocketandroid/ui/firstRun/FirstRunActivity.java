@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid;
+package com.example.moviepocketandroid.ui.firstRun;
 
 
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.moviepocketandroid.MainActivity2;
+import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ImagePagerAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
