@@ -1,6 +1,8 @@
 package com.example.moviepocketandroid.api.MP;
 
-import android.webkit.CookieManager;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
@@ -16,13 +18,29 @@ import okhttp3.Response;
 public class MPAuthenticationApi {
 
     private static final String baseUrl = Utils.baseServerUrl;
+    private static final String PREF_NAME = "YourAppPreferences";
+    private static final String COOKIE_KEY = "Cookies";
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    public static void setContext(Context context) {
+        if (context.getApplicationContext() != null) {
+            MPAuthenticationApi.context = context.getApplicationContext();
+        } else {
+            MPAuthenticationApi.context = context;
+        }
+    }
 
     public static String getCookies() {
-        CookieManager cookieManager = CookieManager.getInstance();
-        String cookie = cookieManager.getCookie(baseUrl);
-        if (cookie != null)
-            return cookie;
-        else return "";
+        SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return preferences.getString(COOKIE_KEY, "");
+    }
+
+    private static void saveCookies(Context context, String cookies) {
+        SharedPreferences preferences = MPAuthenticationApi.context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(COOKIE_KEY, cookies);
+        editor.apply();
     }
 
     public static Boolean checkAuth() {
@@ -72,8 +90,8 @@ public class MPAuthenticationApi {
                     if (authToken.contains(";")) {
                         authToken = authToken.split(";")[0];
 
-                        CookieManager cookieManager = CookieManager.getInstance();
-                        cookieManager.setCookie(baseUrl, authToken);
+                        // Save the cookie in SharedPreferences
+                        saveCookies(context, authToken);
                     }
                     return true;
                 }

@@ -131,6 +131,9 @@
         <action
             android:id="@+id/action_personFragment_to_postAllFragment"
             app:destination="@id/postAllFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchResultsFragment"

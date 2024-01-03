@@ -465,8 +465,6 @@ public class MovieFragment extends Fragment {
     }
 
     private void setPostAdapter() {
-        TextView textView = view.findViewById(R.id.textPost);
-        textView.setText(R.string.post_mov);
         ImageButton buttonNewPost = view.findViewById(R.id.buttonNewPost);
         ImageButton buttonAllPost = view.findViewById(R.id.buttonAllPosts);
         if (posts != null && !posts.isEmpty()) {

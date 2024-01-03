@@ -3,9 +3,10 @@ package com.example.moviepocketandroid.api.models.review;
 
 import com.example.moviepocketandroid.api.models.user.User;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Review {
+public class Review implements Serializable {
 
     private String title;
     private String content;

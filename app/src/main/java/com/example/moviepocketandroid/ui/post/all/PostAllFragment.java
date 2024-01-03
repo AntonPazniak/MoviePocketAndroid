@@ -54,7 +54,7 @@ public class PostAllFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             int idMovie = args.getInt("idMovie", -1);
-            int idPerson = args.getInt("idPost", -1);
+            int idPerson = args.getInt("idPerson", -1);
             int idList = args.getInt("idList", -1);
 
             new Thread(new Runnable() {
@@ -63,7 +63,8 @@ public class PostAllFragment extends Fragment {
                     posts = new ArrayList<>();
                     if (idMovie != -1)
                         posts = MPPostApi.getAllPostExistIdMovie(idMovie);
-
+                    else if (idPerson != -1)
+                        posts = MPPostApi.getAllPostExistIdPerson(idPerson);
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

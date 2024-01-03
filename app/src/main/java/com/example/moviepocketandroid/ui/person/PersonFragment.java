@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +25,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ImagesAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
+import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.movie.ImageMovie;
 import com.example.moviepocketandroid.api.models.person.Person;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.post.Post;
 
 import java.io.Serializable;
 import java.util.List;
@@ -48,6 +51,9 @@ public class PersonFragment extends Fragment {
     private List<Movie> movies;
     private List<Movie> tvSeries;
     private List<ImageMovie> images;
+    private List<Post> posts;
+    private ImageButton buttonNewPost, buttonAllPosts;
+    private boolean isAuthentication;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -78,18 +84,21 @@ public class PersonFragment extends Fragment {
         textViewOverview = view.findViewById(R.id.textViewOverview);
         viewOverview = view.findViewById(R.id.viewOverview);
 
-        if (savedInstanceState != null) {
-            movies = (List<Movie>) savedInstanceState.getSerializable("movies");
-            person = (Person) savedInstanceState.getSerializable("person");
-            tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
-            images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
-            if (movies != null)
-                setInfo();
-        }
+        buttonNewPost = view.findViewById(R.id.buttonNewPost);
+        buttonAllPosts = view.findViewById(R.id.buttonAllPosts);
         Bundle args = getArguments();
         if (args != null) {
-            int idPerson = args.getInt("idPerson");
-            loadPersonDetails(idPerson);
+            idPerson = args.getInt("idPerson");
+            if (savedInstanceState != null) {
+                movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+                person = (Person) savedInstanceState.getSerializable("person");
+                tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
+                images = (List<ImageMovie>) savedInstanceState.getSerializable("images");
+                if (movies != null)
+                    setInfo();
+            } else {
+                loadPersonDetails(idPerson);
+            }
         }
     }
 
@@ -112,6 +121,7 @@ public class PersonFragment extends Fragment {
                 }
 
                 if (person != null && isAdded()) {
+                    isAuthentication = MPAuthenticationApi.checkAuth();
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -140,6 +150,7 @@ public class PersonFragment extends Fragment {
                 isExpanded = !isExpanded;
             }
         });
+        setPosts();
         setImagePerson(person);
         setInfoPerson(person);
         setImages(images);
@@ -229,6 +240,40 @@ public class PersonFragment extends Fragment {
             });
         } else
             viewTvs.setVisibility(View.GONE);
+    }
+
+    private void setPosts() {
+        if (isAuthentication) {
+            buttonNewPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("idPersonNewPost", idPerson);
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_personFragment_to_newReviewFragment, args);
+                }
+            });
+        } else {
+
+            buttonNewPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_personFragment_to_loginFragment);
+                }
+            });
+        }
+        buttonAllPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putInt("idPerson", idPerson);
+
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_personFragment_to_postAllFragment, args);
+            }
+        });
     }
 
 

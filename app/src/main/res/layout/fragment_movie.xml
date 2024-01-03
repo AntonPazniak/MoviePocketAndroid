@@ -74,6 +74,7 @@
 
             <TextView
                 android:id="@+id/textPost"
+                android:text="@string/post_mov"
                 style="@style/TextGenerally" />
 
             <LinearLayout

@@ -105,6 +105,8 @@ public class NewReviewFragment extends Fragment {
                 newPostMovie(idMovieNewPost);
             } else if (idPostEdit != -1) {
                 editPost(idPostEdit);
+            } else if (idPersonNewPost != -1) {
+                newPostPerson(idPersonNewPost);
             }
 
         }
@@ -371,6 +373,39 @@ public class NewReviewFragment extends Fragment {
                         @Override
                         public void run() {
                             boolean isSuccessful = MPPostApi.newPostMovie(idMovie, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isSuccessful) {
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigateUp();
+                                    } else {
+                                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    private void newPostPerson(int idPerson) {
+        textViewHead.setText(R.string.create_your_post);
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = String.valueOf(titleEditText.getText());
+                String content = String.valueOf(contentEditText.getText());
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isSuccessful = MPPostApi.newPostPerson(idPerson, title, content);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {

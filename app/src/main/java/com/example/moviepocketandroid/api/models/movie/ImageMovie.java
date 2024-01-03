@@ -2,7 +2,9 @@ package com.example.moviepocketandroid.api.models.movie;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ImageMovie {
+import java.io.Serializable;
+
+public class ImageMovie implements Serializable {
     private final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
     @SerializedName("aspect_ratio")
     private double aspectRatio;

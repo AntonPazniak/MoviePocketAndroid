@@ -3,10 +3,11 @@ package com.example.moviepocketandroid.api.models.user;
 
 import com.example.moviepocketandroid.util.Utils;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-public class UserPage {
+public class UserPage implements Serializable {
 
     private String username;
     private String bio;
