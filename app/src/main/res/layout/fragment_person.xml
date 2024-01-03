@@ -81,6 +81,7 @@
 
         <TextView
             android:id="@+id/textPost"
+            android:visibility="invisible"
             style="@style/TextGenerally"
             android:text="@string/posts_about_this_person" />
 
@@ -96,7 +97,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/edit_yellow" />
+                android:src="@drawable/edit_yellow"
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/buttonAllPosts"
@@ -105,7 +107,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/list_yellow" />
+                android:src="@drawable/list_yellow"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
