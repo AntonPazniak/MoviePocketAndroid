@@ -180,5 +180,31 @@ public class MPPostApi {
         return false;
     }
 
+    public static Boolean newPostMovie(int idMovie, String title, String content) {
+        String url = baseUrl + "/post/movie/set?idMovie=" + idMovie + "&title=" + title;
+
+        // Create JSON payload
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
+
+        // Build the request
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

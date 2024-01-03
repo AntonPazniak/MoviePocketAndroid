@@ -18,7 +18,7 @@ import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
 import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.ui.post.main.PostMainFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
-import com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment;
+import com.example.moviepocketandroid.ui.review.newr.NewReviewFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class PostFragment extends Fragment {

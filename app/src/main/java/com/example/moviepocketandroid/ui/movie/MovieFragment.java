@@ -465,11 +465,12 @@ public class MovieFragment extends Fragment {
     }
 
     private void setPostAdapter() {
+        TextView textView = view.findViewById(R.id.textPost);
+        textView.setText(R.string.post_mov);
+        ImageButton buttonNewPost = view.findViewById(R.id.buttonNewPost);
+        ImageButton buttonAllPost = view.findViewById(R.id.buttonAllPosts);
         if (posts != null && !posts.isEmpty()) {
-            TextView textView = view.findViewById(R.id.textPost);
             RecyclerView recyclerView = view.findViewById(R.id.recyclerViewPost);
-
-            textView.setText(R.string.post_mov);
             PostAdapter postAdapter = new PostAdapter(posts);
             recyclerView.setAdapter(postAdapter);
             GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
@@ -484,8 +485,28 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_to_postFragment, args);
                 }
             });
-
         }
+        if (isAuthentication) {
+            buttonNewPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovieNewPost", idMovie);
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                }
+            });
+        } else {
+            buttonNewPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                }
+            });
+        }
+
+
     }
 
 

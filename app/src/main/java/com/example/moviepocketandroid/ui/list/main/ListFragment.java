@@ -20,7 +20,7 @@ import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
-import com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment;
+import com.example.moviepocketandroid.ui.review.newr.NewReviewFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class ListFragment extends Fragment {

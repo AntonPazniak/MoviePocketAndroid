@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.review.newrev;
+package com.example.moviepocketandroid.ui.review.newr;
 
 import androidx.lifecycle.ViewModel;
 

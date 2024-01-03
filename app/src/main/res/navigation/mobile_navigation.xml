@@ -173,12 +173,15 @@
     </fragment>
     <fragment
         android:id="@+id/newReviewFragment"
-        android:name="com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.newr.NewReviewFragment"
         android:label="fragment_new_review"
         tools:layout="@layout/fragment_review_new">
         <action
             android:id="@+id/action_newReviewFragment_to_detailReviewFragment"
             app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_newReviewFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailReviewFragment"

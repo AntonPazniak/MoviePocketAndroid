@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.review.newrev;
+package com.example.moviepocketandroid.ui.review.newr;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -101,6 +101,8 @@ public class NewReviewFragment extends Fragment {
                 editList(idListEdit);
             } else if (newList != -1) {
                 newList();
+            } else if (idMovieNewPost != -1) {
+                newPostMovie(idMovieNewPost);
             } else if (idPostEdit != -1) {
                 editPost(idPostEdit);
             }
@@ -236,7 +238,7 @@ public class NewReviewFragment extends Fragment {
     }
 
     private void editList(int idList) {
-        textViewHead.setText(R.string.create_your_review);
+        textViewHead.setText(R.string.edit_your_list);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -246,7 +248,6 @@ public class NewReviewFragment extends Fragment {
                     public void run() {
                         if (list != null) {
                             publishButton.setText(R.string.save);
-                            textViewHead.setText(R.string.edit_your_review);
                             titleEditText.setText(list.getTitle());
                             contentEditText.setText(list.getContent());
                         }
@@ -284,7 +285,7 @@ public class NewReviewFragment extends Fragment {
     }
 
     private void newList() {
-        textViewHead.setText(R.string.create_your_review);
+        textViewHead.setText(R.string.edit_your_list);
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -312,7 +313,7 @@ public class NewReviewFragment extends Fragment {
     }
 
     private void editPost(int idPost) {
-        textViewHead.setText(R.string.create_your_review);
+        textViewHead.setText(R.string.edit_your_post);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -322,7 +323,6 @@ public class NewReviewFragment extends Fragment {
                     public void run() {
                         if (post != null) {
                             publishButton.setText(R.string.save);
-                            textViewHead.setText(R.string.edit_your_review);
                             titleEditText.setText(post.getTitle());
                             contentEditText.setText(post.getContent());
                         }
@@ -348,6 +348,38 @@ public class NewReviewFragment extends Fragment {
                                         Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show();
                                     else
                                         Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void newPostMovie(int idMovie) {
+        textViewHead.setText(R.string.create_your_post);
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = String.valueOf(titleEditText.getText());
+                String content = String.valueOf(contentEditText.getText());
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isSuccessful = MPPostApi.newPostMovie(idMovie, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isSuccessful) {
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigateUp();
+                                    } else {
+                                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             });
                         }

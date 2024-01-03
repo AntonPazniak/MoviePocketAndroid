@@ -52,4 +52,7 @@
     <string name="nr">NR</string>
     <string name="skip">Skip</string>
     <string name="all">All</string>
+    <string name="edit_your_list">Edit your list</string>
+    <string name="edit_your_post">Edit your post</string>
+    <string name="create_your_post">Create your post</string>
 </resources>
