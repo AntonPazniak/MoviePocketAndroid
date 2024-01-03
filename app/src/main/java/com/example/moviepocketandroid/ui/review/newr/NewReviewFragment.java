@@ -372,13 +372,16 @@ public class NewReviewFragment extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            boolean isSuccessful = MPPostApi.newPostMovie(idMovie, title, content);
+                            Post post = MPPostApi.newPostMovie(idMovie, title, content);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (isSuccessful) {
+                                    if (post != null) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idPost", post.getId());
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
+                                        navController.navigate(R.id.action_movieFragment_to_postFragment, args);
                                     } else {
                                         Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                                     }
@@ -405,13 +408,16 @@ public class NewReviewFragment extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            boolean isSuccessful = MPPostApi.newPostPerson(idPerson, title, content);
+                            Post post = MPPostApi.newPostPerson(idPerson, title, content);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (isSuccessful) {
+                                    if (post != null) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idPost", post.getId());
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
+                                        navController.navigate(R.id.action_personFragment_to_postFragment, args);
                                     } else {
                                         Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                                     }

@@ -180,7 +180,7 @@ public class MPPostApi {
         return false;
     }
 
-    public static Boolean newPostMovie(int idMovie, String title, String content) {
+    public static Post newPostMovie(int idMovie, String title, String content) {
         String url = baseUrl + "/post/movie/set?idMovie=" + idMovie + "&title=" + title;
 
         // Create JSON payload
@@ -198,15 +198,17 @@ public class MPPostApi {
         try {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
-                return true;
+                assert response.body() != null;
+                String responseString = response.body().string();
+                return gson.fromJson(responseString, Post.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
-    public static Boolean newPostPerson(int idPerson, String title, String content) {
+    public static Post newPostPerson(int idPerson, String title, String content) {
         String url = baseUrl + "/post/person/set?idPerson=" + idPerson + "&title=" + title;
 
         // Create JSON payload
@@ -224,12 +226,14 @@ public class MPPostApi {
         try {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
-                return true;
+                assert response.body() != null;
+                String responseString = response.body().string();
+                return gson.fromJson(responseString, Post.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     public static List<Post> getAllPostExistIdPerson(int idPerson) {
