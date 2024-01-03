@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -151,4 +152,33 @@ public class MPPostApi {
         }
         return false;
     }
+
+
+    public static Boolean editPost(int idPost, String title, String content) {
+        String url = baseUrl + "/post/up?idPost=" + idPost + "&title=" + title;
+
+        // Create JSON payload
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
+
+        // Build the request
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

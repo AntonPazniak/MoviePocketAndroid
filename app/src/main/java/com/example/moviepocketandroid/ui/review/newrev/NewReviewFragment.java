@@ -20,8 +20,10 @@ import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPListApi;
+import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
+import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.api.models.review.Review;
 
 public class NewReviewFragment extends Fragment {
@@ -35,6 +37,12 @@ public class NewReviewFragment extends Fragment {
     public void setIdListEdit(int idListEdit) {
         Bundle args = new Bundle();
         args.putInt("idListEdit", idListEdit);
+        setArguments(args);
+    }
+
+    public void setIdPostEdit(int idPostEdit) {
+        Bundle args = new Bundle();
+        args.putInt("idPostEdit", idPostEdit);
         setArguments(args);
     }
 
@@ -93,6 +101,8 @@ public class NewReviewFragment extends Fragment {
                 editList(idListEdit);
             } else if (newList != -1) {
                 newList();
+            } else if (idPostEdit != -1) {
+                editPost(idPostEdit);
             }
 
         }
@@ -235,7 +245,7 @@ public class NewReviewFragment extends Fragment {
                     @Override
                     public void run() {
                         if (list != null) {
-                            publishButton.setText(R.string.saved);
+                            publishButton.setText(R.string.save);
                             textViewHead.setText(R.string.edit_your_review);
                             titleEditText.setText(list.getTitle());
                             contentEditText.setText(list.getContent());
@@ -290,6 +300,54 @@ public class NewReviewFragment extends Fragment {
                                 public void run() {
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                     navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void editPost(int idPost) {
+        textViewHead.setText(R.string.create_your_review);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Post post = MPPostApi.getPostById(idPost);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (post != null) {
+                            publishButton.setText(R.string.save);
+                            textViewHead.setText(R.string.edit_your_review);
+                            titleEditText.setText(post.getTitle());
+                            contentEditText.setText(post.getContent());
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = String.valueOf(titleEditText.getText());
+                String content = String.valueOf(contentEditText.getText());
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isSuccessful = MPPostApi.editPost(idPost, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isSuccessful)
+                                        Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
