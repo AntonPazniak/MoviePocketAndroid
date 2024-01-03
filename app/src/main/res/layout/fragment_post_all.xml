@@ -5,9 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.post.all.PostAllFragment">
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextTitle"
+            android:text="@string/all_posts" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </FrameLayout>

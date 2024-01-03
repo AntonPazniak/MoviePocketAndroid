@@ -55,4 +55,6 @@
     <string name="edit_your_list">Edit your list</string>
     <string name="edit_your_post">Edit your post</string>
     <string name="create_your_post">Create your post</string>
+    <string name="all_posts">All posts</string>
+    <string name="all_reviews">All reviews</string>
 </resources>

@@ -506,6 +506,15 @@ public class MovieFragment extends Fragment {
             });
         }
 
+        buttonAllPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putInt("idMovie", idMovie);
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_movieFragment_to_postAllFragment, args);
+            }
+        });
 
     }
 
