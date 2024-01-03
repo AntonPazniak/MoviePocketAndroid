@@ -70,8 +70,11 @@ public class ListFragment extends Fragment {
                         public void run() {
                             listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idList), "Movies");
                             listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idList), "Reviews");
-                            if (authorship)
-                                listNavBarAdapter.addFragmentAddTitle(new NewReviewFragment(idList), "Edit");
+                            if (authorship) {
+                                NewReviewFragment newReviewFragment = new NewReviewFragment();
+                                newReviewFragment.setIdListEdit(idList);
+                                listNavBarAdapter.addFragmentAddTitle(newReviewFragment, "Edit");
+                            }
                             viewPager.setAdapter(listNavBarAdapter);
                         }
                     });

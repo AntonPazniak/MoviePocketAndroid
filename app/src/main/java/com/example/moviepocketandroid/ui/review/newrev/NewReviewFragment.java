@@ -32,13 +32,10 @@ public class NewReviewFragment extends Fragment {
     private Button publishButton;
     private TextView textViewHead, textViewTitle, textViewContent;
 
-    public NewReviewFragment(int idList) {
+    public void setIdListEdit(int idListEdit) {
         Bundle args = new Bundle();
-        args.putInt("idListEdit", idList);
+        args.putInt("idListEdit", idListEdit);
         setArguments(args);
-    }
-
-    public NewReviewFragment() {
     }
 
     public static NewReviewFragment newInstance() {

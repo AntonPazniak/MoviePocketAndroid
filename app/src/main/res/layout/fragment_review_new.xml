@@ -62,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/textView1"
@@ -76,7 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="556dp"
                 android:gravity="top"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                tools:ignore="LabelFor" />
 
 
         </LinearLayout>
