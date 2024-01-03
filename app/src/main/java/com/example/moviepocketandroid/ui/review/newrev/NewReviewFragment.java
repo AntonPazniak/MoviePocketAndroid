@@ -19,7 +19,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.MP.MPReviewApi;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.review.Review;
 
 public class NewReviewFragment extends Fragment {
@@ -30,6 +32,15 @@ public class NewReviewFragment extends Fragment {
     private Button publishButton;
     private TextView textViewHead, textViewTitle, textViewContent;
 
+    public NewReviewFragment(int idList) {
+        Bundle args = new Bundle();
+        args.putInt("idListEdit", idList);
+        setArguments(args);
+    }
+
+    public NewReviewFragment() {
+    }
+
     public static NewReviewFragment newInstance() {
         return new NewReviewFragment();
     }
@@ -37,7 +48,7 @@ public class NewReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_review, container, false);
+        return inflater.inflate(R.layout.fragment_review_new, container, false);
     }
 
     @Override
@@ -67,6 +78,12 @@ public class NewReviewFragment extends Fragment {
             int idReview = args.getInt("idReview", -1);
             int idList = args.getInt("idList", -1);
             int idPost = args.getInt("idPost", -1);
+            int idListEdit = args.getInt("idListEdit", -1);
+            int idPostEdit = args.getInt("idPostEdit", -1);
+            int newList = args.getInt("newList", -1);
+            int idMovieNewPost = args.getInt("idMovieNewPost", -1);
+            int idPersonNewPost = args.getInt("idPersonNewPost", -1);
+            int idListNewPost = args.getInt("idListNewPost", -1);
             if (idMovie != -1) {
                 newReviewMovie(idMovie);
             } else if (idReview != -1) {
@@ -75,6 +92,10 @@ public class NewReviewFragment extends Fragment {
                 newReviewList(idList);
             } else if (idPost != -1) {
                 newReviewPost(idPost);
+            } else if (idListEdit != -1) {
+                editList(idListEdit);
+            } else if (newList != -1) {
+                newList();
             }
 
         }
@@ -191,6 +212,82 @@ public class NewReviewFragment extends Fragment {
                         @Override
                         public void run() {
                             MPReviewApi.editReviewMovie(idReview, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                    navController.navigateUp();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void editList(int idList) {
+        textViewHead.setText(R.string.create_your_review);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MovieList list = MPListApi.getListById(idList);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (list != null) {
+                            publishButton.setText(R.string.saved);
+                            textViewHead.setText(R.string.edit_your_review);
+                            titleEditText.setText(list.getTitle());
+                            contentEditText.setText(list.getContent());
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = String.valueOf(titleEditText.getText());
+                String content = String.valueOf(contentEditText.getText());
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isSuccessful = MPListApi.editList(idList, title, content);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isSuccessful)
+                                        Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(requireContext(), "All input fields must be filled in!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void newList() {
+        textViewHead.setText(R.string.create_your_review);
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = String.valueOf(titleEditText.getText());
+                String content = String.valueOf(contentEditText.getText());
+                if (!title.isEmpty() && !content.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPListApi.newList(title, content);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {

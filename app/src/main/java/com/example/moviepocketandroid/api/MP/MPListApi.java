@@ -130,6 +130,32 @@ public class MPListApi {
         return false;
     }
 
+    public static Boolean newList(String title, String content) {
+        String url = baseUrl + "/movies/list/set?title=" + title;
+
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static Boolean getLike(int idList) {
         String url = baseUrl + "/movies/list/like/get?idList=" + idList;
 

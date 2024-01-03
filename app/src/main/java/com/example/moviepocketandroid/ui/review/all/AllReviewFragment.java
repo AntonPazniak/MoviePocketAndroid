@@ -84,7 +84,7 @@ public class AllReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_all_review, container, false);
+        return inflater.inflate(R.layout.fragment_review_all, container, false);
     }
 
     @Override

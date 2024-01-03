@@ -4,6 +4,7 @@
     <string name="search">Search</string>
     <string name="you">You</string>
     <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_first_run">FirstRunActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -51,4 +52,5 @@
     <string name="nr">NR</string>
     <string name="skip">Skip</string>
     <string name="all">All</string>
+    <string name="saved">Saved</string>
 </resources>
