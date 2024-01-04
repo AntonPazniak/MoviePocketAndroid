@@ -110,6 +110,9 @@
         <action
             android:id="@+id/action_movieFragment_to_postAllFragment"
             app:destination="@id/postAllFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_listAllFragment"
+            app:destination="@id/listAllFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -344,5 +347,14 @@
         <action
             android:id="@+id/action_postAllFragment_to_postFragment"
             app:destination="@id/postFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listAllFragment"
+        android:name="com.example.moviepocketandroid.ui.list.all.ListAllFragment"
+        android:label="fragment_list_all"
+        tools:layout="@layout/fragment_list_all">
+        <action
+            android:id="@+id/action_listAllFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 </navigation>

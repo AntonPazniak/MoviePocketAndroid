@@ -61,10 +61,7 @@ public class MovieFragment extends Fragment {
     private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
     private WebView webView;
-    private ImageButton button;
-    private ImageButton button2;
     private View view;
-    private View layoutList;
     private Context context;
     private Movie movie;
     private List<Person> actors;
@@ -76,8 +73,6 @@ public class MovieFragment extends Fragment {
     private int idMovie, rating;
     private List<MovieList> lists;
     private ListAdapter listAdapter;
-    private RecyclerView listRecyclerView;
-    private TextView textViewList;
     private List<Post> posts;
 
 
@@ -98,7 +93,6 @@ public class MovieFragment extends Fragment {
         actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
         moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
-        reviewRecyclerView = view.findViewById(R.id.recyclerViewReview);
 
         textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
         textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
@@ -111,13 +105,9 @@ public class MovieFragment extends Fragment {
         viewSimilar = view.findViewById(R.id.viewSimilar);
         viewOverview = view.findViewById(R.id.viewOverview);
 
-        button2 = view.findViewById(R.id.button2);
-        button = view.findViewById(R.id.button);
 
         webView = view.findViewById(R.id.webView);
         webView.setBackgroundColor(0);
-
-        layoutList = view.findViewById(R.id.layoutList);
 
         context = view.getContext();
         this.view = view;
@@ -229,7 +219,6 @@ public class MovieFragment extends Fragment {
                             @Override
                             public void run() {
                                 setMovieReview(reviews);
-                                setButtonsReview();
                             }
                         });
                     }
@@ -277,7 +266,6 @@ public class MovieFragment extends Fragment {
         }).start();
         RatingUntil ratingUntil = new RatingUntil(view, idMovie);
         ratingUntil.setRating();
-        setButtonsReview();
         setMovieTrailer(movieTrailerUrl);
         setMovieImages(images);
         setMovieActors(actors);
@@ -300,40 +288,6 @@ public class MovieFragment extends Fragment {
                 }
             }
         }).start();
-    }
-
-    private void setButtonsReview() {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putInt("idMovie", movie.getId());
-
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
-            }
-        });
-        if (isAuthentication) {
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovie", movie.getId());
-
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
-                }
-            });
-        } else {
-
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
-                }
-            });
-        }
     }
 
     @Override
@@ -414,14 +368,19 @@ public class MovieFragment extends Fragment {
     }
 
     private void setMovieReview(List<Review> reviews) {
+        View reviewView = view.findViewById(R.id.reviewView);
+        ImageButton buttonNew = reviewView.findViewById(R.id.button0);
+        ImageButton buttonAll = reviewView.findViewById(R.id.button1);
+        TextView textViewTitle = reviewView.findViewById(R.id.textViewTitle);
+        RecyclerView recyclerView = reviewView.findViewById(R.id.recyclerView);
+
         if (reviews != null) {
-            TextView textReview = view.findViewById(R.id.textReview);
-            textReview.setText(R.string.reviews);
+            textViewTitle.setText(R.string.reviews);
 
             reviewAdapter = new ReviewAdapter(reviews);
-            reviewRecyclerView.setAdapter(reviewAdapter);
+            recyclerView.setAdapter(reviewAdapter);
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            reviewRecyclerView.setLayoutManager(layoutManager2);
+            recyclerView.setLayoutManager(layoutManager2);
             reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
                 @Override
                 public void onReviewClick(int reviewId) {
@@ -433,19 +392,63 @@ public class MovieFragment extends Fragment {
                 }
             });
         }
+        buttonAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putInt("idMovie", movie.getId());
+
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
+            }
+        });
+        if (isAuthentication) {
+            buttonNew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", movie.getId());
+
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                }
+            });
+        } else {
+
+            buttonNew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                }
+            });
+        }
     }
 
-    @SuppressLint("SetTextI18n")
     private void setLists() {
-        listRecyclerView = layoutList.findViewById(R.id.moviesRecyclerView);
-        textViewList = layoutList.findViewById(R.id.textMoviesRecyclerView);
+        View listView = view.findViewById(R.id.listView);
+        ImageButton buttonNew = listView.findViewById(R.id.button0);
+        ImageButton buttonAll = listView.findViewById(R.id.button1);
+        TextView textViewTitle = listView.findViewById(R.id.textViewTitle);
+        RecyclerView recyclerView = listView.findViewById(R.id.recyclerView);
+
+
+        textViewTitle.setText(R.string.lists_with_this_movie);
+        buttonAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putInt("idMovie", idMovie);
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_movieFragment_to_listAllFragment, args);
+            }
+        });
 
         if (lists != null && !lists.isEmpty()) {
-            textViewList.setText("Lists with this movie");
             listAdapter = new ListAdapter(lists);
-            listRecyclerView.setAdapter(listAdapter);
+            recyclerView.setAdapter(listAdapter);
             LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            listRecyclerView.setLayoutManager(layoutManager1);
+            recyclerView.setLayoutManager(layoutManager1);
             listAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int idList) {
@@ -455,20 +458,20 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_to_listFragment, args);
                 }
             });
-            listRecyclerView.setVisibility(View.VISIBLE);
-            textViewList.setVisibility(View.VISIBLE);
         } else {
-            listRecyclerView.setVisibility(View.GONE);
-            textViewList.setVisibility(View.GONE);
-            layoutList.setVisibility(View.GONE);
         }
     }
 
     private void setPostAdapter() {
-        ImageButton buttonNewPost = view.findViewById(R.id.buttonNewPost);
-        ImageButton buttonAllPost = view.findViewById(R.id.buttonAllPosts);
+        View postView = view.findViewById(R.id.postView);
+        ImageButton buttonNew = postView.findViewById(R.id.button0);
+        ImageButton buttonAll = postView.findViewById(R.id.button1);
+        TextView textViewTitle = postView.findViewById(R.id.textViewTitle);
+        RecyclerView recyclerView = postView.findViewById(R.id.recyclerView);
+
+        textViewTitle.setText(R.string.post_mov);
+
         if (posts != null && !posts.isEmpty()) {
-            RecyclerView recyclerView = view.findViewById(R.id.recyclerViewPost);
             PostAdapter postAdapter = new PostAdapter(posts);
             recyclerView.setAdapter(postAdapter);
             GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
@@ -485,7 +488,7 @@ public class MovieFragment extends Fragment {
             });
         }
         if (isAuthentication) {
-            buttonNewPost.setOnClickListener(new View.OnClickListener() {
+            buttonNew.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Bundle args = new Bundle();
@@ -495,7 +498,7 @@ public class MovieFragment extends Fragment {
                 }
             });
         } else {
-            buttonNewPost.setOnClickListener(new View.OnClickListener() {
+            buttonNew.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
@@ -504,7 +507,7 @@ public class MovieFragment extends Fragment {
             });
         }
 
-        buttonAllPost.setOnClickListener(new View.OnClickListener() {
+        buttonAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();

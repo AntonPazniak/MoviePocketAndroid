@@ -287,7 +287,7 @@ public class NewReviewFragment extends Fragment {
     }
 
     private void newList() {
-        textViewHead.setText(R.string.edit_your_list);
+        textViewHead.setText(R.string.create_your_list);
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
