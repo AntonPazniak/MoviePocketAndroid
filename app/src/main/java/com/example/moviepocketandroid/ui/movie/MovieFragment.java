@@ -434,6 +434,22 @@ public class MovieFragment extends Fragment {
 
 
         textViewTitle.setText(R.string.lists_with_this_movie);
+
+        if (isAuthentication) {
+            buttonNew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("newList", 0);
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                }
+            });
+        } else {
+            setButtonLisLogin(buttonNew);
+        }
+
+
         buttonAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -542,4 +558,13 @@ public class MovieFragment extends Fragment {
             return movie.getFirstAirDate() != null && !movie.getFirstAirDate().isAfter(LocalDate.now());
     }
 
+    private void setButtonLisLogin(ImageButton button) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_movieFragment_to_loginFragment);
+            }
+        });
+    }
 }

@@ -297,12 +297,19 @@ public class NewReviewFragment extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            MPListApi.newList(title, content);
+                            MovieList list = MPListApi.newList(title, content);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigateUp();
+                                    if (list != null) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idList", list.getId());
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigateUp();
+                                        navController.navigate(R.id.action_movieFragment_to_listFragment, args);
+                                    } else {
+                                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             });
                         }

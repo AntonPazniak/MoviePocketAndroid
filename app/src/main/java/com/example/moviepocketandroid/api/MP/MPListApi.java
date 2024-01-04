@@ -130,7 +130,7 @@ public class MPListApi {
         return false;
     }
 
-    public static Boolean newList(String title, String content) {
+    public static MovieList newList(String title, String content) {
         String url = baseUrl + "/movies/list/set?title=" + title;
 
 
@@ -148,12 +148,14 @@ public class MPListApi {
         try {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
-                return true;
+                assert response.body() != null;
+                String responseString = response.body().string();
+                return gson.fromJson(responseString, MovieList.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     public static Boolean getLike(int idList) {
