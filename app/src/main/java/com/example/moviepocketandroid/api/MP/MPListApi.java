@@ -1,6 +1,7 @@
 package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.list.MovieList;
+import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
@@ -207,4 +208,60 @@ public class MPListApi {
         return false;
     }
 
+    public static List<Genre> getAllGenres() {
+        String url = baseUrl + "/movies/list/genre/all";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                List<Genre> genres = new ArrayList<>();
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    Genre genre = gson.fromJson(reviewObject.toString(), Genre.class);
+                    if (genre != null) {
+                        genres.add(genre);
+                    }
+                }
+                return genres;
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Boolean setOrDelGenre(int idList, int idCategory) {
+        String url = baseUrl + "/movies/list/genre/set";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idCategory", String.valueOf(idCategory))
+                .add("idList", String.valueOf(idList))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
