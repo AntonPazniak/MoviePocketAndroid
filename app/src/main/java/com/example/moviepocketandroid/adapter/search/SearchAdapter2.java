@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.MP.MPRatingApi;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
@@ -25,11 +27,13 @@ import java.util.List;
 public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieViewHolder> {
 
     private List<Movie> movies;
+    private int idList;
     private SearchAdapter.OnMovieClickListener onMovieClickListener;
 
 
-    public SearchAdapter2(List<Movie> movies) {
+    public SearchAdapter2(List<Movie> movies, int idList) {
         this.movies = movies;
+        this.idList = idList;
     }
 
     public void setOnMovieClickListener(SearchAdapter.OnMovieClickListener listener) {
@@ -39,7 +43,7 @@ public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieVie
     @NonNull
     @Override
     public SearchAdapter2.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_search_movie, parent, false);
         return new SearchAdapter2.MovieViewHolder(view);
     }
 
@@ -64,6 +68,8 @@ public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieVie
         private TextView textGenres;
         private TextView textYear;
         private TextView textRatingPoster;
+        private ImageButton buttonAdd;
+        private boolean exist;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +78,7 @@ public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieVie
             textYear = itemView.findViewById(R.id.textYear);
             textGenres = itemView.findViewById(R.id.textGenres);
             textRatingPoster = itemView.findViewById(R.id.textRatingPoster);
+            buttonAdd = itemView.findViewById(R.id.buttonAdd);
         }
 
         public void bind(Movie movie) {
@@ -129,7 +136,7 @@ public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieVie
                 textGenres.setText(genders);
             }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            imageMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onMovieClickListener != null) {
@@ -138,6 +145,43 @@ public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieVie
                     }
                 }
             });
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    exist = MPListApi.checkExistMovieInList(idList, movie.getId());
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (exist) {
+                                buttonAdd.setImageResource(R.drawable.delete_pink);
+                            } else {
+                                buttonAdd.setImageResource(R.drawable.plus_yellow);
+                            }
+                        }
+                    });
+
+                }
+            }).start();
+
+            buttonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (exist) {
+                        buttonAdd.setImageResource(R.drawable.plus_yellow);
+                    } else {
+                        buttonAdd.setImageResource(R.drawable.delete_pink);
+                    }
+                    exist = !exist;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MPListApi.setOrDelMovie(idList, movie.getId());
+                        }
+                    }).start();
+                }
+            });
+
         }
     }
 }

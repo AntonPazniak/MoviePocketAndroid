@@ -357,4 +357,14 @@
             android:id="@+id/action_listAllFragment_to_listFragment"
             app:destination="@id/listFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listMovieAddFragment"
+        android:name="com.example.moviepocketandroid.ui.list.add.listMovieAddFragment"
+        android:label="fragment_list_movie_add"
+        tools:layout="@layout/fragment_list_movie_add" />
+    <fragment
+        android:id="@+id/listMovieAddSearchFragment"
+        android:name="com.example.moviepocketandroid.ui.list.add.search.ListMovieAddSearchFragment"
+        android:label="fragment_list_movie_add_search"
+        tools:layout="@layout/fragment_list_movie_add_search" />
 </navigation>

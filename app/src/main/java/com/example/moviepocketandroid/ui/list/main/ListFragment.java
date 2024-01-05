@@ -18,6 +18,7 @@ import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
+import com.example.moviepocketandroid.ui.list.add.listMovieAddFragment;
 import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
 import com.example.moviepocketandroid.ui.review.newr.NewReviewFragment;
@@ -74,6 +75,7 @@ public class ListFragment extends Fragment {
                                 NewReviewFragment newReviewFragment = new NewReviewFragment();
                                 newReviewFragment.setIdListEdit(idList);
                                 listNavBarAdapter.addFragmentAddTitle(newReviewFragment, "Edit");
+                                listNavBarAdapter.addFragmentAddTitle(new listMovieAddFragment(idList), "Add");
                             }
                             viewPager.setAdapter(listNavBarAdapter);
                         }
