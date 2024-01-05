@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/edit_yellow" />
+            android:src="@drawable/plus_yellow" />
 
         <ImageButton
             android:id="@+id/button1"
