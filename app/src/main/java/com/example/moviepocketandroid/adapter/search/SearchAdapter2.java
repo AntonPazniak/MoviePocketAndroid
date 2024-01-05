@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.MP.MPRatingApi;
+import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.text.DecimalFormat;
@@ -125,16 +126,31 @@ public class SearchAdapter2 extends RecyclerView.Adapter<SearchAdapter2.MovieVie
             } else if (movie.getFirstAirDate() != null) {
                 textYear.setText(String.valueOf(movie.getFirstAirDate().getYear()));
             }
-            StringBuilder genders = new StringBuilder();
-            List<String> genres = movie.getGenreIds();
-            if (!genres.isEmpty()) {
-                genders.append(genres.get(0));
-                for (int i = 1; i < genres.size(); i++) {
-                    genders.append(",");
-                    genders.append(genres.get(i));
+            StringBuilder genres = new StringBuilder();
+
+            try {
+                List<String> genreIds = movie.getGenreIds();
+                if (genreIds != null && !genreIds.isEmpty()) {
+                    genres.append(genreIds.get(0));
+                    for (int i = 1; i < genreIds.size(); i++) {
+                        genres.append(",");
+                        genres.append(genreIds.get(i));
+                    }
                 }
-                textGenres.setText(genders);
+            } catch (NullPointerException ignored) {
             }
+
+            if (genres.length() == 0 && movie.getGenres() != null && !movie.getGenres().isEmpty()) {
+                List<Genre> genresList = movie.getGenres();
+                genres.append(genresList.get(0).getName());
+                for (int i = 1; i < genresList.size(); i++) {
+                    genres.append(",");
+                    genres.append(genresList.get(i).getName());
+                }
+            }
+
+            textGenres.setText(genres);
+
 
             imageMovie.setOnClickListener(new View.OnClickListener() {
                 @Override

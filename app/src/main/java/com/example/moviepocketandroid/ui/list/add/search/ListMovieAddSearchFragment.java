@@ -17,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.search.SearchAdapter;
 import com.example.moviepocketandroid.adapter.search.SearchAdapter2;
+import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.movie.Movie;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListMovieAddSearchFragment extends Fragment {
 
@@ -33,6 +35,13 @@ public class ListMovieAddSearchFragment extends Fragment {
     public ListMovieAddSearchFragment(int idList) {
         Bundle args = new Bundle();
         args.putInt("idList", idList);
+        setArguments(args);
+    }
+
+    public ListMovieAddSearchFragment(int idList, int n) {
+        Bundle args = new Bundle();
+        args.putInt("idList", idList);
+        args.putInt("del", 0);
         setArguments(args);
     }
 
@@ -68,6 +77,7 @@ public class ListMovieAddSearchFragment extends Fragment {
             idList = args.getInt("idList");
             String movie = args.getString("movie", null);
             String tv = args.getString("tv", null);
+            int del = args.getInt("del", -1);
 
             new Thread(new Runnable() {
                 @Override
@@ -76,6 +86,8 @@ public class ListMovieAddSearchFragment extends Fragment {
                         setSearchResultsMovie(TMDBApi.getSearchResultsMovie(movie));
                     } else if (tv != null && !tv.isEmpty()) {
                         setSearchResultsMovie(TMDBApi.getSearchResultsTV(tv));
+                    } else if (del != -1) {
+                        setSearchResultsMovie(Objects.requireNonNull(MPListApi.getListById(idList)).getMovies());
                     }
                 }
             }).start();

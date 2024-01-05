@@ -29,6 +29,7 @@ public class listMovieAddFragment extends Fragment {
     private ListNavBarAdapter listNavBarAdapter;
     private ListMovieAddSearchFragment movieFragment;
     private ListMovieAddSearchFragment tvFragment;
+    private ListMovieAddSearchFragment delFragment;
 
     public listMovieAddFragment(int idList) {
         Bundle args = new Bundle();
@@ -68,9 +69,13 @@ public class listMovieAddFragment extends Fragment {
             listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             movieFragment = new ListMovieAddSearchFragment(idList);
-            listNavBarAdapter.addFragmentAddTitle(movieFragment, "Movie");
             tvFragment = new ListMovieAddSearchFragment(idList);
+            delFragment = new ListMovieAddSearchFragment(idList, 0);
+
+            listNavBarAdapter.addFragmentAddTitle(movieFragment, "Movie");
             listNavBarAdapter.addFragmentAddTitle(tvFragment, "TVs");
+            listNavBarAdapter.addFragmentAddTitle(delFragment, "Delete");
+
 
             viewPager.setAdapter(listNavBarAdapter);
 
@@ -115,6 +120,11 @@ public class listMovieAddFragment extends Fragment {
         if (tvFragment != null) {
             getChildFragmentManager().beginTransaction().remove(tvFragment).commit();
             tvFragment = null;
+        }
+
+        if (delFragment != null) {
+            getChildFragmentManager().beginTransaction().remove(delFragment).commit();
+            delFragment = null;
         }
     }
 
