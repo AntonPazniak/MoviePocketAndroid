@@ -65,7 +65,6 @@ public class listMovieAddFragment extends Fragment {
             viewPager = view.findViewById(R.id.viewPager);
 
             tabLayout.setupWithViewPager(viewPager);
-
             listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             movieFragment = new ListMovieAddSearchFragment(idList);
@@ -99,6 +98,24 @@ public class listMovieAddFragment extends Fragment {
             });
         }
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeFragments();
+    }
+
+    private void removeFragments() {
+        if (movieFragment != null) {
+            getChildFragmentManager().beginTransaction().remove(movieFragment).commit();
+            movieFragment = null;
+        }
+
+        if (tvFragment != null) {
+            getChildFragmentManager().beginTransaction().remove(tvFragment).commit();
+            tvFragment = null;
+        }
     }
 
 

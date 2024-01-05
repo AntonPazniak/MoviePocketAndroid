@@ -83,7 +83,6 @@ public class ListMovieAddSearchFragment extends Fragment {
     }
 
     private void setSearchResultsMovie(List<Movie> movies) {
-
         if (movies != null && isAdded()) {
             requireActivity().runOnUiThread(new Runnable() {
                 @Override
