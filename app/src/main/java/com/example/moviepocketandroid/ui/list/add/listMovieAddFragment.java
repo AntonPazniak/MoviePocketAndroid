@@ -27,6 +27,8 @@ public class listMovieAddFragment extends Fragment {
     private SearchView searchView;
     private MaterialToolbar toolbar;
     private ListNavBarAdapter listNavBarAdapter;
+    private ListMovieAddSearchFragment movieFragment;
+    private ListMovieAddSearchFragment tvFragment;
 
     public listMovieAddFragment(int idList) {
         Bundle args = new Bundle();
@@ -66,9 +68,9 @@ public class listMovieAddFragment extends Fragment {
 
             listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                     FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-            ListMovieAddSearchFragment movieFragment = new ListMovieAddSearchFragment(idList);
+            movieFragment = new ListMovieAddSearchFragment(idList);
             listNavBarAdapter.addFragmentAddTitle(movieFragment, "Movie");
-            ListMovieAddSearchFragment tvFragment = new ListMovieAddSearchFragment(idList);
+            tvFragment = new ListMovieAddSearchFragment(idList);
             listNavBarAdapter.addFragmentAddTitle(tvFragment, "TVs");
 
             viewPager.setAdapter(listNavBarAdapter);
@@ -81,23 +83,17 @@ public class listMovieAddFragment extends Fragment {
     private void setupSearchView() {
         if (searchView instanceof SearchView) {
             SearchView sv = (SearchView) searchView;
-
-            // Set the hint for the SearchView
             sv.setQueryHint("Search...");
-
-            // Set the OnQueryTextListener
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    // Handle search submission (e.g., perform search based on query)
-                    updateFragments(query);
+                    movieFragment.updateMovie(query);
+                    tvFragment.updateTVs(query);
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    // Handle text change (e.g., update search suggestions)
-                    // You can perform some filtering or update suggestions here
                     return true;
                 }
             });
@@ -105,16 +101,5 @@ public class listMovieAddFragment extends Fragment {
 
     }
 
-    private void updateFragments(String query) {
-        Fragment movieFragment = listNavBarAdapter.getItem(0);
-        if (movieFragment instanceof ListMovieAddSearchFragment) {
-            ((ListMovieAddSearchFragment) movieFragment).updateMovie(query);
-        }
-
-        Fragment tvFragment = listNavBarAdapter.getItem(1);
-        if (tvFragment instanceof ListMovieAddSearchFragment) {
-            ((ListMovieAddSearchFragment) tvFragment).updateTVs(query);
-        }
-    }
 
 }
