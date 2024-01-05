@@ -11,15 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            app:tabIndicatorColor="@color/logoPink"
-            app:tabSelectedTextColor="@color/logoPink"
-            app:tabTextColor="@color/logoBlue">
-        </com.google.android.material.tabs.TabLayout>
+        <include layout="@layout/item_tab" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
