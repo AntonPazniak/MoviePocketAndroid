@@ -25,7 +25,6 @@ import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
-import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -37,7 +36,6 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager;
 
     private List<Movie> moviePopular;
-    private FragmentHomeBinding binding;
     private int id, idListMovie;
     private TextView textTitlePopularMovie, textViewCinema, textViewNameList;
     private ImageView imageBackMovie;

@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.feed;
+package com.example.moviepocketandroid.ui.feed.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

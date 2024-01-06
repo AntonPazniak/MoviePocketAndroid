@@ -369,7 +369,17 @@
         tools:layout="@layout/fragment_list_movie_add_search" />
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.example.moviepocketandroid.ui.feed.FeedFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.main.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" />
+    <fragment
+        android:id="@+id/feedListFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.list.FeedListFragment"
+        android:label="fragment_feed_list"
+        tools:layout="@layout/fragment_feed_list" />
+    <fragment
+        android:id="@+id/feedPostFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.post.FeedPostFragment"
+        android:label="fragment_feed_post"
+        tools:layout="@layout/fragment_feed_post" />
 </navigation>

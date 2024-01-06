@@ -55,10 +55,9 @@ public class PersonFragment extends Fragment {
     private List<Movie> tvSeries;
     private List<ImageMovie> images;
     private List<Post> posts;
-    private ImageButton buttonNewPost, buttonAllPosts;
     private boolean isAuthentication;
-    private RecyclerView recyclerViewPost;
-    private TextView textPost;
+    private View view;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -89,10 +88,7 @@ public class PersonFragment extends Fragment {
         textViewOverview = view.findViewById(R.id.textViewOverview);
         viewOverview = view.findViewById(R.id.viewOverview);
 
-        textPost = view.findViewById(R.id.textPost);
-        buttonNewPost = view.findViewById(R.id.buttonNewPost);
-        buttonAllPosts = view.findViewById(R.id.buttonAllPosts);
-        recyclerViewPost = view.findViewById(R.id.recyclerViewPost);
+        this.view = view;
 
         Bundle args = getArguments();
         if (args != null) {
@@ -252,9 +248,14 @@ public class PersonFragment extends Fragment {
     }
 
     private void setPosts() {
-        textPost.setVisibility(View.VISIBLE);
-        buttonNewPost.setVisibility(View.VISIBLE);
-        buttonAllPosts.setVisibility(View.VISIBLE);
+        View postView = view.findViewById(R.id.postView);
+        TextView textViewTitle = postView.findViewById(R.id.textViewTitle);
+        textViewTitle.setText(R.string.posts_about_this_person);
+        ImageButton buttonNewPost = postView.findViewById(R.id.button0);
+        ImageButton buttonAllPosts = postView.findViewById(R.id.button1);
+        RecyclerView recyclerViewPost = postView.findViewById(R.id.recyclerView);
+        postView.setVisibility(View.VISIBLE);
+
         if (isAuthentication) {
             buttonNewPost.setOnClickListener(new View.OnClickListener() {
                 @Override
