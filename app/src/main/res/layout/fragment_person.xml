@@ -75,9 +75,13 @@
 
         <include layout="@layout/item_recycler_view_images" />
 
-        <include layout="@layout/item_recycler_view_movie" />
+        <include
+            android:id="@+id/view0"
+            layout="@layout/item_text_recycler" />
 
-        <include layout="@layout/item_recycler_view_tv" />
+        <include
+            android:id="@+id/view1"
+            layout="@layout/item_text_recycler" />
 
         <include
             android:id="@+id/postView"

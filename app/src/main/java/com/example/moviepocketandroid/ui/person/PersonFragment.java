@@ -68,6 +68,8 @@ public class PersonFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
 
         imagePerson = view.findViewById(R.id.imagePerson);
         textNamePerson = view.findViewById(R.id.textNamePerson);
@@ -75,11 +77,11 @@ public class PersonFragment extends Fragment {
         textPlaceBirth = view.findViewById(R.id.textPlaceBirth);
         textBirthday = view.findViewById(R.id.textBirthday);
         textDeathDay = view.findViewById(R.id.textDeathDay);
-        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
-        tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
+        moviesRecyclerView = view0.findViewById(R.id.recyclerView);
+        tvRecyclerView = view1.findViewById(R.id.recyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
-        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
-        textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
+        textMoviesRecyclerView = view0.findViewById(R.id.textView);
+        textTVRecyclerView = view1.findViewById(R.id.textView);
         textImages = view.findViewById(R.id.textImages);
 
         viewImages = view.findViewById(R.id.viewImages);
@@ -203,10 +205,9 @@ public class PersonFragment extends Fragment {
             viewImages.setVisibility(View.GONE);
     }
 
-    @SuppressLint("SetTextI18n")
     private void setMovies(List<Movie> movies) {
         if (movies != null) {
-            textMoviesRecyclerView.setText("Movies:");
+            textMoviesRecyclerView.setText(R.string.Movies);
             movieAdapter = new MovieAdapter(movies);
             moviesRecyclerView.setAdapter(movieAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -225,10 +226,9 @@ public class PersonFragment extends Fragment {
             viewMovie.setVisibility(View.GONE);
     }
 
-    @SuppressLint("SetTextI18n")
     private void setTVs(List<Movie> tv) {
         if (tv != null) {
-            textTVRecyclerView.setText("TV Series:");
+            textTVRecyclerView.setText(R.string.tv_series);
             tvAdapter = new MovieAdapter(tv);
             tvRecyclerView.setAdapter(tvAdapter);
             LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);

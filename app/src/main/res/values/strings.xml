@@ -64,4 +64,6 @@
     <string name="popular_actors">Popular actors:</string>
     <string name="popular_tv_series">Popular TV Series:</string>
     <string name="popular_movies">Popular movies:</string>
+    <string name="tv_series">TV Series:</string>
+    <string name="Movies">Movies:</string>
 </resources>
