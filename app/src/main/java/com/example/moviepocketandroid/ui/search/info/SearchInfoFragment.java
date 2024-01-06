@@ -45,12 +45,15 @@ public class SearchInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
-        actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
-        tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
-        textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
-        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
-        textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
+        View view2 = view.findViewById(R.id.view2);
+        moviesRecyclerView = view0.findViewById(R.id.recyclerView);
+        actorsRecyclerView = view1.findViewById(R.id.recyclerView);
+        tvRecyclerView = view2.findViewById(R.id.recyclerView);
+        textMoviesRecyclerView = view0.findViewById(R.id.textView);
+        textActorsRecyclerView = view1.findViewById(R.id.textView);
+        textTVRecyclerView = view2.findViewById(R.id.textView);
 
         loadMovieDetails();
 
@@ -89,10 +92,9 @@ public class SearchInfoFragment extends Fragment {
         setActors(actors);
     }
 
-    @SuppressLint("SetTextI18n")
     private void setPopularMovie(List<Movie> movies) {
         if (movies != null) {
-            textMoviesRecyclerView.setText("Popular movies:");
+            textMoviesRecyclerView.setText(R.string.popular_movies);
             movieAdapter = new MovieAdapter(movies);
             moviesRecyclerView.setAdapter(movieAdapter);
             LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -110,10 +112,9 @@ public class SearchInfoFragment extends Fragment {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void setPopularTVs(List<Movie> tvSeries) {
         if (tvSeries != null) {
-            textTVRecyclerView.setText("Popular TV Series:");
+            textTVRecyclerView.setText(R.string.popular_tv_series);
             tvAdapter = new MovieAdapter(tvSeries);
             tvRecyclerView.setAdapter(tvAdapter);
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -133,7 +134,7 @@ public class SearchInfoFragment extends Fragment {
 
     private void setActors(List<Person> actors) {
         if (actors != null) {
-            textActorsRecyclerView.setText("Popular actors:");
+            textActorsRecyclerView.setText(R.string.popular_actors);
             actorsAdapter = new ActorsAdapter(actors);
             actorsRecyclerView.setAdapter(actorsAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);

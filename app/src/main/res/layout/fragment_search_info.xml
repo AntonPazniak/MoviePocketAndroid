@@ -15,11 +15,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/item_recycler_view_movie" />
+            <include
+                android:id="@+id/view0"
+                layout="@layout/item_text_recycler" />
 
-            <include layout="@layout/item_recycler_view_actors" />
+            <include
+                android:id="@+id/view1"
+                layout="@layout/item_text_recycler" />
 
-            <include layout="@layout/item_recycler_view_tv" />
+            <include
+                android:id="@+id/view2"
+                layout="@layout/item_text_recycler" />
 
         </LinearLayout>
 

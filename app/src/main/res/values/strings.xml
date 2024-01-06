@@ -61,4 +61,7 @@
     <string name="all_reviews">All reviews</string>
     <string name="posts_about_this_person">Posts about this person</string>
     <string name="feed">Feed</string>
+    <string name="popular_actors">Popular actors:</string>
+    <string name="popular_tv_series">Popular TV Series:</string>
+    <string name="popular_movies">Popular movies:</string>
 </resources>
