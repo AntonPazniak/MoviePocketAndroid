@@ -37,9 +37,7 @@ public class UserFragment extends Fragment {
     private List<Movie> toWatch;
     private List<Movie> favorites;
     private List<Movie> watched;
-
-    private View itemRecyclerViewMovie0, itemRecyclerViewMovie1, itemRecyclerViewMovie2, view;
-    private View textView0, textView1, textView2;
+    private View view;
     private TextView favoriteTextView, toWatchTextView, watchedTextView, textViewUsername;
     private RecyclerView movieFavoriteRecyclerView, movieToWatchRecyclerView, movieWatchedRecyclerView;
     private ImageButton imageButtonSettings;
@@ -82,22 +80,19 @@ public class UserFragment extends Fragment {
         }).start();
 
         // Инициализация элементов интерфейса
-        itemRecyclerViewMovie0 = view.findViewById(R.id.itemRecyclerViewMovie0);
-        itemRecyclerViewMovie1 = view.findViewById(R.id.itemRecyclerViewMovie1);
-        itemRecyclerViewMovie2 = view.findViewById(R.id.itemRecyclerViewMovie2);
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
+        View view2 = view.findViewById(R.id.view2);
 
-        movieToWatchRecyclerView = itemRecyclerViewMovie0.findViewById(R.id.moviesRecyclerView);
-        movieFavoriteRecyclerView = itemRecyclerViewMovie1.findViewById(R.id.moviesRecyclerView);
-        movieWatchedRecyclerView = itemRecyclerViewMovie2.findViewById(R.id.moviesRecyclerView);
+        movieToWatchRecyclerView = view0.findViewById(R.id.recyclerView);
+        movieFavoriteRecyclerView = view1.findViewById(R.id.recyclerView);
+        movieWatchedRecyclerView = view2.findViewById(R.id.recyclerView);
 
-        textView0 = view.findViewById(R.id.textView0);
-        textView1 = view.findViewById(R.id.textView1);
-        textView2 = view.findViewById(R.id.textView2);
-
-        toWatchTextView = textView0.findViewById(R.id.textView);
-        favoriteTextView = textView1.findViewById(R.id.textView);
-        watchedTextView = textView2.findViewById(R.id.textView);
+        toWatchTextView = view0.findViewById(R.id.textView);
+        favoriteTextView = view1.findViewById(R.id.textView);
+        watchedTextView = view2.findViewById(R.id.textView);
         textViewUsername = view.findViewById(R.id.textViewUsername);
+
         imageButtonSettings = view.findViewById(R.id.imageButtonSettings);
 
         this.view = view;
@@ -206,7 +201,7 @@ public class UserFragment extends Fragment {
                             .into(imageViewAvatar);
                 }
 
-                textView0.setOnClickListener(new View.OnClickListener() {
+                toWatchTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Bundle args = new Bundle();
@@ -216,7 +211,7 @@ public class UserFragment extends Fragment {
                     }
                 });
 
-                textView1.setOnClickListener(new View.OnClickListener() {
+                favoriteTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Bundle args = new Bundle();
@@ -226,7 +221,7 @@ public class UserFragment extends Fragment {
                     }
                 });
 
-                textView2.setOnClickListener(new View.OnClickListener() {
+                watchedTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Bundle args = new Bundle();

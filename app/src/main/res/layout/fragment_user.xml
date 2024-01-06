@@ -52,59 +52,18 @@
                         android:src="@drawable/settings" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/textView0"
-                        layout="@layout/item_text" />
-
-                </LinearLayout>
+                <include
+                    android:id="@+id/view0"
+                    layout="@layout/item_text_recycler" />
 
                 <include
-                    android:id="@+id/itemRecyclerViewMovie0"
-                    layout="@layout/item_recycler_view_movie_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-
-                    <include
-                        android:id="@+id/textView1"
-                        layout="@layout/item_text" />
-
-                </LinearLayout>
+                    android:id="@+id/view1"
+                    layout="@layout/item_text_recycler" />
 
                 <include
-                    android:id="@+id/itemRecyclerViewMovie1"
-                    layout="@layout/item_recycler_view_movie_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:id="@+id/view2"
+                    layout="@layout/item_text_recycler" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/textView2"
-                        layout="@layout/item_text"
-                        android:layout_width="match_parent"
-                        tools:ignore="IncludeLayoutParam" />
-
-                </LinearLayout>
-
-                <include
-                    android:id="@+id/itemRecyclerViewMovie2"
-                    layout="@layout/item_recycler_view_movie_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
         </ScrollView>
 
