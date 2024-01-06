@@ -265,5 +265,63 @@ public class MPPostApi {
         return posts;
     }
 
+    public static List<Post> getLastPosts() {
+        List<Post> posts = new ArrayList<>();
+        String url = baseUrl + "/post/get/last";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    Post post = gson.fromJson(reviewObject.toString(), Post.class);
+                    if (post != null) {
+                        posts.add(post);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
+    public static List<Post> getTopPosts() {
+        List<Post> posts = new ArrayList<>();
+        String url = baseUrl + "/post/get/top";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    Post post = gson.fromJson(reviewObject.toString(), Post.class);
+                    if (post != null) {
+                        posts.add(post);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
 
 }
