@@ -34,54 +34,16 @@
             <include layout="@layout/item_recycler_view_movie" />
 
             <include
-                android:id="@+id/layoutList"
-                layout="@layout/item_recycler_view_movie" />
+                android:id="@+id/listView"
+                layout="@layout/item_buttons_recycler" />
 
-            <TextView
-                android:id="@+id/textReview"
-                style="@style/TextGenerally" />
+            <include
+                android:id="@+id/reviewView"
+                layout="@layout/item_buttons_recycler" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/button2"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/edit_yellow" />
-
-                <ImageButton
-                    android:id="@+id/button"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/list_yellow" />
-
-            </LinearLayout>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewReview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/textPost"
-                style="@style/TextGenerally" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewPost"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scrollbars="none" />
+            <include
+                android:id="@+id/postView"
+                layout="@layout/item_buttons_recycler" />
 
         </LinearLayout>
 

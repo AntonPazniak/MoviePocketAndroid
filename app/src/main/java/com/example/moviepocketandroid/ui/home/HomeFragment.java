@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
     private ImageView imageViewBack;
     private List<Movie> nowPlayMovie;
     private MovieList movieList;
-    private Movie movieFromLIst;
 
 
     @Override
@@ -92,13 +91,15 @@ public class HomeFragment extends Fragment {
                 public void run() {
                     if (moviePopular == null) {
                         moviePopular = TMDBApi.getPopularMovies();
-                        nowPlayMovie = TMDBApi.getNowPlayingMovie();
-                        movieList = MPListApi.getListById(3);
-                        if (movieList != null) {
-                            movieFromLIst = TMDBApi.getInfoMovie(movieList.getMovies().get(idListMovie).getId());
-                        }
                     }
 
+                    if (nowPlayMovie == null) {
+                        nowPlayMovie = TMDBApi.getNowPlayingMovie();
+                    }
+
+                    if (movieList == null) {
+                        movieList = MPListApi.getListById(3);
+                    }
 
                     if (movieList != null) {
                         if (isAdded() && getContext() != null) {
@@ -124,13 +125,12 @@ public class HomeFragment extends Fragment {
                 }
             }).start();
         }
-
     }
 
     private void setInfo() {
 
         Random random = new Random();
-        id = random.nextInt(10);
+        id = random.nextInt(moviePopular.size());
 
 
         RequestOptions requestOptions = new RequestOptions()
@@ -194,20 +194,13 @@ public class HomeFragment extends Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         Glide.with(requireContext())
-                .load(movieFromLIst.getBackdropPath())
+                .load(movieList.getMovies().get(idListMovie).getBackdropPath())
                 .apply(requestOptions)
                 .into(imageViewBack);
         textViewNameList.setVisibility(View.VISIBLE);
         textViewCinema.setVisibility(View.VISIBLE);
 
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

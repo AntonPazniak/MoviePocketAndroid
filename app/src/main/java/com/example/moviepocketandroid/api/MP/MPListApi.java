@@ -1,6 +1,7 @@
 package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.list.MovieList;
+import com.example.moviepocketandroid.api.models.movie.Genre;
 import com.example.moviepocketandroid.util.LocalDateAdapter;
 import com.example.moviepocketandroid.util.LocalDateTimeAdapter;
 import com.example.moviepocketandroid.util.Utils;
@@ -130,6 +131,34 @@ public class MPListApi {
         return false;
     }
 
+    public static MovieList newList(String title, String content) {
+        String url = baseUrl + "/movies/list/set?title=" + title;
+
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(content, JSON);
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                return gson.fromJson(responseString, MovieList.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static Boolean getLike(int idList) {
         String url = baseUrl + "/movies/list/like/get?idList=" + idList;
 
@@ -179,4 +208,111 @@ public class MPListApi {
         return false;
     }
 
+    public static List<Genre> getAllGenres() {
+        String url = baseUrl + "/movies/list/genre/all";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                List<Genre> genres = new ArrayList<>();
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    Genre genre = gson.fromJson(reviewObject.toString(), Genre.class);
+                    if (genre != null) {
+                        genres.add(genre);
+                    }
+                }
+                return genres;
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Boolean setOrDelGenre(int idList, int idCategory) {
+        String url = baseUrl + "/movies/list/genre/set";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idCategory", String.valueOf(idCategory))
+                .add("idList", String.valueOf(idList))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public static boolean checkExistMovieInList(int idList, int idMovie) {
+        String url = baseUrl + "/movies/list/isInList?idList=" + idList + "&idMovie=" + idMovie;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                String responseString = response.body().string();
+                Gson gson = new Gson();
+                return gson.fromJson(responseString, boolean.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Boolean setOrDelMovie(int idList, int idMovie) {
+        String url = baseUrl + "/movies/list/movie/set";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idList", String.valueOf(idList))
+                .add("idMovie", String.valueOf(idMovie))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

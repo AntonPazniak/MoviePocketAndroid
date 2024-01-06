@@ -4,6 +4,7 @@
     <string name="search">Search</string>
     <string name="you">You</string>
     <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_first_run">FirstRunActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -44,11 +45,20 @@
     <string name="description">Description</string>
     <string name="reviews">Reviews</string>
     <string name="moviess">Movies</string>
-    <string name="post_mov">Post with this movie</string>
+    <string name="post_mov">Posts with this movie</string>
+    <string name="lists_with_this_movie">Lists with this movie</string>
     <string name="create_your_review">Create your review</string>
     <string name="edit_your_review">Edit your review</string>
     <string name="votes">Votes: </string>
     <string name="nr">NR</string>
     <string name="skip">Skip</string>
     <string name="all">All</string>
+    <string name="edit_your_list">Edit your list</string>
+    <string name="edit_your_post">Edit your post</string>
+    <string name="create_your_post">Create your post</string>
+    <string name="create_your_list">Create your list</string>
+    <string name="all_posts">All posts</string>
+    <string name="all_reviews">All reviews</string>
+    <string name="posts_about_this_person">Posts about this person</string>
+    <string name="feed">Feed</string>
 </resources>

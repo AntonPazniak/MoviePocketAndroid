@@ -23,7 +23,7 @@ import okhttp3.Response;
 public class TMDBApi {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3";
-    private static final String language = "us-USd";
+    private static final String language = "us-US";
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())

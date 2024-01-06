@@ -2,7 +2,9 @@ package com.example.moviepocketandroid.api.models.movie;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SpokenLanguage {
+import java.io.Serializable;
+
+public class SpokenLanguage implements Serializable {
     @SerializedName("english_name")
     private String englishName;
     @SerializedName("iso_639_1")

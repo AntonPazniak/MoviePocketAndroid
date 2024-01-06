@@ -2,7 +2,9 @@ package com.example.moviepocketandroid.api.models.movie;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Season {
+import java.io.Serializable;
+
+public class Season implements Serializable {
     @SerializedName("air_date")
     private String airDate;
 

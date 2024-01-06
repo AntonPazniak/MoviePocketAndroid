@@ -2,6 +2,7 @@ package com.example.moviepocketandroid.api.models.post;
 
 import com.example.moviepocketandroid.api.models.user.User;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Post implements Serializable {
     private int id;
     private String title;
     private String content;

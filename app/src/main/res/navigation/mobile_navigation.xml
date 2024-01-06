@@ -107,6 +107,12 @@
         <action
             android:id="@+id/action_movieFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_postAllFragment"
+            app:destination="@id/postAllFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_listAllFragment"
+            app:destination="@id/listAllFragment" />
     </fragment>
     <fragment
         android:id="@+id/personFragment"
@@ -125,6 +131,12 @@
         <action
             android:id="@+id/action_personFragment_to_postFragment2"
             app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_postAllFragment"
+            app:destination="@id/postAllFragment" />
+        <action
+            android:id="@+id/action_personFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchResultsFragment"
@@ -173,18 +185,21 @@
     </fragment>
     <fragment
         android:id="@+id/newReviewFragment"
-        android:name="com.example.moviepocketandroid.ui.review.newrev.NewReviewFragment"
+        android:name="com.example.moviepocketandroid.ui.review.newr.NewReviewFragment"
         android:label="fragment_new_review"
-        tools:layout="@layout/fragment_new_review">
+        tools:layout="@layout/fragment_review_new">
         <action
             android:id="@+id/action_newReviewFragment_to_detailReviewFragment"
             app:destination="@id/detailReviewFragment" />
+        <action
+            android:id="@+id/action_newReviewFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailReviewFragment"
         android:name="com.example.moviepocketandroid.ui.review.detail.DetailReviewFragment"
         android:label="fragment_detail_review"
-        tools:layout="@layout/fragment_detail_review">
+        tools:layout="@layout/fragment_review_detail">
         <action
             android:id="@+id/action_detailReviewFragment_to_newReviewFragment"
             app:destination="@id/newReviewFragment" />
@@ -196,7 +211,7 @@
         android:id="@+id/allReviewFragment"
         android:name="com.example.moviepocketandroid.ui.review.all.AllReviewFragment"
         android:label="fragment_all_review"
-        tools:layout="@layout/fragment_all_review">
+        tools:layout="@layout/fragment_review_all">
         <action
             android:id="@+id/action_allReviewFragment_to_newReviewFragment"
             app:destination="@id/newReviewFragment" />
@@ -324,4 +339,37 @@
         android:name="com.example.moviepocketandroid.ui.search.info.SearchInfoFragment"
         android:label="fragment_search_infp"
         tools:layout="@layout/fragment_search_info" />
+    <fragment
+        android:id="@+id/postAllFragment"
+        android:name="com.example.moviepocketandroid.ui.post.all.PostAllFragment"
+        android:label="fragment_post_all"
+        tools:layout="@layout/fragment_post_all">
+        <action
+            android:id="@+id/action_postAllFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listAllFragment"
+        android:name="com.example.moviepocketandroid.ui.list.all.ListAllFragment"
+        android:label="fragment_list_all"
+        tools:layout="@layout/fragment_list_all">
+        <action
+            android:id="@+id/action_listAllFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listMovieAddFragment"
+        android:name="com.example.moviepocketandroid.ui.list.add.listMovieAddFragment"
+        android:label="fragment_list_movie_add"
+        tools:layout="@layout/fragment_list_movie_add" />
+    <fragment
+        android:id="@+id/listMovieAddSearchFragment"
+        android:name="com.example.moviepocketandroid.ui.list.add.search.ListMovieAddSearchFragment"
+        android:label="fragment_list_movie_add_search"
+        tools:layout="@layout/fragment_list_movie_add_search" />
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" />
 </navigation>

@@ -2,7 +2,9 @@ package com.example.moviepocketandroid.api.models.movie;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCountry {
+import java.io.Serializable;
+
+public class ProductionCountry implements Serializable {
     @SerializedName("iso_3166_1")
     private String iso31661;
     @SerializedName("name")
