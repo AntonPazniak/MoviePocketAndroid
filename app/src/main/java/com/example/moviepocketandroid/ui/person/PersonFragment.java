@@ -48,7 +48,7 @@ public class PersonFragment extends Fragment {
     private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
     private MovieAdapter tvAdapter;
-    private View viewImages, viewMovie, viewTvs, viewOverview;
+    private View viewImages, viewOverview;
     private boolean isExpanded = false;
     private Person person;
     private List<Movie> movies;
@@ -85,8 +85,6 @@ public class PersonFragment extends Fragment {
         textImages = view.findViewById(R.id.textImages);
 
         viewImages = view.findViewById(R.id.viewImages);
-        viewMovie = view.findViewById(R.id.viewSimilar);
-        viewTvs = view.findViewById(R.id.viewTVs);
         textViewOverview = view.findViewById(R.id.textViewOverview);
         viewOverview = view.findViewById(R.id.viewOverview);
 
@@ -222,8 +220,7 @@ public class PersonFragment extends Fragment {
                     navController.navigate(R.id.action_personFragment_to_movieFragment, args);
                 }
             });
-        } else
-            viewMovie.setVisibility(View.GONE);
+        }
     }
 
     private void setTVs(List<Movie> tv) {
@@ -243,8 +240,7 @@ public class PersonFragment extends Fragment {
                     navController.navigate(R.id.action_personFragment_to_movieFragment, args);
                 }
             });
-        } else
-            viewTvs.setVisibility(View.GONE);
+        }
     }
 
     private void setPosts() {

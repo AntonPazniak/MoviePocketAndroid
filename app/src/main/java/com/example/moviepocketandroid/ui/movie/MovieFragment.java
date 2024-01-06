@@ -58,7 +58,7 @@ public class MovieFragment extends Fragment {
     private MovieAdapter movieAdapter;
     private ImagesAdapter movieImagesAdapter;
     private ReviewAdapter reviewAdapter;
-    private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
+    private View viewYouTube, viewImages, viewOverview;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
     private WebView webView;
     private View view;
@@ -103,8 +103,6 @@ public class MovieFragment extends Fragment {
 
         viewYouTube = view.findViewById(R.id.viewYouTube);
         viewImages = view.findViewById(R.id.viewImages);
-        viewActors = view.findViewById(R.id.viewActors);
-        viewSimilar = view.findViewById(R.id.viewSimilar);
         viewOverview = view.findViewById(R.id.viewOverview);
 
 
@@ -343,8 +341,7 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_to_personFragment, args);
                 }
             });
-        } else
-            viewActors.setVisibility(View.GONE);
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -365,8 +362,7 @@ public class MovieFragment extends Fragment {
                     navController.navigate(R.id.action_movieFragment_self, args);
                 }
             });
-        } else
-            viewSimilar.setVisibility(View.GONE);
+        }
     }
 
     private void setMovieReview(List<Review> reviews) {
