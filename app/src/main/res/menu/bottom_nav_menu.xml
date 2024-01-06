@@ -4,7 +4,12 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/home_black"
-        android:title="@string/title_home"/>
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/feedFragment"
+        android:icon="@drawable/social_black"
+        android:title="@string/feed" />
 
     <item
         android:id="@+id/navigation_search"
@@ -14,6 +19,6 @@
     <item
         android:id="@+id/userFragment"
         android:icon="@drawable/user_black"
-        android:title="@string/user"/>
+        android:title="@string/user" />
 
 </menu>

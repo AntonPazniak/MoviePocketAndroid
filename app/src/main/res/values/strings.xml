@@ -60,4 +60,5 @@
     <string name="all_posts">All posts</string>
     <string name="all_reviews">All reviews</string>
     <string name="posts_about_this_person">Posts about this person</string>
+    <string name="feed">Feed</string>
 </resources>
