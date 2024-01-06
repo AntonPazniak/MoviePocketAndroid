@@ -89,13 +89,15 @@ public class MovieFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
 
-        actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
-        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
+        actorsRecyclerView = view0.findViewById(R.id.recyclerView);
+        moviesRecyclerView = view1.findViewById(R.id.recyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
 
-        textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
-        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
+        textActorsRecyclerView = view0.findViewById(R.id.textView);
+        textMoviesRecyclerView = view1.findViewById(R.id.textView);
         textImages = view.findViewById(R.id.textImages);
         textViewOverview = view.findViewById(R.id.textViewOverview);
 
