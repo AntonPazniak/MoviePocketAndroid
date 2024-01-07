@@ -113,37 +113,49 @@ public class UserFragment extends Fragment {
         recyclerViewPost = postView.findViewById(R.id.recyclerView);
 
 
-
         this.view = view;
 
-        // Восстановление данных после изменения конфигурации
-        if (savedInstanceState != null) {
-            Serializable toWatchSerializable = savedInstanceState.getSerializable("toWatchKey");
-            Serializable favoritesSerializable = savedInstanceState.getSerializable("favoritesKey");
-            Serializable watchedSerializable = savedInstanceState.getSerializable("watchedKey");
-            Serializable userSerializable = savedInstanceState.getSerializable("user");
+        try {
+            if (savedInstanceState != null) {
+                Serializable toWatchSerializable = savedInstanceState.getSerializable("toWatchKey");
+                Serializable favoritesSerializable = savedInstanceState.getSerializable("favoritesKey");
+                Serializable watchedSerializable = savedInstanceState.getSerializable("watchedKey");
+                Serializable listSerializable = savedInstanceState.getSerializable("lists");
+                Serializable postSerializable = savedInstanceState.getSerializable("posts");
+                Serializable userSerializable = savedInstanceState.getSerializable("user");
 
-            // Проверка на null перед использованием
-            if (toWatchSerializable != null) {
-                toWatch = Collections.checkedList((List<Movie>) toWatchSerializable, Movie.class);
-            }
+                // Проверка на null перед использованием
+                if (toWatchSerializable != null) {
+                    toWatch = Collections.checkedList((List<Movie>) toWatchSerializable, Movie.class);
+                }
 
-            if (favoritesSerializable != null) {
-                favorites = Collections.checkedList((List<Movie>) favoritesSerializable, Movie.class);
-            }
+                if (favoritesSerializable != null) {
+                    favorites = Collections.checkedList((List<Movie>) favoritesSerializable, Movie.class);
+                }
 
-            if (watchedSerializable != null) {
-                watched = Collections.checkedList((List<Movie>) watchedSerializable, Movie.class);
-            }
+                if (watchedSerializable != null) {
+                    watched = Collections.checkedList((List<Movie>) watchedSerializable, Movie.class);
+                }
 
-            // Установка информации, если пользователь уже аутентифицирован
-            if (userSerializable != null) {
-                user = (User) userSerializable;
-                setInfo();
+                if (watchedSerializable != null) {
+                    lists = Collections.checkedList((List<MovieList>) listSerializable, MovieList.class);
+                }
+
+                if (watchedSerializable != null) {
+                    posts = Collections.checkedList((List<Post>) postSerializable, Post.class);
+                }
+
+                // Установка информации, если пользователь уже аутентифицирован
+                if (userSerializable != null) {
+                    user = (User) userSerializable;
+                    setInfo();
+                } else {
+                    loadMovieDet();
+                }
             } else {
                 loadMovieDet();
             }
-        } else {
+        } catch (NullPointerException e) {
             loadMovieDet();
         }
     }
@@ -355,6 +367,8 @@ public class UserFragment extends Fragment {
             outState.putSerializable("toWatchKey", (Serializable) toWatch);
             outState.putSerializable("favoritesKey", (Serializable) favorites);
             outState.putSerializable("watchedKey", (Serializable) watched);
+            outState.putSerializable("lists", (Serializable) lists);
+            outState.putSerializable("posts", (Serializable) posts);
             outState.putSerializable("user", user);
         }
     }

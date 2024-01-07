@@ -19,9 +19,9 @@ import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
 import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.ui.list.add.listMovieAddFragment;
+import com.example.moviepocketandroid.ui.list.edit.ListEditFragment;
 import com.example.moviepocketandroid.ui.list.movie.ListMovieFragment;
 import com.example.moviepocketandroid.ui.review.all.AllReviewFragment;
-import com.example.moviepocketandroid.ui.review.newr.NewReviewFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class ListFragment extends Fragment {
@@ -72,9 +72,7 @@ public class ListFragment extends Fragment {
                             listNavBarAdapter.addFragmentAddTitle(new ListMovieFragment(idList), "Movies");
                             listNavBarAdapter.addFragmentAddTitle(new AllReviewFragment(idList), "Reviews");
                             if (authorship) {
-                                NewReviewFragment newReviewFragment = new NewReviewFragment();
-                                newReviewFragment.setIdListEdit(idList);
-                                listNavBarAdapter.addFragmentAddTitle(newReviewFragment, "Edit");
+                                listNavBarAdapter.addFragmentAddTitle(new ListEditFragment(idList), "Edit");
                                 listNavBarAdapter.addFragmentAddTitle(new listMovieAddFragment(idList), "Add");
                             }
                             viewPager.setAdapter(listNavBarAdapter);

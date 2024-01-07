@@ -88,7 +88,7 @@ public class PostMainFragment extends Fragment {
                 post = MPPostApi.getPostById(idPost);
                 if (post != null) {
                     if (post.getIdMovie() != 0)
-                        movie = TMDBApi.getInfoMovie(post.getId());
+                        movie = TMDBApi.getInfoMovie(post.getIdMovie());
                     else if (post.getIdPerson() > 0)
                         person = TMDBApi.getPersonById(post.getIdPerson());
                     if (isAdded()) {

@@ -403,5 +403,30 @@ public class MPListApi {
         return lists;
     }
 
+    public static Boolean deleteList(int idList) {
+        String url = baseUrl + "/movies/list/del";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idMovieList", String.valueOf(idList))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
