@@ -393,6 +393,12 @@
         <action
             android:id="@+id/action_feedFragment_to_userPageFragment"
             app:destination="@id/userPageFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/feedListFragment"

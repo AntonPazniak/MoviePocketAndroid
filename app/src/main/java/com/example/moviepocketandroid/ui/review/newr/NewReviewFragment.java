@@ -306,7 +306,12 @@ public class NewReviewFragment extends Fragment {
                                         args.putInt("idList", list.getId());
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
-                                        navController.navigate(R.id.action_movieFragment_to_listFragment, args);
+                                        Bundle argss = getArguments();
+                                        int feed = argss.getInt("feed", -1);
+                                        if (feed != -1)
+                                            navController.navigate(R.id.action_feedFragment_to_listFragment, args);
+                                        else
+                                            navController.navigate(R.id.action_movieFragment_to_listFragment, args);
                                     } else {
                                         Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                                     }

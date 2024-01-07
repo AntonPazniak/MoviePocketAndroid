@@ -36,6 +36,7 @@ public class FirstRunActivity extends AppCompatActivity {
         images.add(R.drawable.screenshot_2);
         images.add(R.drawable.screenshot_3);
         images.add(R.drawable.screenshot_4);
+        images.add(R.drawable.screenshot_8);
         images.add(R.drawable.screenshot_6);
         images.add(R.drawable.screenshot_7);
 
