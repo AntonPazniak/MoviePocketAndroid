@@ -353,5 +353,30 @@ public class MPPostApi {
         return posts;
     }
 
+    public static Boolean delPost(int idPost) {
+        String url = baseUrl + "/post/del";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idPost", String.valueOf(idPost))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

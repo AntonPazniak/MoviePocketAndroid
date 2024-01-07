@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviepocketandroid.R;
@@ -73,6 +74,12 @@ public class PostAdapter2 extends RecyclerView.Adapter<PostAdapter2.PostViewHold
         }
 
         public void bind(Post post) {
+            textViewTitle.setText("");
+            textViewDate.setText("");
+            imageViewAvatar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.user_pink));
+            textViewNickname.setText("");
+            textViewCountLikes.setText("");
+            textViewCountDislikes.setText("");
             textViewTitle.setText(post.getTitle());
             textViewDate.setText(post.getCreate().toLocalDate().toString());
             UserInfoUntil.setUserInfo(post.getUser(), context, imageViewAvatar);

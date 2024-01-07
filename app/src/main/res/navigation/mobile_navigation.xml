@@ -404,4 +404,9 @@
         android:name="com.example.moviepocketandroid.ui.feed.post.FeedPostFragment"
         android:label="fragment_feed_post"
         tools:layout="@layout/fragment_feed_post" />
+    <fragment
+        android:id="@+id/postEditFragment"
+        android:name="com.example.moviepocketandroid.ui.post.edit.PostEditFragment"
+        android:label="fragment_post_edit"
+        tools:layout="@layout/fragment_post_edit" />
 </navigation>

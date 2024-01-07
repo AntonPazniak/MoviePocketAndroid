@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -78,6 +79,15 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
         }
 
         public void bind(MovieList list) {
+
+            imageViewPoster.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo2));
+            textViewTitle.setText("");
+            textViewDate.setText("");
+            imageViewAvatar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.user_pink));
+            textViewNickname.setText("");
+            textViewCountLikes.setText("");
+            textViewCountDislikes.setText("");
+
             if (list.getPoster() != null) {
                 RequestOptions requestOptions = new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
