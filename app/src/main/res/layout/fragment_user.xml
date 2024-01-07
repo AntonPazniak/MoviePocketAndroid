@@ -66,11 +66,11 @@
 
                 <include
                     android:id="@+id/listView"
-                    layout="@layout/item_buttons_recycler" />
+                    layout="@layout/item_text_recycler" />
 
                 <include
                     android:id="@+id/postView"
-                    layout="@layout/item_buttons_recycler" />
+                    layout="@layout/item_text_recycler" />
 
             </LinearLayout>
         </ScrollView>

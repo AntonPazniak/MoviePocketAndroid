@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">MoviePocket</string>
     <string name="home">Home</string>
     <string name="search">Search</string>

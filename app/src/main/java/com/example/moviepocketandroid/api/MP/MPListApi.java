@@ -373,7 +373,6 @@ public class MPListApi {
         }
         return lists;
     }
-
     public static List<MovieList> getAllMyList() {
         List<MovieList> lists = new ArrayList<>();
         String url = baseUrl + "/movies/list/user/my";
@@ -381,6 +380,7 @@ public class MPListApi {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {

@@ -68,6 +68,18 @@
         <action
             android:id="@+id/action_userFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_listAllFragment"
+            app:destination="@id/listAllFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_postAllFragment"
+            app:destination="@id/postAllFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieFragment"

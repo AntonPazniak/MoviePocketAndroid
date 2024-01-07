@@ -323,13 +323,14 @@ public class MPPostApi {
         return posts;
     }
 
-    public static List<Post> getAllMy() {
+    public static List<Post> getAllMyPost() {
         List<Post> posts = new ArrayList<>();
-        String url = baseUrl + "/post/get/top";
+        String url = baseUrl + "/post/user";
 
         Request request = new Request.Builder()
                 .url(url)
                 .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
                 .build();
 
         try {

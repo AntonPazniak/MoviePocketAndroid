@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,9 +22,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
+import com.example.moviepocketandroid.adapter.ListAdapter;
 import com.example.moviepocketandroid.adapter.MovieAdapter;
+import com.example.moviepocketandroid.adapter.PostAdapter;
 import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
+import com.example.moviepocketandroid.api.MP.MPListApi;
+import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
@@ -108,9 +113,10 @@ public class UserFragment extends Fragment {
         recyclerViewPost = postView.findViewById(R.id.recyclerView);
 
 
+
         this.view = view;
 
-
+        // Восстановление данных после изменения конфигурации
         if (savedInstanceState != null) {
             Serializable toWatchSerializable = savedInstanceState.getSerializable("toWatchKey");
             Serializable favoritesSerializable = savedInstanceState.getSerializable("favoritesKey");
@@ -154,6 +160,8 @@ public class UserFragment extends Fragment {
                     toWatch = MPAssessmentApi.getAllToWatchMovie();
                     watched = MPAssessmentApi.getAllWatchedMovie();
                     user = MPUserApi.getUserInfo();
+                    lists = MPListApi.getAllMyList();
+                    posts = MPPostApi.getAllMyPost();
 
                     if (isAdded()) {
                         requireActivity().runOnUiThread(new Runnable() {
@@ -243,7 +251,8 @@ public class UserFragment extends Fragment {
                         navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
                     }
                 });
-
+                setMyLists();
+                setMyPosts();
             }
         }
     }
@@ -267,6 +276,76 @@ public class UserFragment extends Fragment {
                 navController.navigate(R.id.action_userFragment_to_movieFragment, args);
             }
         });
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private void setMyLists() {
+        try {
+            textViewList.setText("All my Movie Lists");
+            if (lists != null && !lists.isEmpty()) {
+                textViewList.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putInt("my", 1);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_listAllFragment, args);
+                    }
+                });
+                ListAdapter listAdapter = new ListAdapter(lists);
+                recyclerViewList.setAdapter(listAdapter);
+                LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewList.setLayoutManager(layoutManager1);
+                listAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int idList) {
+                        Bundle args = new Bundle();
+                        args.putInt("idList", idList);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_listFragment, args);
+                    }
+                });
+            }
+
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setMyPosts() {
+        try {
+            textViewPost.setText("All my Movie Posts");
+            if (posts != null && !posts.isEmpty()) {
+                textViewPost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putInt("my", 1);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_postAllFragment, args);
+                    }
+                });
+                PostAdapter postAdapter = new PostAdapter(posts);
+                recyclerViewPost.setAdapter(postAdapter);
+                GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
+                recyclerViewPost.setLayoutManager(layoutManager);
+
+                postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int idPost) {
+                        Bundle args = new Bundle();
+                        args.putInt("idPost", idPost);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_userFragment_to_postFragment, args);
+                    }
+                });
+            }
+
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 
     @Override
