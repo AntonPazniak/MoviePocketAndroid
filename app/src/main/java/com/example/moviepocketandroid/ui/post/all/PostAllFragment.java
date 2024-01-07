@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.adapter.PostAdapter;
+import com.example.moviepocketandroid.adapter.PostAdapter2;
 import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.api.models.post.Post;
 
@@ -71,18 +71,18 @@ public class PostAllFragment extends Fragment {
                         @Override
                         public void run() {
                             if (posts != null && !posts.isEmpty()) {
-                                PostAdapter postAdapter = new PostAdapter(posts);
+                                PostAdapter2 postAdapter = new PostAdapter2(posts);
                                 recyclerView.setAdapter(postAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(layoutManager);
-                                postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
+                                postAdapter.setOnItemClickListener(new PostAdapter2.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(int idPost) {
                                         Bundle args = new Bundle();
                                         args.putInt("idPost", idPost);
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigate(R.id.action_postAllFragment_to_postFragment, args);
-                                     }
+                                    }
                                 });
                             }
 

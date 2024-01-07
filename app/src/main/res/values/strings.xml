@@ -67,4 +67,5 @@
     <string name="tv_series">TV Series:</string>
     <string name="Movies">Movies:</string>
     <string name="new_list">New list</string>
+    <string name="all_lists">All lists</string>
 </resources>

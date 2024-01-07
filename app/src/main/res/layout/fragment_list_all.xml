@@ -12,7 +12,7 @@
 
         <TextView
             style="@style/TextTitle"
-            android:text="@string/lists_with_this_movie" />
+            android:text="@string/all_lists" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMovie"
