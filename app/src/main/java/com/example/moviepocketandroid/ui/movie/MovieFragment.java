@@ -58,7 +58,7 @@ public class MovieFragment extends Fragment {
     private MovieAdapter movieAdapter;
     private ImagesAdapter movieImagesAdapter;
     private ReviewAdapter reviewAdapter;
-    private View viewYouTube, viewImages, viewActors, viewSimilar, viewOverview;
+    private View viewYouTube, viewImages, viewOverview;
     private RecyclerView actorsRecyclerView, moviesRecyclerView, imagesRecyclerView, reviewRecyclerView;
     private WebView webView;
     private View view;
@@ -89,20 +89,20 @@ public class MovieFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
 
-        actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
-        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
+        actorsRecyclerView = view0.findViewById(R.id.recyclerView);
+        moviesRecyclerView = view1.findViewById(R.id.recyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
 
-        textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
-        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
+        textActorsRecyclerView = view0.findViewById(R.id.textView);
+        textMoviesRecyclerView = view1.findViewById(R.id.textView);
         textImages = view.findViewById(R.id.textImages);
         textViewOverview = view.findViewById(R.id.textViewOverview);
 
         viewYouTube = view.findViewById(R.id.viewYouTube);
         viewImages = view.findViewById(R.id.viewImages);
-        viewActors = view.findViewById(R.id.viewActors);
-        viewSimilar = view.findViewById(R.id.viewSimilar);
         viewOverview = view.findViewById(R.id.viewOverview);
 
 
@@ -147,6 +147,7 @@ public class MovieFragment extends Fragment {
 
 
     }
+
     private void loadMovieDetails(int idMovie) {
 
         if (movie == null && isAdded()) {
@@ -155,90 +156,94 @@ public class MovieFragment extends Fragment {
                 public void run() {
                     isAuthentication = MPAuthenticationApi.checkAuth();
                     movie = TMDBApi.getInfoMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
-                                movieInfoUntil.setMovieInfo();
-                            }
-                        });
-                    }
-                    rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
-                                ratingDialog1.setRatingDialog(isAuthentication, getRelease());
-                                ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
-                                RatingUntil ratingUntil = new RatingUntil(view, idMovie);
-                                ratingUntil.setRating();
-                            }
-                        });
-                    }
-                    actors = TMDBApi.getActorsByIdMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setMovieActors(actors);
-                            }
-                        });
-                        similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
-                    }
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setMovieSimilar(similarMovies);
-                            }
-                        });
-                    }
-                    images = TMDBApi.getImagesByIdMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setMovieImages(images);
-                            }
-                        });
-                    }
-                    movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setMovieTrailer(movieTrailerUrl);
-                            }
-                        });
-                    }
-                    reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setMovieReview(reviews);
-                            }
-                        });
-                    }
-                    lists = MPListApi.getAllListExistIdMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setLists();
-                            }
-                        });
-                    }
-                    posts = MPPostApi.getAllPostExistIdMovie(idMovie);
-                    if (isAdded() && getContext() != null) {
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setPostAdapter();
-                            }
-                        });
+                    try {
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MovieInfoUntil movieInfoUntil = new MovieInfoUntil(view, movie);
+                                    movieInfoUntil.setMovieInfo();
+                                }
+                            });
+                        }
+                        rating = MPRatingApi.getRatingUserByIdMovie(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    RatingDialog ratingDialog1 = new RatingDialog(view, idMovie, rating);
+                                    ratingDialog1.setRatingDialog(isAuthentication, getRelease());
+                                    ButtonUntil buttonUntil = new ButtonUntil(view, idMovie, getRelease(), isAuthentication);
+                                    RatingUntil ratingUntil = new RatingUntil(view, idMovie);
+                                    ratingUntil.setRating();
+                                }
+                            });
+                        }
+                        actors = TMDBApi.getActorsByIdMovie(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMovieActors(actors);
+                                }
+                            });
+                            similarMovies = TMDBApi.getSimilarMoviesById(idMovie);
+                        }
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMovieSimilar(similarMovies);
+                                }
+                            });
+                        }
+                        images = TMDBApi.getImagesByIdMovie(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMovieImages(images);
+                                }
+                            });
+                        }
+                        movieTrailerUrl = TMDBApi.getMovieTrailerUrl(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMovieTrailer(movieTrailerUrl);
+                                }
+                            });
+                        }
+                        reviews = MPReviewApi.getReviewAllByIdMovie(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setMovieReview(reviews);
+                                }
+                            });
+                        }
+                        lists = MPListApi.getAllListExistIdMovie(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setLists();
+                                }
+                            });
+                        }
+                        posts = MPPostApi.getAllPostExistIdMovie(idMovie);
+                        if (isAdded() && getContext() != null) {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setPostAdapter();
+                                }
+                            });
+                        }
+                    } catch (IllegalStateException e) {
+                        onDestroy();
                     }
                 }
             }).start();
@@ -299,239 +304,265 @@ public class MovieFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setMovieTrailer(String movieTrailerUrl) {
-        if (movieTrailerUrl != null) {
-            WebSettings webSettings = webView.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            String frameVideo = "<html><body><iframe width=\"100%\" height=\"100%\" src=\"" + movieTrailerUrl +
-                    "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        try {
+            if (movieTrailerUrl != null) {
+                WebSettings webSettings = webView.getSettings();
+                webSettings.setJavaScriptEnabled(true);
+                String frameVideo = "<html><body><iframe width=\"100%\" height=\"100%\" src=\"" + movieTrailerUrl +
+                        "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
-            webView.loadData(frameVideo, "text/html", "utf-8");
-        } else
-            viewYouTube.setVisibility(View.GONE);
+                webView.loadData(frameVideo, "text/html", "utf-8");
+            } else
+                viewYouTube.setVisibility(View.GONE);
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void setMovieImages(List<ImageMovie> images) {
-        if (images != null) {
-            textImages.setText("Images:");
-            movieImagesAdapter = new ImagesAdapter(images);
-            imagesRecyclerView.setAdapter(movieImagesAdapter);
-            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            imagesRecyclerView.setLayoutManager(layoutManager2);
-        } else
-            viewImages.setVisibility(View.GONE);
+        try {
+            if (images != null) {
+                textImages.setText("Images:");
+                movieImagesAdapter = new ImagesAdapter(images);
+                imagesRecyclerView.setAdapter(movieImagesAdapter);
+                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                imagesRecyclerView.setLayoutManager(layoutManager2);
+            } else
+                viewImages.setVisibility(View.GONE);
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void setMovieActors(List<Person> actors) {
-        if (actors != null) {
-            textActorsRecyclerView.setText("Actors:");
-            actorsAdapter = new ActorsAdapter(actors);
-            actorsRecyclerView.setAdapter(actorsAdapter);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            actorsRecyclerView.setLayoutManager(layoutManager);
-            actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
-                @Override
-                public void onActorClick(int actorId) {
-                    // Navigate to PersonFragment with actorId as an argument
-                    Bundle args = new Bundle();
-                    args.putInt("idPerson", actorId);
+        try {
+            if (actors != null) {
+                textActorsRecyclerView.setText("Actors:");
+                actorsAdapter = new ActorsAdapter(actors);
+                actorsRecyclerView.setAdapter(actorsAdapter);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                actorsRecyclerView.setLayoutManager(layoutManager);
+                actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
+                    @Override
+                    public void onActorClick(int actorId) {
+                        // Navigate to PersonFragment with actorId as an argument
+                        Bundle args = new Bundle();
+                        args.putInt("idPerson", actorId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_personFragment, args);
-                }
-            });
-        } else
-            viewActors.setVisibility(View.GONE);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_personFragment, args);
+                    }
+                });
+            }
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void setMovieSimilar(List<Movie> movies) {
-        if (movies != null) {
-            textMoviesRecyclerView.setText("Similar:");
-            movieAdapter = new MovieAdapter(movies);
-            moviesRecyclerView.setAdapter(movieAdapter);
-            LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            moviesRecyclerView.setLayoutManager(layoutManager1);
-            movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-                @Override
-                public void onMovieClick(int movieId) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovie", movieId);
+        try {
+            if (movies != null) {
+                textMoviesRecyclerView.setText("Similar:");
+                movieAdapter = new MovieAdapter(movies);
+                moviesRecyclerView.setAdapter(movieAdapter);
+                LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                moviesRecyclerView.setLayoutManager(layoutManager1);
+                movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+                    @Override
+                    public void onMovieClick(int movieId) {
+                        Bundle args = new Bundle();
+                        args.putInt("idMovie", movieId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_self, args);
-                }
-            });
-        } else
-            viewSimilar.setVisibility(View.GONE);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_self, args);
+                    }
+                });
+            }
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 
     private void setMovieReview(List<Review> reviews) {
-        View reviewView = view.findViewById(R.id.reviewView);
-        ImageButton buttonNew = reviewView.findViewById(R.id.button0);
-        ImageButton buttonAll = reviewView.findViewById(R.id.button1);
-        TextView textViewTitle = reviewView.findViewById(R.id.textViewTitle);
-        RecyclerView recyclerView = reviewView.findViewById(R.id.recyclerView);
+        try {
+            View reviewView = view.findViewById(R.id.reviewView);
+            ImageButton buttonNew = reviewView.findViewById(R.id.button0);
+            ImageButton buttonAll = reviewView.findViewById(R.id.button1);
+            TextView textViewTitle = reviewView.findViewById(R.id.textViewTitle);
+            RecyclerView recyclerView = reviewView.findViewById(R.id.recyclerView);
 
-        if (reviews != null) {
-            textViewTitle.setText(R.string.reviews);
+            if (reviews != null) {
+                textViewTitle.setText(R.string.reviews);
 
-            reviewAdapter = new ReviewAdapter(reviews);
-            recyclerView.setAdapter(reviewAdapter);
-            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(layoutManager2);
-            reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
-                @Override
-                public void onReviewClick(int reviewId) {
-                    Bundle args = new Bundle();
-                    args.putInt("idReview", reviewId);
+                reviewAdapter = new ReviewAdapter(reviews);
+                recyclerView.setAdapter(reviewAdapter);
+                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager2);
+                reviewAdapter.setOnReviewClickListener(new ReviewAdapter.OnReviewClickListener() {
+                    @Override
+                    public void onReviewClick(int reviewId) {
+                        Bundle args = new Bundle();
+                        args.putInt("idReview", reviewId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_detailReviewFragment, args);
-                }
-            });
-        }
-        buttonAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putInt("idMovie", movie.getId());
-
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_detailReviewFragment, args);
+                    }
+                });
             }
-        });
-        if (isAuthentication) {
-            buttonNew.setOnClickListener(new View.OnClickListener() {
+            buttonAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Bundle args = new Bundle();
                     args.putInt("idMovie", movie.getId());
 
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                    navController.navigate(R.id.action_movieFragment_to_allReviewFragment, args);
                 }
             });
-        } else {
+            if (isAuthentication) {
+                buttonNew.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putInt("idMovie", movie.getId());
 
-            buttonNew.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
-                }
-            });
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                    }
+                });
+            } else {
+
+                buttonNew.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                    }
+                });
+            }
+        } catch (IllegalStateException e) {
+            onDestroy();
         }
     }
 
     private void setLists() {
-        View listView = view.findViewById(R.id.listView);
-        ImageButton buttonNew = listView.findViewById(R.id.button0);
-        ImageButton buttonAll = listView.findViewById(R.id.button1);
-        TextView textViewTitle = listView.findViewById(R.id.textViewTitle);
-        RecyclerView recyclerView = listView.findViewById(R.id.recyclerView);
+        try {
+            View listView = view.findViewById(R.id.listView);
+            ImageButton buttonNew = listView.findViewById(R.id.button0);
+            ImageButton buttonAll = listView.findViewById(R.id.button1);
+            TextView textViewTitle = listView.findViewById(R.id.textViewTitle);
+            RecyclerView recyclerView = listView.findViewById(R.id.recyclerView);
 
 
-        textViewTitle.setText(R.string.lists_with_this_movie);
+            textViewTitle.setText(R.string.lists_with_this_movie);
 
-        if (isAuthentication) {
-            buttonNew.setOnClickListener(new View.OnClickListener() {
+            if (isAuthentication) {
+                buttonNew.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putInt("newList", 0);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                    }
+                });
+            } else {
+                setButtonLisLogin(buttonNew);
+            }
+
+
+            buttonAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Bundle args = new Bundle();
-                    args.putInt("newList", 0);
+                    args.putInt("idMovie", idMovie);
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                    navController.navigate(R.id.action_movieFragment_to_listAllFragment, args);
                 }
             });
-        } else {
-            setButtonLisLogin(buttonNew);
-        }
 
-
-        buttonAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putInt("idMovie", idMovie);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_movieFragment_to_listAllFragment, args);
+            if (lists != null && !lists.isEmpty()) {
+                listAdapter = new ListAdapter(lists);
+                recyclerView.setAdapter(listAdapter);
+                LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager1);
+                listAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int idList) {
+                        Bundle args = new Bundle();
+                        args.putInt("idList", idList);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_listFragment, args);
+                    }
+                });
+            } else {
             }
-        });
-
-        if (lists != null && !lists.isEmpty()) {
-            listAdapter = new ListAdapter(lists);
-            recyclerView.setAdapter(listAdapter);
-            LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(layoutManager1);
-            listAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int idList) {
-                    Bundle args = new Bundle();
-                    args.putInt("idList", idList);
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_listFragment, args);
-                }
-            });
-        } else {
+        } catch (IllegalStateException e) {
+            onDestroy();
         }
     }
 
     private void setPostAdapter() {
-        View postView = view.findViewById(R.id.postView);
-        ImageButton buttonNew = postView.findViewById(R.id.button0);
-        ImageButton buttonAll = postView.findViewById(R.id.button1);
-        TextView textViewTitle = postView.findViewById(R.id.textViewTitle);
-        RecyclerView recyclerView = postView.findViewById(R.id.recyclerView);
+        try {
+            View postView = view.findViewById(R.id.postView);
+            ImageButton buttonNew = postView.findViewById(R.id.button0);
+            ImageButton buttonAll = postView.findViewById(R.id.button1);
+            TextView textViewTitle = postView.findViewById(R.id.textViewTitle);
+            RecyclerView recyclerView = postView.findViewById(R.id.recyclerView);
 
-        textViewTitle.setText(R.string.post_mov);
+            textViewTitle.setText(R.string.post_mov);
 
-        if (posts != null && !posts.isEmpty()) {
-            PostAdapter postAdapter = new PostAdapter(posts);
-            recyclerView.setAdapter(postAdapter);
-            GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(layoutManager);
+            if (posts != null && !posts.isEmpty()) {
+                PostAdapter postAdapter = new PostAdapter(posts);
+                recyclerView.setAdapter(postAdapter);
+                GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager);
 
-            postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int idPost) {
-                    Bundle args = new Bundle();
-                    args.putInt("idPost", idPost);
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_postFragment, args);
-                }
-            });
-        }
-        if (isAuthentication) {
-            buttonNew.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovieNewPost", idMovie);
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
-                }
-            });
-        } else {
-            buttonNew.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
-                }
-            });
-        }
-
-        buttonAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putInt("idMovie", idMovie);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_movieFragment_to_postAllFragment, args);
+                postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int idPost) {
+                        Bundle args = new Bundle();
+                        args.putInt("idPost", idPost);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_postFragment, args);
+                    }
+                });
             }
-        });
+            if (isAuthentication) {
+                buttonNew.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle args = new Bundle();
+                        args.putInt("idMovieNewPost", idMovie);
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_newReviewFragment, args);
+                    }
+                });
+            } else {
+                buttonNew.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                    }
+                });
+            }
+
+            buttonAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putInt("idMovie", idMovie);
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_postAllFragment, args);
+                }
+            });
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
 
     }
 
@@ -559,12 +590,16 @@ public class MovieFragment extends Fragment {
     }
 
     private void setButtonLisLogin(ImageButton button) {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_movieFragment_to_loginFragment);
-            }
-        });
+        try {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                    navController.navigate(R.id.action_movieFragment_to_loginFragment);
+                }
+            });
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 }

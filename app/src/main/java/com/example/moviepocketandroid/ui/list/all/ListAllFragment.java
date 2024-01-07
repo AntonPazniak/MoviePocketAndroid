@@ -52,12 +52,15 @@ public class ListAllFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            int idMovie = args.getInt("idMovie");
-
+            int idMovie = args.getInt("idMovie", 0);
+            int my = args.getInt("my", 0);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    if (idMovie != 0)
+                        lists = MPListApi.getAllListExistIdMovie(idMovie);
+                    else if (my > 0)
+                        lists = MPListApi.getAllMyList();
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

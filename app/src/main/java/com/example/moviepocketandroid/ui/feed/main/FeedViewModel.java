@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.feed;
+package com.example.moviepocketandroid.ui.feed.main;
 
 import androidx.lifecycle.ViewModel;
 

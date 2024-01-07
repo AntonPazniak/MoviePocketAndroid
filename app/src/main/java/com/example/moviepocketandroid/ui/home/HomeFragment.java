@@ -25,7 +25,6 @@ import com.example.moviepocketandroid.api.MP.MPListApi;
 import com.example.moviepocketandroid.api.TMDB.TMDBApi;
 import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
-import com.example.moviepocketandroid.databinding.FragmentHomeBinding;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -37,7 +36,6 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager;
 
     private List<Movie> moviePopular;
-    private FragmentHomeBinding binding;
     private int id, idListMovie;
     private TextView textTitlePopularMovie, textViewCinema, textViewNameList;
     private ImageView imageBackMovie;
@@ -71,60 +69,67 @@ public class HomeFragment extends Fragment {
 
         imageViewBack = view.findViewById(R.id.imageViewBack);
         textViewNameList = view.findViewById(R.id.textViewNameList);
+        try {
+            if (savedInstanceState != null) {
+                moviePopular = Collections.checkedList(
+                        (List<Movie>) savedInstanceState.getSerializable("moviePopular"), Movie.class);
 
-        if (savedInstanceState != null) {
-            moviePopular = Collections.checkedList(
-                    (List<Movie>) savedInstanceState.getSerializable("moviePopular"), Movie.class);
+                nowPlayMovie = Collections.checkedList(
+                        (List<Movie>) savedInstanceState.getSerializable("nowPlayMovie"), Movie.class);
 
-            nowPlayMovie = Collections.checkedList(
-                    (List<Movie>) savedInstanceState.getSerializable("nowPlayMovie"), Movie.class);
+                movieList = (MovieList) savedInstanceState.getSerializable("movieList");
 
-            movieList = (MovieList) savedInstanceState.getSerializable("movieList");
+                setInfo();
 
-            setInfo();
+            } else {
+                load();
+            }
+        } catch (NullPointerException e) {
+            load();
+        }
+    }
 
-        } else {
 
-            new Thread(new Runnable() {
-                @SuppressLint("NewApi")
-                @Override
-                public void run() {
-                    if (moviePopular == null) {
-                        moviePopular = TMDBApi.getPopularMovies();
-                    }
+    private void load() {
+        new Thread(new Runnable() {
+            @SuppressLint("NewApi")
+            @Override
+            public void run() {
+                if (moviePopular == null) {
+                    moviePopular = TMDBApi.getPopularMovies();
+                }
 
-                    if (nowPlayMovie == null) {
-                        nowPlayMovie = TMDBApi.getNowPlayingMovie();
-                    }
+                if (nowPlayMovie == null) {
+                    nowPlayMovie = TMDBApi.getNowPlayingMovie();
+                }
 
-                    if (movieList == null) {
-                        movieList = MPListApi.getListById(3);
-                    }
+                if (movieList == null) {
+                    movieList = MPListApi.getListById(3);
+                }
 
-                    if (movieList != null) {
-                        if (isAdded() && getContext() != null) {
-                            requireActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setMainLIst();
-                                }
-                            });
-                        }
-                    }
-
-                    if (moviePopular != null && !moviePopular.isEmpty()) {
-                        if (isAdded() && getContext() != null) {
-                            requireActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setInfo();
-                                }
-                            });
-                        }
+                if (movieList != null) {
+                    if (isAdded() && getContext() != null) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setMainLIst();
+                            }
+                        });
                     }
                 }
-            }).start();
-        }
+
+                if (moviePopular != null && !moviePopular.isEmpty()) {
+                    if (isAdded() && getContext() != null) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setInfo();
+                            }
+                        });
+                    }
+                }
+            }
+        }).start();
     }
 
     private void setInfo() {

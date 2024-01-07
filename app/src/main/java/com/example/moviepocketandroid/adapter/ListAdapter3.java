@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,12 +19,12 @@ import com.example.moviepocketandroid.ui.until.UserInfoUntil;
 
 import java.util.List;
 
-public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHolder> {
+public class ListAdapter3 extends RecyclerView.Adapter<ListAdapter3.ListViewHolder> {
 
     private List<MovieList> lists;
     private OnItemClickListener onItemClickListener;
 
-    public ListAdapter2(List<MovieList> lists) {
+    public ListAdapter3(List<MovieList> lists) {
         this.lists = lists;
     }
 
@@ -36,7 +35,7 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_2, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_3, parent, false);
         return new ListViewHolder(view);
     }
 
@@ -64,6 +63,7 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
         private TextView textViewNickname;
         private TextView textViewCountLikes;
         private TextView textViewCountDislikes;
+        private TextView textViewContent;
 
         public ListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,19 +75,10 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
             textViewNickname = itemView.findViewById(R.id.textViewNickname);
             textViewCountLikes = itemView.findViewById(R.id.textViewCountLikes);
             textViewCountDislikes = itemView.findViewById(R.id.textViewCountDislikes);
-
+            textViewContent = itemView.findViewById(R.id.textViewContent);
         }
 
         public void bind(MovieList list) {
-
-            imageViewPoster.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo2));
-            textViewTitle.setText("");
-            textViewDate.setText("");
-            imageViewAvatar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.user_pink));
-            textViewNickname.setText("");
-            textViewCountLikes.setText("");
-            textViewCountDislikes.setText("");
-
             if (list.getPoster() != null) {
                 RequestOptions requestOptions = new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
@@ -97,6 +88,7 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
                         .into(imageViewPoster);
             }
             textViewTitle.setText(list.getTitle());
+            textViewContent.setText(list.getContent());
             textViewDate.setText(list.getCreate().toLocalDate().toString());
             UserInfoUntil.setUserInfo(list.getUser(), context, imageViewAvatar);
             textViewNickname.setText(list.getUser().getUsername());

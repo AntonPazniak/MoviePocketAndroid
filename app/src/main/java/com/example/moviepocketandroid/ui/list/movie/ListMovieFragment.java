@@ -152,7 +152,7 @@ public class ListMovieFragment extends Fragment {
         if (movieList.getMovies() != null && !movieList.getMovies().isEmpty()) {
 
             Random random = new Random();
-            int randMovie = random.nextInt(movieList.getMovies().size() - 1);
+            int randMovie = random.nextInt(movieList.getMovies().size());
 
             RequestOptions requestOptions = new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL);

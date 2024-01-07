@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.list.edit;
+package com.example.moviepocketandroid.ui.post.edit;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,55 +17,57 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.MP.MPListApi;
+import com.example.moviepocketandroid.api.MP.MPPostApi;
 import com.example.moviepocketandroid.ui.review.newr.NewReviewFragment;
 import com.google.android.material.button.MaterialButton;
 
-public class ListEditFragment extends Fragment {
+public class PostEditFragment extends Fragment {
 
-    private ListEditViewModel mViewModel;
     private NewReviewFragment newReviewFragment;
 
-    public ListEditFragment() {
+    private PostEditViewModel mViewModel;
+
+    public PostEditFragment() {
+
     }
 
-    public ListEditFragment(int idList) {
+    public PostEditFragment(int idList) {
         Bundle args = new Bundle();
-        args.putInt("idList", idList);
+        args.putInt("idPost", idList);
         setArguments(args);
     }
 
-
-    public static ListEditFragment newInstance() {
-        return new ListEditFragment();
+    public static PostEditFragment newInstance() {
+        return new PostEditFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_edit, container, false);
+        return inflater.inflate(R.layout.fragment_post_edit, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ListEditViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(PostEditViewModel.class);
         // TODO: Use the ViewModel
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         MaterialButton button = view.findViewById(R.id.button);
         Bundle args = getArguments();
         if (args != null) {
-            int idList = args.getInt("idList");
+            int idPost = args.getInt("idPost");
             if (savedInstanceState == null) {
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
                 // Создаем экземпляр ChildFragment
                 newReviewFragment = new NewReviewFragment();
-                newReviewFragment.setIdListEdit(idList);
+                newReviewFragment.setIdPostEdit(idPost);
 
                 // Заменяем фрагмент внутри ParentFragment на ChildFragment
                 transaction.replace(R.id.fragmentContainer, newReviewFragment);
@@ -79,14 +81,14 @@ public class ListEditFragment extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            boolean isSuccessful = MPListApi.deleteList(idList);
+                            boolean isSuccessful = MPPostApi.delPost(idPost);
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (isSuccessful) {
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigateUp();
-                                        Toast.makeText(requireContext(), "The list was deleted", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(requireContext(), "The post was deleted", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                                     }
@@ -98,8 +100,5 @@ public class ListEditFragment extends Fragment {
             });
 
         }
-
     }
-
-
 }

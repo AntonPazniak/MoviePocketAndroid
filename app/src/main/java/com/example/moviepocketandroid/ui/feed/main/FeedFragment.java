@@ -1,4 +1,4 @@
-package com.example.moviepocketandroid.ui.feed;
+package com.example.moviepocketandroid.ui.feed.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
-import com.example.moviepocketandroid.ui.home.HomeFragment;
+import com.example.moviepocketandroid.ui.feed.list.FeedListFragment;
+import com.example.moviepocketandroid.ui.feed.post.FeedPostFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class FeedFragment extends Fragment {
@@ -53,8 +54,8 @@ public class FeedFragment extends Fragment {
         listNavBarAdapter = new ListNavBarAdapter(getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-        listNavBarAdapter.addFragmentAddTitle(new HomeFragment(), "Lists");
-        listNavBarAdapter.addFragmentAddTitle(new HomeFragment(), "Posts");
+        listNavBarAdapter.addFragmentAddTitle(new FeedListFragment(), "Lists");
+        listNavBarAdapter.addFragmentAddTitle(new FeedPostFragment(), "Posts");
         viewPager.setAdapter(listNavBarAdapter);
     }
 }

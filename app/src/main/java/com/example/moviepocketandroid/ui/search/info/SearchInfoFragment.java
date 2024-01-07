@@ -42,19 +42,36 @@ public class SearchInfoFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_search_info, container, false);
     }
 
+    private boolean restoreInstanceState(Bundle savedInstanceState) {
+        try {
+            if (savedInstanceState != null) {
+                movies = (List<Movie>) savedInstanceState.getSerializable("movies");
+                actors = (List<Person>) savedInstanceState.getSerializable("actors");
+                tvSeries = (List<Movie>) savedInstanceState.getSerializable("tvSeries");
+                return true;
+            }
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return false;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
-        actorsRecyclerView = view.findViewById(R.id.actorsRecyclerView);
-        tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
-        textActorsRecyclerView = view.findViewById(R.id.textActorsRecyclerView);
-        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
-        textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
-
-        loadMovieDetails();
-
-
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
+        View view2 = view.findViewById(R.id.view2);
+        moviesRecyclerView = view0.findViewById(R.id.recyclerView);
+        actorsRecyclerView = view1.findViewById(R.id.recyclerView);
+        tvRecyclerView = view2.findViewById(R.id.recyclerView);
+        textMoviesRecyclerView = view0.findViewById(R.id.textView);
+        textActorsRecyclerView = view1.findViewById(R.id.textView);
+        textTVRecyclerView = view2.findViewById(R.id.textView);
+        if (restoreInstanceState(savedInstanceState))
+            setInfo();
+        else
+            loadMovieDetails();
     }
 
     @Override
@@ -89,67 +106,77 @@ public class SearchInfoFragment extends Fragment {
         setActors(actors);
     }
 
-    @SuppressLint("SetTextI18n")
     private void setPopularMovie(List<Movie> movies) {
-        if (movies != null) {
-            textMoviesRecyclerView.setText("Popular movies:");
-            movieAdapter = new MovieAdapter(movies);
-            moviesRecyclerView.setAdapter(movieAdapter);
-            LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            moviesRecyclerView.setLayoutManager(layoutManager1);
-            movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-                @Override
-                public void onMovieClick(int movieId) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovie", movieId);
+        try {
+            if (movies != null) {
+                textMoviesRecyclerView.setText(R.string.popular_movies);
+                movieAdapter = new MovieAdapter(movies);
+                moviesRecyclerView.setAdapter(movieAdapter);
+                LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                moviesRecyclerView.setLayoutManager(layoutManager1);
+                movieAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+                    @Override
+                    public void onMovieClick(int movieId) {
+                        Bundle args = new Bundle();
+                        args.putInt("idMovie", movieId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_navigation_search_to_movieFragment, args);
-                }
-            });
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_navigation_search_to_movieFragment, args);
+                    }
+                });
+            }
+        } catch (IllegalStateException e) {
+            onDestroy();
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void setPopularTVs(List<Movie> tvSeries) {
-        if (tvSeries != null) {
-            textTVRecyclerView.setText("Popular TV Series:");
-            tvAdapter = new MovieAdapter(tvSeries);
-            tvRecyclerView.setAdapter(tvAdapter);
-            LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            tvRecyclerView.setLayoutManager(layoutManager2);
-            tvAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
-                @Override
-                public void onMovieClick(int movieId) {
-                    Bundle args = new Bundle();
-                    args.putInt("idMovie", movieId);
+        try {
+            if (tvSeries != null) {
+                textTVRecyclerView.setText(R.string.popular_tv_series);
+                tvAdapter = new MovieAdapter(tvSeries);
+                tvRecyclerView.setAdapter(tvAdapter);
+                LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                tvRecyclerView.setLayoutManager(layoutManager2);
+                tvAdapter.setOnMovieClickListener(new MovieAdapter.OnMovieClickListener() {
+                    @Override
+                    public void onMovieClick(int movieId) {
+                        Bundle args = new Bundle();
+                        args.putInt("idMovie", movieId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_navigation_search_to_movieFragment, args);
-                }
-            });
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_navigation_search_to_movieFragment, args);
+                    }
+                });
+            }
+        } catch (IllegalStateException e) {
+            onDestroy();
         }
     }
 
     private void setActors(List<Person> actors) {
-        if (actors != null) {
-            textActorsRecyclerView.setText("Popular actors:");
-            actorsAdapter = new ActorsAdapter(actors);
-            actorsRecyclerView.setAdapter(actorsAdapter);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-            actorsRecyclerView.setLayoutManager(layoutManager);
+        try {
+            if (actors != null) {
+                textActorsRecyclerView.setText(R.string.popular_actors);
+                actorsAdapter = new ActorsAdapter(actors);
+                actorsRecyclerView.setAdapter(actorsAdapter);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                actorsRecyclerView.setLayoutManager(layoutManager);
 
-            actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
-                @Override
-                public void onActorClick(int actorId) {
-                    // Navigate to PersonFragment with actorId as an argument
-                    Bundle args = new Bundle();
-                    args.putInt("idPerson", actorId);
+                actorsAdapter.setOnActorClickListener(new ActorsAdapter.OnActorClickListener() {
+                    @Override
+                    public void onActorClick(int actorId) {
+                        // Navigate to PersonFragment with actorId as an argument
+                        Bundle args = new Bundle();
+                        args.putInt("idPerson", actorId);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                    navController.navigate(R.id.action_navigation_search_to_personFragment, args);
-                }
-            });
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                        navController.navigate(R.id.action_navigation_search_to_personFragment, args);
+                    }
+                });
+            }
+        } catch (IllegalStateException e) {
+            onDestroy();
         }
     }
 

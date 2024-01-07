@@ -315,4 +315,118 @@ public class MPListApi {
         }
         return false;
     }
+
+    public static List<MovieList> getLastLists() {
+        List<MovieList> lists = new ArrayList<>();
+        String url = baseUrl + "/movies/list/get/last";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);
+                    if (movieList != null) {
+                        lists.add(movieList);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return lists;
+    }
+
+    public static List<MovieList> getTopLists() {
+        List<MovieList> lists = new ArrayList<>();
+        String url = baseUrl + "/movies/list/get/top";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);
+                    if (movieList != null) {
+                        lists.add(movieList);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return lists;
+    }
+    public static List<MovieList> getAllMyList() {
+        List<MovieList> lists = new ArrayList<>();
+        String url = baseUrl + "/movies/list/user/my";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);
+                    if (movieList != null) {
+                        lists.add(movieList);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return lists;
+    }
+
+    public static Boolean deleteList(int idList) {
+        String url = baseUrl + "/movies/list/del";
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("idMovieList", String.valueOf(idList))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return true;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

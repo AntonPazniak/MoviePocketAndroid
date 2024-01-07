@@ -114,7 +114,10 @@ public class MovieList implements Serializable {
     }
 
     public String getPoster() {
-        return Utils.MP_POSTER_PATH + poster.toString();
+        if (poster != null)
+            return Utils.MP_POSTER_PATH + poster.toString();
+        else
+            return null;
     }
 
     public void setPoster(Long poster) {

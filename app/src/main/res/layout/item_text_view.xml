@@ -14,12 +14,7 @@
 
         <TextView
             android:id="@+id/textViewOverview"
-            android:layout_marginStart="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:textColor="@color/logoBlue"
-            android:textSize="20sp"
-            tools:ignore="MissingConstraints" />
+            style="@style/TextGenerally" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,6 +29,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:maxLines="5"
+                android:ellipsize="end"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.523"

@@ -12,12 +12,13 @@
 
         <TextView
             style="@style/TextTitle"
-            android:text="@string/lists_with_this_movie" />
+            android:text="@string/all_lists" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMovie"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">MoviePocket</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
@@ -61,4 +61,13 @@
     <string name="all_reviews">All reviews</string>
     <string name="posts_about_this_person">Posts about this person</string>
     <string name="feed">Feed</string>
+    <string name="popular_actors">Popular actors:</string>
+    <string name="popular_tv_series">Popular TV Series:</string>
+    <string name="popular_movies">Popular movies:</string>
+    <string name="tv_series">TV Series:</string>
+    <string name="Movies">Movies:</string>
+    <string name="new_list">New list</string>
+    <string name="all_lists">All lists</string>
+    <string name="delete_list">Delete list</string>
+    <string name="delete_post">Delete post</string>
 </resources>

@@ -48,17 +48,16 @@ public class PersonFragment extends Fragment {
     private ImagesAdapter movieImagesAdapter;
     private MovieAdapter movieAdapter;
     private MovieAdapter tvAdapter;
-    private View viewImages, viewMovie, viewTvs, viewOverview;
+    private View viewImages, viewOverview;
     private boolean isExpanded = false;
     private Person person;
     private List<Movie> movies;
     private List<Movie> tvSeries;
     private List<ImageMovie> images;
     private List<Post> posts;
-    private ImageButton buttonNewPost, buttonAllPosts;
     private boolean isAuthentication;
-    private RecyclerView recyclerViewPost;
-    private TextView textPost;
+    private View view;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -69,6 +68,8 @@ public class PersonFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        View view0 = view.findViewById(R.id.view0);
+        View view1 = view.findViewById(R.id.view1);
 
         imagePerson = view.findViewById(R.id.imagePerson);
         textNamePerson = view.findViewById(R.id.textNamePerson);
@@ -76,23 +77,18 @@ public class PersonFragment extends Fragment {
         textPlaceBirth = view.findViewById(R.id.textPlaceBirth);
         textBirthday = view.findViewById(R.id.textBirthday);
         textDeathDay = view.findViewById(R.id.textDeathDay);
-        moviesRecyclerView = view.findViewById(R.id.moviesRecyclerView);
-        tvRecyclerView = view.findViewById(R.id.tvRecyclerView);
+        moviesRecyclerView = view0.findViewById(R.id.recyclerView);
+        tvRecyclerView = view1.findViewById(R.id.recyclerView);
         imagesRecyclerView = view.findViewById(R.id.imagesRecyclerView);
-        textMoviesRecyclerView = view.findViewById(R.id.textMoviesRecyclerView);
-        textTVRecyclerView = view.findViewById(R.id.textTVRecyclerView);
+        textMoviesRecyclerView = view0.findViewById(R.id.textView);
+        textTVRecyclerView = view1.findViewById(R.id.textView);
         textImages = view.findViewById(R.id.textImages);
 
         viewImages = view.findViewById(R.id.viewImages);
-        viewMovie = view.findViewById(R.id.viewSimilar);
-        viewTvs = view.findViewById(R.id.viewTVs);
         textViewOverview = view.findViewById(R.id.textViewOverview);
         viewOverview = view.findViewById(R.id.viewOverview);
 
-        textPost = view.findViewById(R.id.textPost);
-        buttonNewPost = view.findViewById(R.id.buttonNewPost);
-        buttonAllPosts = view.findViewById(R.id.buttonAllPosts);
-        recyclerViewPost = view.findViewById(R.id.recyclerViewPost);
+        this.view = view;
 
         Bundle args = getArguments();
         if (args != null) {
@@ -207,10 +203,9 @@ public class PersonFragment extends Fragment {
             viewImages.setVisibility(View.GONE);
     }
 
-    @SuppressLint("SetTextI18n")
     private void setMovies(List<Movie> movies) {
         if (movies != null) {
-            textMoviesRecyclerView.setText("Movies:");
+            textMoviesRecyclerView.setText(R.string.Movies);
             movieAdapter = new MovieAdapter(movies);
             moviesRecyclerView.setAdapter(movieAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -225,14 +220,12 @@ public class PersonFragment extends Fragment {
                     navController.navigate(R.id.action_personFragment_to_movieFragment, args);
                 }
             });
-        } else
-            viewMovie.setVisibility(View.GONE);
+        }
     }
 
-    @SuppressLint("SetTextI18n")
     private void setTVs(List<Movie> tv) {
         if (tv != null) {
-            textTVRecyclerView.setText("TV Series:");
+            textTVRecyclerView.setText(R.string.tv_series);
             tvAdapter = new MovieAdapter(tv);
             tvRecyclerView.setAdapter(tvAdapter);
             LinearLayoutManager layoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -247,14 +240,18 @@ public class PersonFragment extends Fragment {
                     navController.navigate(R.id.action_personFragment_to_movieFragment, args);
                 }
             });
-        } else
-            viewTvs.setVisibility(View.GONE);
+        }
     }
 
     private void setPosts() {
-        textPost.setVisibility(View.VISIBLE);
-        buttonNewPost.setVisibility(View.VISIBLE);
-        buttonAllPosts.setVisibility(View.VISIBLE);
+        View postView = view.findViewById(R.id.postView);
+        TextView textViewTitle = postView.findViewById(R.id.textViewTitle);
+        textViewTitle.setText(R.string.posts_about_this_person);
+        ImageButton buttonNewPost = postView.findViewById(R.id.button0);
+        ImageButton buttonAllPosts = postView.findViewById(R.id.button1);
+        RecyclerView recyclerViewPost = postView.findViewById(R.id.recyclerView);
+        postView.setVisibility(View.VISIBLE);
+
         if (isAuthentication) {
             buttonNewPost.setOnClickListener(new View.OnClickListener() {
                 @Override

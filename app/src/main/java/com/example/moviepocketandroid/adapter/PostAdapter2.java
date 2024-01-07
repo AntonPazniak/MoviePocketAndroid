@@ -11,22 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.api.models.list.MovieList;
+import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.ui.until.UserInfoUntil;
 
 import java.util.List;
 
-public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHolder> {
+public class PostAdapter2 extends RecyclerView.Adapter<PostAdapter2.PostViewHolder> {
 
-    private List<MovieList> lists;
+    private List<Post> posts;
     private OnItemClickListener onItemClickListener;
 
-    public ListAdapter2(List<MovieList> lists) {
-        this.lists = lists;
+    public PostAdapter2(List<Post> posts) {
+        this.posts = posts;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -35,28 +32,27 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
 
     @NonNull
     @Override
-    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_2, parent, false);
-        return new ListViewHolder(view);
+        return new PostViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-        MovieList list = lists.get(position);
-        holder.bind(list);
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+        Post post = posts.get(position);
+        holder.bind(post);
     }
 
     @Override
     public int getItemCount() {
-        return lists.size();
+        return posts.size();
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int idList);
+        void onItemClick(int postId);
     }
 
-    public class ListViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageViewPoster;
+    public class PostViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewTitle;
         private final TextView textViewDate;
         private final Context context;
@@ -65,9 +61,9 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
         private TextView textViewCountLikes;
         private TextView textViewCountDislikes;
 
-        public ListViewHolder(@NonNull View itemView) {
+        public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewPoster = itemView.findViewById(R.id.imageViewPoster);
+
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewDate = itemView.findViewById(R.id.textViewDate);
             context = itemView.getContext();
@@ -75,39 +71,27 @@ public class ListAdapter2 extends RecyclerView.Adapter<ListAdapter2.ListViewHold
             textViewNickname = itemView.findViewById(R.id.textViewNickname);
             textViewCountLikes = itemView.findViewById(R.id.textViewCountLikes);
             textViewCountDislikes = itemView.findViewById(R.id.textViewCountDislikes);
-
         }
 
-        public void bind(MovieList list) {
-
-            imageViewPoster.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo2));
+        public void bind(Post post) {
             textViewTitle.setText("");
             textViewDate.setText("");
             imageViewAvatar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.user_pink));
             textViewNickname.setText("");
             textViewCountLikes.setText("");
             textViewCountDislikes.setText("");
-
-            if (list.getPoster() != null) {
-                RequestOptions requestOptions = new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL);
-                Glide.with(itemView.getContext())
-                        .load(list.getPoster())
-                        .apply(requestOptions)
-                        .into(imageViewPoster);
-            }
-            textViewTitle.setText(list.getTitle());
-            textViewDate.setText(list.getCreate().toLocalDate().toString());
-            UserInfoUntil.setUserInfo(list.getUser(), context, imageViewAvatar);
-            textViewNickname.setText(list.getUser().getUsername());
-            textViewCountLikes.setText(String.valueOf(list.getLikeOrDis()[0]));
-            textViewCountDislikes.setText(String.valueOf(list.getLikeOrDis()[1]));
+            textViewTitle.setText(post.getTitle());
+            textViewDate.setText(post.getCreate().toLocalDate().toString());
+            UserInfoUntil.setUserInfo(post.getUser(), context, imageViewAvatar);
+            textViewNickname.setText(post.getUser().getUsername());
+            textViewCountLikes.setText(String.valueOf(post.getLikeOrDis()[0]));
+            textViewCountDislikes.setText(String.valueOf(post.getLikeOrDis()[1]));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
-                        int idList = list.getId();
-                        onItemClickListener.onItemClick(idList);
+                        int postId = post.getId();
+                        onItemClickListener.onItemClick(postId);
                     }
                 }
             });

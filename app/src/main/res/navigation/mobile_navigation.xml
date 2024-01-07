@@ -68,6 +68,18 @@
         <action
             android:id="@+id/action_userFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_listAllFragment"
+            app:destination="@id/listAllFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_postAllFragment"
+            app:destination="@id/postAllFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieFragment"
@@ -369,7 +381,38 @@
         tools:layout="@layout/fragment_list_movie_add_search" />
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.example.moviepocketandroid.ui.feed.FeedFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.main.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_feedFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_newReviewFragment"
+            app:destination="@id/newReviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedListFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.list.FeedListFragment"
+        android:label="fragment_feed_list"
+        tools:layout="@layout/fragment_feed_list" />
+    <fragment
+        android:id="@+id/feedPostFragment"
+        android:name="com.example.moviepocketandroid.ui.feed.post.FeedPostFragment"
+        android:label="fragment_feed_post"
+        tools:layout="@layout/fragment_feed_post" />
+    <fragment
+        android:id="@+id/postEditFragment"
+        android:name="com.example.moviepocketandroid.ui.post.edit.PostEditFragment"
+        android:label="fragment_post_edit"
+        tools:layout="@layout/fragment_post_edit" />
 </navigation>
