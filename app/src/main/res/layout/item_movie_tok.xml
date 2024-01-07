@@ -30,7 +30,6 @@
         android:layout_height="200dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -79,7 +78,6 @@
         android:layout_height="140dp"
         android:layout_marginEnd="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewPoster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout3">
 
