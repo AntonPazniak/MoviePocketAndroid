@@ -25,7 +25,9 @@ import com.example.moviepocketandroid.adapter.MovieAdapter;
 import com.example.moviepocketandroid.api.MP.MPAssessmentApi;
 import com.example.moviepocketandroid.api.MP.MPAuthenticationApi;
 import com.example.moviepocketandroid.api.MP.MPUserApi;
+import com.example.moviepocketandroid.api.models.list.MovieList;
 import com.example.moviepocketandroid.api.models.movie.Movie;
+import com.example.moviepocketandroid.api.models.post.Post;
 import com.example.moviepocketandroid.api.models.user.User;
 
 import java.io.Serializable;
@@ -43,6 +45,10 @@ public class UserFragment extends Fragment {
     private ImageButton imageButtonSettings;
     private User user;
     private ImageView imageViewAvatar;
+    private RecyclerView recyclerViewList, recyclerViewPost;
+    private TextView textViewList, textViewPost;
+    private List<MovieList> lists;
+    private List<Post> posts;
 
 
     public static UserFragment newInstance() {
@@ -77,7 +83,6 @@ public class UserFragment extends Fragment {
             }
         }).start();
 
-        // Инициализация элементов интерфейса
         View view0 = view.findViewById(R.id.view0);
         View view1 = view.findViewById(R.id.view1);
         View view2 = view.findViewById(R.id.view2);
@@ -93,9 +98,19 @@ public class UserFragment extends Fragment {
 
         imageButtonSettings = view.findViewById(R.id.imageButtonSettings);
 
+        View listView = view.findViewById(R.id.listView);
+        View postView = view.findViewById(R.id.postView);
+
+        textViewList = listView.findViewById(R.id.textView);
+        recyclerViewList = listView.findViewById(R.id.recyclerView);
+
+        textViewPost = postView.findViewById(R.id.textView);
+        recyclerViewPost = postView.findViewById(R.id.recyclerView);
+
+
         this.view = view;
 
-        // Восстановление данных после изменения конфигурации
+
         if (savedInstanceState != null) {
             Serializable toWatchSerializable = savedInstanceState.getSerializable("toWatchKey");
             Serializable favoritesSerializable = savedInstanceState.getSerializable("favoritesKey");

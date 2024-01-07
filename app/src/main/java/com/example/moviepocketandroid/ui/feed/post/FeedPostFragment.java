@@ -48,34 +48,36 @@ public class FeedPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    posts = MPPostApi.getLastPosts();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (posts != null && !posts.isEmpty()) {
+                                PostAdapter2 postAdapter = new PostAdapter2(posts);
+                                recyclerViewPosts.setAdapter(postAdapter);
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+                                recyclerViewPosts.setLayoutManager(layoutManager);
+                                postAdapter.setOnItemClickListener(new PostAdapter2.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(int idPost) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idPost", idPost);
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_feedFragment_to_postFragment, args);
+                                    }
+                                });
+                            }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                posts = MPPostApi.getLastPosts();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (posts != null && !posts.isEmpty()) {
-                            PostAdapter2 postAdapter = new PostAdapter2(posts);
-                            recyclerViewPosts.setAdapter(postAdapter);
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-                            recyclerViewPosts.setLayoutManager(layoutManager);
-                            postAdapter.setOnItemClickListener(new PostAdapter2.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(int idPost) {
-                                    Bundle args = new Bundle();
-                                    args.putInt("idPost", idPost);
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigate(R.id.action_feedFragment_to_postFragment, args);
-                                }
-                            });
                         }
-
-                    }
-                });
-            }
-        }).start();
-
+                    });
+                }
+            }).start();
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
     }
 }

@@ -48,37 +48,39 @@ public class FeedListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewLists);
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    lists = MPListApi.getLastLists();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (lists != null && !lists.isEmpty()) {
+                                ListAdapter2 listAdapter = new ListAdapter2(lists);
+                                recyclerView.setAdapter(listAdapter);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                lists = MPListApi.getLastLists();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (lists != null && !lists.isEmpty()) {
-                            ListAdapter2 listAdapter = new ListAdapter2(lists);
-                            recyclerView.setAdapter(listAdapter);
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+                                recyclerView.setLayoutManager(layoutManager);
 
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-                            recyclerView.setLayoutManager(layoutManager);
+                                listAdapter.setOnItemClickListener(new ListAdapter2.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(int idList) {
+                                        Bundle args = new Bundle();
+                                        args.putInt("idList", idList);
+                                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                                        navController.navigate(R.id.action_feedFragment_to_listFragment, args);
+                                    }
+                                });
+                            }
 
-                            listAdapter.setOnItemClickListener(new ListAdapter2.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(int idList) {
-                                    Bundle args = new Bundle();
-                                    args.putInt("idList", idList);
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                                    navController.navigate(R.id.action_feedFragment_to_listFragment, args);
-                                }
-                            });
                         }
-
-                    }
-                });
-            }
-        }).start();
-
+                    });
+                }
+            }).start();
+        } catch (IllegalStateException e) {
+            onDestroy();
+        }
 
     }
 }

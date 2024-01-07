@@ -64,6 +64,14 @@
                     android:id="@+id/view2"
                     layout="@layout/item_text_recycler" />
 
+                <include
+                    android:id="@+id/listView"
+                    layout="@layout/item_buttons_recycler" />
+
+                <include
+                    android:id="@+id/postView"
+                    layout="@layout/item_buttons_recycler" />
+
             </LinearLayout>
         </ScrollView>
 
