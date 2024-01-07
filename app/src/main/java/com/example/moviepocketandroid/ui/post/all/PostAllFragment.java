@@ -80,7 +80,7 @@ public class PostAllFragment extends Fragment {
                                         args.putInt("idPost", idPost);
                                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                                         navController.navigate(R.id.action_postAllFragment_to_postFragment, args);
-                                    }
+                                     }
                                 });
                             }
 

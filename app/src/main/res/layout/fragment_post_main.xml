@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.post.main.PostMainFragment">
 
     <ScrollView
@@ -16,11 +17,37 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/imageBackMovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:scaleType="centerCrop" />
+
+                <View
+                    android:id="@+id/viewBackMovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:background="@drawable/gradient_duo_dark_2" />
+
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    style="@style/TextTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageBackMovie" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <include layout="@layout/item_author_ratings" />
 
-            <TextView
-                android:id="@+id/textTitle"
-                style="@style/TextTitle" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/textTitle"-->
+            <!--                style="@style/TextTitle" />-->
 
             <TextView
                 android:id="@+id/textContent"

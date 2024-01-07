@@ -65,12 +65,10 @@ public class UserFragment extends Fragment {
             public void run() {
                 Boolean isAuthentication = MPAuthenticationApi.checkAuth();
 
-                // Если не прошла аутентификация и фрагмент прикреплен к активности
                 if (!isAuthentication && isAdded()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // Переход к LoginFragment с использованием NavController
                             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
                             navController.navigate(R.id.action_userFragment_to_loginFragment);
                         }

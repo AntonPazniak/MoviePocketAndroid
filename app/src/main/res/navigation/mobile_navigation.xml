@@ -371,7 +371,17 @@
         android:id="@+id/feedFragment"
         android:name="com.example.moviepocketandroid.ui.feed.main.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_feedFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/feedListFragment"
         android:name="com.example.moviepocketandroid.ui.feed.list.FeedListFragment"

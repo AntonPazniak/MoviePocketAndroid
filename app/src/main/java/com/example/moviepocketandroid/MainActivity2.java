@@ -53,6 +53,9 @@ public class MainActivity2 extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.userFragment) {
                     // Launch the User fragment
                     navController.navigate(R.id.userFragment);
+                } else if (item.getItemId() == R.id.feedFragment) {
+                    // Launch the User fragment
+                    navController.navigate(R.id.feedFragment);
                 }
             } else {
                 // Handle the item selection manually

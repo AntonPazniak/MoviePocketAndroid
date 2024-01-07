@@ -63,6 +63,7 @@ public class ListAdapter3 extends RecyclerView.Adapter<ListAdapter3.ListViewHold
         private TextView textViewNickname;
         private TextView textViewCountLikes;
         private TextView textViewCountDislikes;
+        private TextView textViewContent;
 
         public ListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,17 +75,20 @@ public class ListAdapter3 extends RecyclerView.Adapter<ListAdapter3.ListViewHold
             textViewNickname = itemView.findViewById(R.id.textViewNickname);
             textViewCountLikes = itemView.findViewById(R.id.textViewCountLikes);
             textViewCountDislikes = itemView.findViewById(R.id.textViewCountDislikes);
-
+            textViewContent = itemView.findViewById(R.id.textViewContent);
         }
 
         public void bind(MovieList list) {
-            RequestOptions requestOptions = new RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
-            Glide.with(itemView.getContext())
-                    .load(list.getPoster())
-                    .apply(requestOptions)
-                    .into(imageViewPoster);
+            if (list.getPoster() != null) {
+                RequestOptions requestOptions = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                Glide.with(itemView.getContext())
+                        .load(list.getPoster())
+                        .apply(requestOptions)
+                        .into(imageViewPoster);
+            }
             textViewTitle.setText(list.getTitle());
+            textViewContent.setText(list.getContent());
             textViewDate.setText(list.getCreate().toLocalDate().toString());
             UserInfoUntil.setUserInfo(list.getUser(), context, imageViewAvatar);
             textViewNickname.setText(list.getUser().getUsername());
