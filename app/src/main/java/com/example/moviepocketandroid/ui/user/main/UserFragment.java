@@ -315,7 +315,7 @@ public class UserFragment extends Fragment {
                         Bundle args = new Bundle();
                         args.putInt("idList", idList);
                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_listFragment, args);
+                        navController.navigate(R.id.action_userPageFragment_to_listFragment, args);
                     }
                 });
             }

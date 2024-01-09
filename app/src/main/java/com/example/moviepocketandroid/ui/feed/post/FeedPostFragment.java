@@ -56,7 +56,7 @@ public class FeedPostFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (posts != null && !posts.isEmpty()) {
+                            if (isAdded() && posts != null && !posts.isEmpty()) {
                                 PostAdapter2 postAdapter = new PostAdapter2(posts);
                                 recyclerViewPosts.setAdapter(postAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);

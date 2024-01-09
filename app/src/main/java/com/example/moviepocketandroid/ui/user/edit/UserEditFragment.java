@@ -1,8 +1,13 @@
 package com.example.moviepocketandroid.ui.user.edit;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,21 +82,34 @@ public class UserEditFragment extends Fragment {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        RequestOptions requestOptions = new RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL);
                         if (user != null) {
                             editTextUsername.setText(user.getUsername());
                             editTextEmailAddress.setText(user.getEmail());
                             editTextBio.setText(user.getBio());
                             if (user.getAvatar() != null) {
-                                RequestOptions requestOptions = new RequestOptions()
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL);
                                 Glide.with(view.getContext())
                                         .load(user.getAvatar())
                                         .apply(requestOptions)
                                         .into(imageViewAvatar);
                             }
+
+                            imageViewAvatar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    startActivityForResult(intent, 3);
+                                    Glide.with(view.getContext())
+                                            .load(user.getAvatar())
+                                            .apply(requestOptions)
+                                            .into(imageViewAvatar);
+                                }
+                            });
                         }
                     }
                 });
+
             }
         }).start();
 
@@ -99,6 +117,35 @@ public class UserEditFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean isSuccessful = MPUserApi.setNewAvatar(getContext(), selectedImage);
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isSuccessful) {
+                                RequestOptions requestOptions = new RequestOptions()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                Glide.with(getContext())
+                                        .load(user.getAvatar())
+                                        .apply(requestOptions)
+                                        .into(imageViewAvatar);
+                                Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }).start();
+        }
+    }
 
     private void setList() {
 

@@ -266,6 +266,12 @@
         <action
             android:id="@+id/action_userPageFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_userPageFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_userPageFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieListFragment"
@@ -304,6 +310,9 @@
         <action
             android:id="@+id/action_listFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/listMovieFragment"
@@ -335,6 +344,9 @@
         <action
             android:id="@+id/action_postFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/postMainFragment"
