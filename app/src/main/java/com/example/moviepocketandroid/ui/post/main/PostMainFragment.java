@@ -152,7 +152,7 @@ public class PostMainFragment extends Fragment {
                 args.putString("username", post.getUser().getUsername());
 
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                navController.navigate(R.id.action_listFragment_to_userPageFragment, args);
+                navController.navigate(R.id.action_postFragment_to_userPageFragment, args);
             }
         });
         textTitle.setText(post.getTitle());
