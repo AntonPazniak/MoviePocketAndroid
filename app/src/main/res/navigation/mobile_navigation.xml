@@ -304,6 +304,9 @@
         <action
             android:id="@+id/action_listFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/listMovieFragment"
@@ -335,6 +338,9 @@
         <action
             android:id="@+id/action_postFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/postMainFragment"

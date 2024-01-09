@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -141,6 +142,19 @@ public class PostMainFragment extends Fragment {
                 }
             });
         }
+
+        LinearLayout linearLayoutUser = view.findViewById(R.id.linearLayoutUser);
+
+        linearLayoutUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putString("username", post.getUser().getUsername());
+
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                navController.navigate(R.id.action_listFragment_to_userPageFragment, args);
+            }
+        });
         textTitle.setText(post.getTitle());
         textContent.setText(post.getContent());
         AuthorAndRating authorAndRating = new AuthorAndRating(view, post.getId(), post.getUser(), post.getLikeOrDis());

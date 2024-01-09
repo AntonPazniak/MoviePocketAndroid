@@ -61,7 +61,7 @@ public class FeedListFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (lists != null && !lists.isEmpty()) {
+                            if (isAdded() && lists != null && !lists.isEmpty()) {
                                 ListAdapter2 listAdapter = new ListAdapter2(lists);
                                 recyclerView.setAdapter(listAdapter);
 
