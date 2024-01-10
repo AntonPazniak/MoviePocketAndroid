@@ -13,9 +13,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.moviepocketandroid.R;
-import com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
+import com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment;
+import com.example.moviepocketandroid.ui.search.list.SearchListFragment;
 import com.example.moviepocketandroid.ui.search.post.SearchPostFragment;
+import com.example.moviepocketandroid.ui.search.user.SearchUserFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class SearchResultsFragment extends Fragment {
@@ -69,6 +71,8 @@ public class SearchResultsFragment extends Fragment {
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query, 0), "TVs");
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query, 0, 0), "Actors");
             listNavBarAdapter.addFragmentAddTitle(new SearchPostFragment(query), "Posts");
+            listNavBarAdapter.addFragmentAddTitle(new SearchListFragment(query), "Lists");
+            listNavBarAdapter.addFragmentAddTitle(new SearchUserFragment(query), "Users");
             viewPager.setAdapter(listNavBarAdapter);
 
         }
@@ -97,6 +101,16 @@ public class SearchResultsFragment extends Fragment {
         fragment = listNavBarAdapter.getItem(3);
         if (fragment instanceof SearchPostFragment) {
             SearchPostFragment yourFragment = (SearchPostFragment) fragment;
+            yourFragment.updateQuery(query);
+        }
+        fragment = listNavBarAdapter.getItem(4);
+        if (fragment instanceof SearchListFragment) {
+            SearchListFragment yourFragment = (SearchListFragment) fragment;
+            yourFragment.updateQuery(query);
+        }
+        fragment = listNavBarAdapter.getItem(5);
+        if (fragment instanceof SearchUserFragment) {
+            SearchUserFragment yourFragment = (SearchUserFragment) fragment;
             yourFragment.updateQuery(query);
         }
     }

@@ -58,10 +58,11 @@ public class FeedListFragment extends Fragment {
                 public void run() {
                     lists = MPListApi.getLastLists();
                     Boolean isAuthentication = MPAuthenticationApi.checkAuth();
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isAdded() && lists != null && !lists.isEmpty()) {
+
+                    if (isAdded() && lists != null && !lists.isEmpty()) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                                 ListAdapter2 listAdapter = new ListAdapter2(lists);
                                 recyclerView.setAdapter(listAdapter);
 
@@ -100,8 +101,9 @@ public class FeedListFragment extends Fragment {
                                 });
                             }
 
-                        }
-                    });
+
+                        });
+                    }
                 }
             }).start();
         } catch (IllegalStateException e) {
