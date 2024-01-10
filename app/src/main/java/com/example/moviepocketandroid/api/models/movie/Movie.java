@@ -27,7 +27,7 @@ public class Movie implements Serializable {
     private Object belongsToCollection;
 
     @SerializedName("budget")
-    private int budget;
+    private long budget;
 
     @SerializedName("genres")
     private List<Genre> genres;
@@ -66,7 +66,7 @@ public class Movie implements Serializable {
     private LocalDate releaseDate;
 
     @SerializedName("revenue")
-    private int revenue;
+    private long revenue;
 
     @SerializedName("runtime")
     private int runtime;
@@ -188,7 +188,7 @@ public class Movie implements Serializable {
         return belongsToCollection;
     }
 
-    public int getBudget() {
+    public long getBudget() {
         return budget;
     }
 
@@ -228,7 +228,7 @@ public class Movie implements Serializable {
         return releaseDate;
     }
 
-    public int getRevenue() {
+    public long getRevenue() {
         return revenue;
     }
 
