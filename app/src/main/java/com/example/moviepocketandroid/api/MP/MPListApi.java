@@ -460,4 +460,34 @@ public class MPListApi {
         return lists;
     }
 
+    public static List<MovieList> getSearchList(String title) {
+        List<MovieList> lists = new ArrayList<>();
+        String url = baseUrl + "/movies/list/get/title?title=" + title;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Cookie", MPAuthenticationApi.getCookies())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    MovieList movieList = gson.fromJson(reviewObject.toString(), MovieList.class);
+                    if (movieList != null) {
+                        lists.add(movieList);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return lists;
+    }
+
 }

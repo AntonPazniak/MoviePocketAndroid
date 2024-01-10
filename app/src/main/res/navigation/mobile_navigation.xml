@@ -429,17 +429,17 @@
         tools:layout="@layout/fragment_post_edit" />
     <fragment
         android:id="@+id/searchListFragment"
-        android:name="com.example.moviepocketandroid.SearchListFragment"
+        android:name="com.example.moviepocketandroid.ui.search.list.SearchListFragment"
         android:label="fragment_search_list"
         tools:layout="@layout/fragment_search_list" />
     <fragment
         android:id="@+id/searchPostFragment"
-        android:name="com.example.moviepocketandroid.SearchPostFragment"
+        android:name="com.example.moviepocketandroid.ui.search.post.SearchPostFragment"
         android:label="fragment_search_post"
         tools:layout="@layout/fragment_search_post" />
     <fragment
         android:id="@+id/searchUserFragment"
-        android:name="com.example.moviepocketandroid.SearchUserFragment"
+        android:name="com.example.moviepocketandroid.ui.search.user.SearchUserFragment"
         android:label="fragment_search_user"
         tools:layout="@layout/fragment_search_user" />
 </navigation>
