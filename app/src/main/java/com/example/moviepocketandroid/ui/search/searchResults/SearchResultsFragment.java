@@ -115,4 +115,24 @@ public class SearchResultsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeFragments();
+    }
+
+    private void removeFragments() {
+        getChildFragmentManager().beginTransaction()
+                .remove(listNavBarAdapter.getItem(0))
+                .remove(listNavBarAdapter.getItem(1))
+                .remove(listNavBarAdapter.getItem(2))
+                .remove(listNavBarAdapter.getItem(3))
+                .remove(listNavBarAdapter.getItem(4))
+                .remove(listNavBarAdapter.getItem(5))
+                .commit();
+
+        getChildFragmentManager().executePendingTransactions();
+    }
+
+
 }
