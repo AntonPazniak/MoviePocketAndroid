@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.moviepocketandroid.R;
 import com.example.moviepocketandroid.ui.search.frag.SearchRecyclerFragment;
 import com.example.moviepocketandroid.adapter.ListNavBarAdapter;
+import com.example.moviepocketandroid.ui.search.post.SearchPostFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class SearchResultsFragment extends Fragment {
@@ -67,6 +68,7 @@ public class SearchResultsFragment extends Fragment {
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query), "Movies");
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query, 0), "TVs");
             listNavBarAdapter.addFragmentAddTitle(new SearchRecyclerFragment(query, 0, 0), "Actors");
+            listNavBarAdapter.addFragmentAddTitle(new SearchPostFragment(query), "Posts");
             viewPager.setAdapter(listNavBarAdapter);
 
         }
@@ -91,6 +93,11 @@ public class SearchResultsFragment extends Fragment {
         if (fragment instanceof SearchRecyclerFragment) {
             SearchRecyclerFragment yourFragment = (SearchRecyclerFragment) fragment;
             yourFragment.updatePersons(query);
+        }
+        fragment = listNavBarAdapter.getItem(3);
+        if (fragment instanceof SearchPostFragment) {
+            SearchPostFragment yourFragment = (SearchPostFragment) fragment;
+            yourFragment.updateQuery(query);
         }
     }
 

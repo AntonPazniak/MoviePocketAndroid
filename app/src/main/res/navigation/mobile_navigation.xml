@@ -44,6 +44,12 @@
         <action
             android:id="@+id/action_navigation_search_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -170,6 +176,15 @@
         <action
             android:id="@+id/action_searchResultsFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_userPageFragment2"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieTokFragment"
