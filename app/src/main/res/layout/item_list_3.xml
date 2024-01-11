@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /*
+  ~  * ******************************************************
+  ~  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+  ~  *  This file is part of MoviePocket.
+  ~  *  MoviePocket can not be copied and/or distributed without the express
+  ~  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+  ~  * *****************************************************
+  ~  */
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

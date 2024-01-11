@@ -1,3 +1,14 @@
+/*
+ *
+ *  * ******************************************************
+ *  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+ *  *  This file is part of MoviePocket.
+ *  *  MoviePocket can not be copied and/or distributed without the express
+ *  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+ *  * *****************************************************
+ *
+ */
+
 package com.example.moviepocketandroid.api.models.rating;
 
 import lombok.Getter;
@@ -12,6 +23,7 @@ public class Rating {
 
     public Rating() {
     }
+
     public Rating(double rating, int count) {
         this.rating = rating;
         this.count = count;

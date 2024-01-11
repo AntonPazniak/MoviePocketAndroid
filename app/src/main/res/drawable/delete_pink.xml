@@ -1,20 +1,31 @@
+<!--
+  ~ /*
+  ~  * ******************************************************
+  ~  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+  ~  *  This file is part of MoviePocket.
+  ~  *  MoviePocket can not be copied and/or distributed without the express
+  ~  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+  ~  * *****************************************************
+  ~  */
+  -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="32dp"
     android:height="32dp"
     android:viewportWidth="32"
     android:viewportHeight="32">
-  <path
-      android:fillColor="#00000000"
-      android:pathData="M7,7L25,25"
-      android:strokeWidth="2"
-      android:strokeColor="@color/logoPink"
-      android:strokeLineCap="round"
-      android:strokeLineJoin="round" />
-  <path
-      android:fillColor="#00000000"
-      android:pathData="M7,25L25,7"
-      android:strokeWidth="2"
-      android:strokeColor="@color/logoPink"
-      android:strokeLineCap="round"
-      android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M7,7L25,25"
+        android:strokeWidth="2"
+        android:strokeColor="@color/logoPink"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M7,25L25,7"
+        android:strokeWidth="2"
+        android:strokeColor="@color/logoPink"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

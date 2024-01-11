@@ -1,3 +1,14 @@
+/*
+ *
+ *  * ******************************************************
+ *  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+ *  *  This file is part of MoviePocket.
+ *  *  MoviePocket can not be copied and/or distributed without the express
+ *  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+ *  * *****************************************************
+ *
+ */
+
 package com.example.moviepocketandroid.adapter;
 
 import android.content.res.Resources;
@@ -81,6 +92,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.MovieImage
                     }
                 });
     }
+
     private int dpToPx(int dp) {
         float density = Resources.getSystem().getDisplayMetrics().density;
         return Math.round(dp * density);

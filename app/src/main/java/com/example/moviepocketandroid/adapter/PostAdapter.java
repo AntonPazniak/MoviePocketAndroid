@@ -1,3 +1,14 @@
+/*
+ *
+ *  * ******************************************************
+ *  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+ *  *  This file is part of MoviePocket.
+ *  *  MoviePocket can not be copied and/or distributed without the express
+ *  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+ *  * *****************************************************
+ *
+ */
+
 package com.example.moviepocketandroid.adapter;
 
 import android.view.LayoutInflater;
@@ -56,7 +67,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-
 
 
     @Override
