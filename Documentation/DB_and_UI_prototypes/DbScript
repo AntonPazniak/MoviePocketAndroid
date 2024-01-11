@@ -1,0 +1,497 @@
+create table companies
+(
+    id             bigint       not null
+        primary key,
+    logo_path      varchar(255) null,
+    name           varchar(255) null,
+    origin_country varchar(255) null,
+    constraint UK50ygfritln653mnfhxucoy8up
+        unique (name)
+);
+
+create table countries
+(
+    iso_3166_1 varchar(255) not null
+        primary key,
+    name       varchar(255) null,
+    constraint UK1pyiwrqimi3hnl3vtgsypj5r
+        unique (name)
+);
+
+create table genre
+(
+    id   bigint       not null
+        primary key,
+    name varchar(255) null,
+    constraint UKctffrbu4484ft8dlsa5vmqdka
+        unique (name)
+);
+
+create table images
+(
+    id      bigint auto_increment
+        primary key,
+    created datetime     null,
+    updated datetime     null,
+    data    longblob     null,
+    name    varchar(255) null
+);
+
+create table movie
+(
+    id            bigint       not null
+        primary key,
+    backdrop_path varchar(255) null,
+    imdb_id       varchar(255) null,
+    overview      text         null,
+    poster_path   varchar(255) null,
+    release_date  date         null,
+    runtime       int          not null,
+    title         varchar(255) null
+);
+
+create table movie_categories
+(
+    id   bigint auto_increment
+        primary key,
+    name varchar(255) not null,
+    constraint UK_a38g6o1s19wveiela1awos1vw
+        unique (name)
+);
+
+create table movie_companies
+(
+    id_movie   bigint not null,
+    id_company bigint not null,
+    constraint FK6xggkqs5hgjrolf1gbrkydour
+        foreign key (id_movie) references movie (id),
+    constraint FKhe06lw3uyueo27pho2jaumjnm
+        foreign key (id_company) references companies (id)
+);
+
+create table movie_countries
+(
+    id_movie      bigint       not null,
+    id_iso_3166_1 varchar(255) not null,
+    constraint FK9mn73rlupstghra1d1yts1bvf
+        foreign key (id_movie) references movie (id),
+    constraint FKlli81eue6f9ug1u1qb8munw1u
+        foreign key (id_iso_3166_1) references countries (iso_3166_1)
+);
+
+create table movie_genre
+(
+    id_movie bigint not null,
+    id_genre bigint not null,
+    constraint FKaqi5po5nuvrcroynuim21mji8
+        foreign key (id_genre) references genre (id),
+    constraint FKntocel55wgcqesjgfy85oxeml
+        foreign key (id_movie) references movie (id)
+);
+
+create table roles
+(
+    id   bigint auto_increment
+        primary key,
+    name varchar(255) not null,
+    constraint UK_ofx66keruapi6vyqpv6f2or37
+        unique (name)
+);
+
+create table users
+(
+    id                 bigint auto_increment
+        primary key,
+    created            datetime     null,
+    updated            datetime     null,
+    account_active     bit          not null,
+    bio                longtext     null,
+    email              varchar(255) not null,
+    password           varchar(255) not null,
+    username           varchar(255) not null,
+    email_verification bit          not null,
+    id_avatar          bigint       null,
+    constraint FKciqxjbrtd2jega1ocnlgw5ekh
+        foreign key (id_avatar) references images (id)
+);
+
+create table account_activate
+(
+    id                     bigint auto_increment
+        primary key,
+    token_account_activate varchar(255) not null,
+    id_user                bigint       null,
+    constraint UK3gqjmg1caeejsmaeswke9absf
+        unique (id_user),
+    constraint FK9667e4mml6114ijsxlxcwnnuq
+        foreign key (id_user) references users (id)
+);
+
+create table blocked_users
+(
+    id      bigint auto_increment
+        primary key,
+    created datetime     null,
+    updated datetime     null,
+    comment varchar(255) not null,
+    user_id bigint       null,
+    constraint FK9slgomfn1tnu1hlo2axxk2jd9
+        foreign key (user_id) references users (id)
+);
+
+create table favorite_movies
+(
+    id       bigint auto_increment
+        primary key,
+    created  datetime null,
+    updated  datetime null,
+    id_movie bigint   null,
+    id_user  bigint   null,
+    constraint UK76au5gc9b2cymiyy4xugjovf9
+        unique (id_user, id_movie),
+    constraint FK62x339lwrxjrlhfl8fq9nr38g
+        foreign key (id_user) references users (id),
+    constraint FK8cc4d9s78xulpg680ipqrneqh
+        foreign key (id_movie) references movie (id)
+);
+
+create table forgot_password
+(
+    id                    bigint auto_increment
+        primary key,
+    created               datetime     null,
+    updated               datetime     null,
+    token_forgot_password varchar(255) not null,
+    id_user               bigint       null,
+    constraint UKgomp454ws73e1fcoxh6k9ogfy
+        unique (id_user),
+    constraint FK1vqbebti6fddyppin8l1tat53
+        foreign key (id_user) references users (id)
+);
+
+create table list_movie
+(
+    id       bigint auto_increment
+        primary key,
+    created  datetime     null,
+    updated  datetime     null,
+    content  text         not null,
+    title    varchar(255) not null,
+    id_user  bigint       null,
+    id_image bigint       null,
+    constraint UK6joprvubwkmpdf0mvakfib6d8
+        unique (id, id_user),
+    constraint UK_hh0792vwhc1at0bp0qlcm0lnm
+        unique (title),
+    constraint FKbedx86w6thd90pui3dtg34fvp
+        foreign key (id_image) references images (id),
+    constraint FKmtvrylk4beg4kwo8jyf5ffrqu
+        foreign key (id_user) references users (id)
+);
+
+create table like_list
+(
+    id          bigint auto_increment
+        primary key,
+    created     datetime null,
+    updated     datetime null,
+    lick_or_dis bit      not null,
+    id_list     bigint   null,
+    id_user     bigint   null,
+    constraint UK3vegptvidboh4pd6wirvdx726
+        unique (id_user, id_list),
+    constraint FK1u3cvy1csltnsp5cf5aq14xy4
+        foreign key (id_list) references list_movie (id),
+    constraint FK9adnssnpmynbbjsrrcynhcw6y
+        foreign key (id_user) references users (id)
+);
+
+create table list_genres
+(
+    id            bigint auto_increment
+        primary key,
+    created       datetime null,
+    updated       datetime null,
+    id_genre      bigint   null,
+    id_movie_list bigint   null,
+    constraint FK34mdhaqgrp5fwrr4eocw2bm5r
+        foreign key (id_genre) references genre (id),
+    constraint FKh4vpdx911pr8511n0hnhin1iu
+        foreign key (id_movie_list) references list_movie (id)
+);
+
+create table list_item
+(
+    id_list  bigint not null,
+    id_movie bigint not null,
+    constraint FK35b584roy4rs5if45ik1pim7t
+        foreign key (id_movie) references movie (id),
+    constraint FKbmymqr9qn6e1jl39jh7w3qdbd
+        foreign key (id_list) references list_movie (id)
+);
+
+create table list_poster
+(
+    id              bigint auto_increment
+        primary key,
+    id_image_entity bigint null,
+    id_movie_list   bigint null,
+    constraint FKgqkngf9ilea3yhb5oo01pwg5u
+        foreign key (id_movie_list) references list_movie (id),
+    constraint FKnfbdtr7447eb45n09901f0gnp
+        foreign key (id_image_entity) references images (id)
+);
+
+create table movie_disliked
+(
+    id       bigint auto_increment
+        primary key,
+    created  datetime null,
+    updated  datetime null,
+    id_movie bigint   null,
+    id_user  bigint   null,
+    constraint UKit183co23kmhhrxylhb3h5o28
+        unique (id_user, id_movie),
+    constraint FK3t2gpqhfmvlqavkisoa9ubu4q
+        foreign key (id_movie) references movie (id),
+    constraint FK9pxk7kpw7faut7215mulbxogt
+        foreign key (id_user) references users (id)
+);
+
+create table movie_rating
+(
+    id       bigint auto_increment
+        primary key,
+    created  datetime null,
+    updated  datetime null,
+    rating   int      not null,
+    id_movie bigint   null,
+    id_user  bigint   null,
+    constraint UKlo11kpfsfemyitalfqfb0kels
+        unique (id_user, id_movie),
+    constraint FKdvtt106rfxiatna162s2ltg26
+        foreign key (id_user) references users (id),
+    constraint FKhauct9xn7353mdbn1onsjws7w
+        foreign key (id_movie) references movie (id)
+);
+
+create table movie_tracking
+(
+    id           bigint auto_increment
+        primary key,
+    created      datetime null,
+    updated      datetime null,
+    date_release date     null,
+    id_movie     bigint   null,
+    id_user      bigint   null,
+    constraint UKp3pi2qfam6b45ffviaevg5mew
+        unique (id_user, id_movie),
+    constraint FKhn8r33betmmt8fw1kwg7rn3f7
+        foreign key (id_user) references users (id),
+    constraint FKpwn89kwfim5rajgngivt34t12
+        foreign key (id_movie) references movie (id)
+);
+
+create table movie_watched
+(
+    id       bigint auto_increment
+        primary key,
+    created  datetime null,
+    updated  datetime null,
+    id_movie bigint   null,
+    id_user  bigint   null,
+    constraint UK1gpae7pqw3pmac6vk9r0r0lel
+        unique (id_user, id_movie),
+    constraint FKdm2h1fwvkx87e3f4gtrsfybpm
+        foreign key (id_movie) references movie (id),
+    constraint FKoqbwv3m3xjgbhvwcry815ut2y
+        foreign key (id_user) references users (id)
+);
+
+create table movies_watchlist
+(
+    id       bigint auto_increment
+        primary key,
+    created  datetime null,
+    updated  datetime null,
+    id_movie bigint   null,
+    id_user  bigint   null,
+    constraint UKdvmy03h2lgb8o08rnvdthko2c
+        unique (id_user, id_movie),
+    constraint FKdlqv65yux4bdq7oo488xxl8je
+        foreign key (id_movie) references movie (id),
+    constraint FKmk00kotec29rl6iwu6yuwm0yf
+        foreign key (id_user) references users (id)
+);
+
+create table new_email
+(
+    id                   bigint auto_increment
+        primary key,
+    created              datetime     null,
+    updated              datetime     null,
+    new_email            varchar(255) not null,
+    token_email_activate varchar(255) not null,
+    id_user              bigint       null,
+    constraint UKmlha6k4yr67k7cdrl9p4nkcs7
+        unique (id_user),
+    constraint FKq8dh5iyrejbco1igubylga9i1
+        foreign key (id_user) references users (id)
+);
+
+create table post
+(
+    id      bigint auto_increment
+        primary key,
+    created datetime     null,
+    updated datetime     null,
+    content text         null,
+    title   varchar(255) not null,
+    id_user bigint       null,
+    constraint UKgwn8arwik7ibsc0tr9a723ouv
+        unique (id, id_user),
+    constraint FK3n2i1j8bfx7d7ac00iohhimul
+        foreign key (id_user) references users (id)
+);
+
+create table like_post
+(
+    id          bigint auto_increment
+        primary key,
+    created     datetime null,
+    updated     datetime null,
+    lick_or_dis bit      not null,
+    id_post     bigint   null,
+    id_user     bigint   null,
+    constraint UKfeg3qg3dg2nn72lw6tkdhm9em
+        unique (id_user, id_post),
+    constraint FK9mkbdoniku68d43207wno3826
+        foreign key (id_post) references post (id),
+    constraint FKlntnii729knoncuppjed7hk08
+        foreign key (id_user) references users (id)
+);
+
+create table post_list
+(
+    id      bigint auto_increment
+        primary key,
+    id_list bigint not null,
+    id_post bigint not null,
+    constraint UKtbvv6wx4pih756ntfa9xdax43
+        unique (id_post, id_list),
+    constraint FK149828vs6vhhcp34pedvv4owb
+        foreign key (id_post) references post (id),
+    constraint FKsxem9ehv5x6vkorxtm0kquhou
+        foreign key (id_list) references list_movie (id)
+);
+
+create table post_movie
+(
+    id       bigint auto_increment
+        primary key,
+    id_movie bigint null,
+    id_post  bigint not null,
+    constraint UKo94sq9g2r4crlou710bfxejaf
+        unique (id_post, id_movie),
+    constraint FKj9e77qmap4a9sotgbtduqnl0
+        foreign key (id_post) references post (id),
+    constraint FKm0vbhppat4fx0oohmp9taj7wq
+        foreign key (id_movie) references movie (id)
+);
+
+create table post_person
+(
+    id        bigint auto_increment
+        primary key,
+    id_person bigint not null,
+    id_post   bigint not null,
+    constraint UK8e9pmjtuf20kwel144h6vl6ea
+        unique (id_post, id_person),
+    constraint FKf9iuknfok2bbeyxyg7fav4015
+        foreign key (id_post) references post (id)
+);
+
+create table review
+(
+    id      bigint auto_increment
+        primary key,
+    created datetime     null,
+    updated datetime     null,
+    content text         not null,
+    title   varchar(255) not null,
+    id_user bigint       null,
+    constraint UKfkys5li778udp74p1ju0u9lt3
+        unique (id_user, id),
+    constraint FK1kahqq7u7xs4mx4snpqmpyjhf
+        foreign key (id_user) references users (id)
+);
+
+create table like_review
+(
+    id          bigint auto_increment
+        primary key,
+    created     datetime null,
+    updated     datetime null,
+    lick_or_dis bit      not null,
+    id_review   bigint   null,
+    id_user     bigint   null,
+    constraint UKmku38n8h8wd1gnivb69v2yyb5
+        unique (id_user, id_review),
+    constraint FKe28by27p1qk79trvt4rvmlxbl
+        foreign key (id_review) references review (id),
+    constraint FKi7iwpqe16a7a7p51yocgbmnax
+        foreign key (id_user) references users (id)
+);
+
+create table review_list
+(
+    id        bigint auto_increment
+        primary key,
+    id_list   bigint not null,
+    id_review bigint not null,
+    constraint UKn4scv7dyg9iep3j60x5qopkw3
+        unique (id_review, id_list),
+    constraint FKjjvqystp6ex1o95ihsg9741il
+        foreign key (id_review) references review (id),
+    constraint FKo52a2ypeh4ba885kmcwk2rqk0
+        foreign key (id_list) references list_movie (id)
+);
+
+create table review_movie
+(
+    id        bigint auto_increment
+        primary key,
+    id_movie  bigint null,
+    id_review bigint not null,
+    constraint UK488w8030v54s2aw1lwidhv6tj
+        unique (id_review, id_movie),
+    constraint FK2qpfen7qni08siae0detqrpui
+        foreign key (id_movie) references movie (id),
+    constraint FKi3et3mijn1lhlmdoaodyiw3n0
+        foreign key (id_review) references review (id)
+);
+
+create table review_post
+(
+    id        bigint auto_increment
+        primary key,
+    id_post   bigint not null,
+    id_review bigint not null,
+    constraint UKb51b79e0audcggm6wvm2iecku
+        unique (id_review, id_post),
+    constraint FKm4r70vujd2vyjo00rsmn1iny8
+        foreign key (id_post) references post (id),
+    constraint FKqjfytovlvl8gx16b2sq4t5mie
+        foreign key (id_review) references review (id)
+);
+
+create table users_roles
+(
+    user_id bigint not null,
+    role_id bigint not null,
+    constraint FK2o0jvgh89lemvvo17cbqvdxaa
+        foreign key (user_id) references users (id),
+    constraint FKj6m8fwv7oqv74fcehir1a9ffy
+        foreign key (role_id) references roles (id)
+);
+

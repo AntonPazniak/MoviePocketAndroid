@@ -53,10 +53,11 @@ public class FeedPostFragment extends Fragment {
                 @Override
                 public void run() {
                     posts = MPPostApi.getLastPosts();
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isAdded() && posts != null && !posts.isEmpty()) {
+
+                    if (isAdded() && posts != null && !posts.isEmpty()) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                                 PostAdapter2 postAdapter = new PostAdapter2(posts);
                                 recyclerViewPosts.setAdapter(postAdapter);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
@@ -70,10 +71,11 @@ public class FeedPostFragment extends Fragment {
                                         navController.navigate(R.id.action_feedFragment_to_postFragment, args);
                                     }
                                 });
-                            }
 
-                        }
-                    });
+
+                            }
+                        });
+                    }
                 }
             }).start();
         } catch (IllegalStateException e) {

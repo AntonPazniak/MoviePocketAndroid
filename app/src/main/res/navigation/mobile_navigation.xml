@@ -44,6 +44,15 @@
         <action
             android:id="@+id/action_navigation_search_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -170,6 +179,15 @@
         <action
             android:id="@+id/action_searchResultsFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_searchResultsFragment_to_userPageFragment2"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieTokFragment"
@@ -427,4 +445,19 @@
         android:name="com.example.moviepocketandroid.ui.post.edit.PostEditFragment"
         android:label="fragment_post_edit"
         tools:layout="@layout/fragment_post_edit" />
+    <fragment
+        android:id="@+id/searchListFragment"
+        android:name="com.example.moviepocketandroid.ui.search.list.SearchListFragment"
+        android:label="fragment_search_list"
+        tools:layout="@layout/fragment_search_list" />
+    <fragment
+        android:id="@+id/searchPostFragment"
+        android:name="com.example.moviepocketandroid.ui.search.post.SearchPostFragment"
+        android:label="fragment_search_post"
+        tools:layout="@layout/fragment_search_post" />
+    <fragment
+        android:id="@+id/searchUserFragment"
+        android:name="com.example.moviepocketandroid.ui.search.user.SearchUserFragment"
+        android:label="fragment_search_user"
+        tools:layout="@layout/fragment_search_user" />
 </navigation>

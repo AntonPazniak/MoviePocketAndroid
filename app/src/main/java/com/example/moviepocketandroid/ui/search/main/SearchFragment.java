@@ -71,9 +71,13 @@ public class SearchFragment extends Fragment {
                 }
 
                 @Override
-                public boolean onQueryTextChange(String newText) {
-                    // Handle text change (e.g., update search suggestions)
-                    // You can perform some filtering or update suggestions here
+                public boolean onQueryTextChange(String query) {
+                    if (searchResultsFragment == null) {
+                        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                        searchResultsFragment = new SearchResultsFragment(query);
+                        transaction.replace(R.id.fragmentContainer, searchResultsFragment);
+                        transaction.commit();
+                    }
                     return true;
                 }
             });

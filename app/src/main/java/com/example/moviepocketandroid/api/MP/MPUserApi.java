@@ -11,11 +11,17 @@ import com.example.moviepocketandroid.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -196,6 +202,35 @@ public class MPUserApi {
         }
 
         return byteBuffer.toByteArray();
+    }
+
+
+    public static List<User> getSearchUserByUsername(String username) {
+        String url = baseUrl + "/user/search?username=" + username;
+        List<User> users = new ArrayList<>();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONArray reviewArray = new JSONArray(responseBody);
+                for (int i = 0; i < reviewArray.length(); i++) {
+                    JSONObject reviewObject = reviewArray.getJSONObject(i);
+                    User user = gson.fromJson(reviewObject.toString(), User.class);
+                    if (user != null) {
+                        users.add(user);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
 

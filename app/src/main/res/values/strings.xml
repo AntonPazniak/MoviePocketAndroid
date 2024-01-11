@@ -70,4 +70,5 @@
     <string name="all_lists">All lists</string>
     <string name="delete_list">Delete list</string>
     <string name="delete_post">Delete post</string>
+    <string name="list_is_empty">List is empty</string>
 </resources>
