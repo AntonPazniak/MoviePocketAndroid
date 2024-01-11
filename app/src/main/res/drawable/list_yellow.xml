@@ -1,27 +1,38 @@
+<!--
+  ~ /*
+  ~  * ******************************************************
+  ~  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+  ~  *  This file is part of MoviePocket.
+  ~  *  MoviePocket can not be copied and/or distributed without the express
+  ~  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+  ~  * *****************************************************
+  ~  */
+  -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="256dp"
     android:height="256dp"
     android:viewportWidth="256"
     android:viewportHeight="256">
-  <path
-      android:fillColor="@color/logoYellow"
-      android:pathData="M40,128L216,128"
-      android:strokeWidth="16"
-      android:strokeColor="@color/logoYellow"
-      android:strokeLineCap="round"
-      android:strokeLineJoin="round" />
-  <path
-      android:fillColor="@color/logoYellow"
-      android:pathData="M40,64L216,64"
-      android:strokeWidth="16"
-      android:strokeColor="@color/logoYellow"
-      android:strokeLineCap="round"
-      android:strokeLineJoin="round" />
-  <path
-      android:fillColor="@color/logoYellow"
-      android:pathData="M40,192L216,192"
-      android:strokeWidth="16"
-      android:strokeColor="@color/logoYellow"
-      android:strokeLineCap="round"
-      android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@color/logoYellow"
+        android:pathData="M40,128L216,128"
+        android:strokeWidth="16"
+        android:strokeColor="@color/logoYellow"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@color/logoYellow"
+        android:pathData="M40,64L216,64"
+        android:strokeWidth="16"
+        android:strokeColor="@color/logoYellow"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@color/logoYellow"
+        android:pathData="M40,192L216,192"
+        android:strokeWidth="16"
+        android:strokeColor="@color/logoYellow"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

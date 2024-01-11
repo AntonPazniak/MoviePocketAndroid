@@ -1,3 +1,14 @@
+/*
+ *
+ *  * ******************************************************
+ *  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+ *  *  This file is part of MoviePocket.
+ *  *  MoviePocket can not be copied and/or distributed without the express
+ *  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+ *  * *****************************************************
+ *
+ */
+
 package com.example.moviepocketandroid.adapter;
 
 import android.view.LayoutInflater;
@@ -56,6 +67,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.ActorViewH
         private ImageView imageActor;
         private TextView textNameActor;
         private TextView textGenre;
+
         public ActorViewHolder(@NonNull View itemView) {
             super(itemView);
             imageActor = itemView.findViewById(R.id.imageActor);

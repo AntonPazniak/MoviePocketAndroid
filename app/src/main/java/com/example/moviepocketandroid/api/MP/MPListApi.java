@@ -1,3 +1,14 @@
+/*
+ *
+ *  * ******************************************************
+ *  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+ *  *  This file is part of MoviePocket.
+ *  *  MoviePocket can not be copied and/or distributed without the express
+ *  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+ *  * *****************************************************
+ *
+ */
+
 package com.example.moviepocketandroid.api.MP;
 
 import com.example.moviepocketandroid.api.models.list.MovieList;
@@ -373,6 +384,7 @@ public class MPListApi {
         }
         return lists;
     }
+
     public static List<MovieList> getAllMyList() {
         List<MovieList> lists = new ArrayList<>();
         String url = baseUrl + "/movies/list/user/my";

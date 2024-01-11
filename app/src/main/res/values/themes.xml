@@ -1,3 +1,14 @@
+<!--
+  ~ /*
+  ~  * ******************************************************
+  ~  *  Copyright (C) MoviePocket <prymakdn@gmail.com>
+  ~  *  This file is part of MoviePocket.
+  ~  *  MoviePocket can not be copied and/or distributed without the express
+  ~  *  permission of Danila Prymak, Alexander Trafimchyk and Anton Pozniak
+  ~  * *****************************************************
+  ~  */
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MoviePocketAndroid" parent="Theme.Material3.DayNight.NoActionBar">
@@ -5,5 +16,6 @@
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="Theme.MoviePocketAndroid" parent="Base.Theme.MoviePocketAndroid" />
 </resources>
