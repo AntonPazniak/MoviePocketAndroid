@@ -26,4 +26,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:gravity="center"
+        android:text="@string/list_is_empty"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
 </LinearLayout>

@@ -45,13 +45,13 @@ public class UserFragment extends Fragment {
     private List<Movie> favorites;
     private List<Movie> watched;
     private View view;
-    private TextView favoriteTextView, toWatchTextView, watchedTextView, textViewUsername;
+    private TextView favoriteTextView, toWatchTextView, watchedTextView, favoriteTextView2, toWatchTextView2, watchedTextView2, textViewUsername;
     private RecyclerView movieFavoriteRecyclerView, movieToWatchRecyclerView, movieWatchedRecyclerView;
     private ImageButton imageButtonSettings;
     private User user;
     private ImageView imageViewAvatar;
     private RecyclerView recyclerViewList, recyclerViewPost;
-    private TextView textViewList, textViewPost;
+    private TextView textViewList, textViewList2, textViewPost, textViewPost2;
     private List<MovieList> lists;
     private List<Post> posts;
 
@@ -99,6 +99,9 @@ public class UserFragment extends Fragment {
         toWatchTextView = view0.findViewById(R.id.textView);
         favoriteTextView = view1.findViewById(R.id.textView);
         watchedTextView = view2.findViewById(R.id.textView);
+        toWatchTextView2 = view0.findViewById(R.id.textView2);
+        favoriteTextView2 = view1.findViewById(R.id.textView2);
+        watchedTextView2 = view2.findViewById(R.id.textView2);
         textViewUsername = view.findViewById(R.id.textViewUsername);
 
         imageButtonSettings = view.findViewById(R.id.imageButtonSettings);
@@ -107,9 +110,11 @@ public class UserFragment extends Fragment {
         View postView = view.findViewById(R.id.postView);
 
         textViewList = listView.findViewById(R.id.textView);
+        textViewList2 = listView.findViewById(R.id.textView2);
         recyclerViewList = listView.findViewById(R.id.recyclerView);
 
         textViewPost = postView.findViewById(R.id.textView);
+        textViewList2 = postView.findViewById(R.id.textView2);
         recyclerViewPost = postView.findViewById(R.id.recyclerView);
 
 
@@ -197,11 +202,50 @@ public class UserFragment extends Fragment {
                 textViewUsername.setText(user.getUsername());
                 textViewUsername.setText(user.getUsername());
                 toWatchTextView.setText("Watchlist");
-                setMovies(movieToWatchRecyclerView, toWatch);
+                if (toWatch == null || toWatch.isEmpty()) {
+                    toWatchTextView2.setVisibility(View.VISIBLE);
+                } else {
+                    toWatchTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle args = new Bundle();
+                            args.putString("ToWatch", "ToWatch");
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                        }
+                    });
+                    setMovies(movieToWatchRecyclerView, toWatch);
+                }
                 favoriteTextView.setText("Favorite movie");
-                setMovies(movieFavoriteRecyclerView, favorites);
+                if (favorites == null || favorites.isEmpty()) {
+                    favoriteTextView2.setVisibility(View.VISIBLE);
+                } else {
+                    setMovies(movieFavoriteRecyclerView, favorites);
+                    favoriteTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle args = new Bundle();
+                            args.putString("Favorite", "Favorite");
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                        }
+                    });
+                }
                 watchedTextView.setText("Watched movie");
-                setMovies(movieWatchedRecyclerView, watched);
+                if (watched == null || watched.isEmpty()) {
+                    watchedTextView2.setVisibility(View.VISIBLE);
+                } else {
+                    setMovies(movieWatchedRecyclerView, watched);
+                    watchedTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle args = new Bundle();
+                            args.putString("Watched", "Watched");
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
+                            navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
+                        }
+                    });
+                }
 
                 textViewUsername.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -233,36 +277,6 @@ public class UserFragment extends Fragment {
                             .apply(requestOptions)
                             .into(imageViewAvatar);
                 }
-
-                toWatchTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle args = new Bundle();
-                        args.putString("ToWatch", "ToWatch");
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
-                    }
-                });
-
-                favoriteTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle args = new Bundle();
-                        args.putString("Favorite", "Favorite");
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
-                    }
-                });
-
-                watchedTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle args = new Bundle();
-                        args.putString("Watched", "Watched");
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main2);
-                        navController.navigate(R.id.action_userFragment_to_movieListFragment, args);
-                    }
-                });
                 setMyLists();
                 setMyPosts();
             }
